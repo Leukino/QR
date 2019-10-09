@@ -8,6 +8,9 @@
 #include "j1Window.h"
 #include "j1Map.h"
 #include "j1Scene.h"
+#include "WindowsStuff.h"
+#include <time.h>
+
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -32,6 +35,7 @@ bool j1Scene::Start()
 {
 	App->map->Load("hello2.tmx");
 	return true;
+	srand(time(NULL));
 }
 
 // Called each loop iteration
