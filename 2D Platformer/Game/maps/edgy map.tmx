@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="200" height="50" tilewidth="16" tileheight="16" infinite="0" nextobjectid="1">
+ <tileset firstgid="1" name="Plains" tilewidth="16" tileheight="16" tilecount="136" columns="17">
+  <image source="../textures/Plains.png" width="272" height="128"/>
+  <terraintypes>
+   <terrain name="Nuevo Terreno" tile="8"/>
+  </terraintypes>
+  <tile id="8" terrain=",,0,0"/>
+  <tile id="25" terrain=",,,0"/>
+  <tile id="26" terrain=",,0,"/>
+  <tile id="27" terrain=",0,,0"/>
+  <tile id="28" terrain="0,0,0,0"/>
+  <tile id="29" terrain="0,,0,"/>
+ </tileset>
+</map>
