@@ -102,10 +102,10 @@ public:
 
 	// TODO 8: Create a method that translates x,y coordinates from map positions to world positions
 	inline int GetPosX(int x) {
-		return x * 32;
+		return x * 16;
 	};
 	inline int GetPosY(int y) {
-		return y * 32;
+		return y * 16;
 	};
 
 private:
