@@ -111,4 +111,9 @@
       <UniqueIdentifier>{7cb78d67-17cc-45eb-af97-e2106becce7b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Game\maps\edgy map.tmx">
+      <Filter>Desenvolupament  ========</Filter>
+    </None>
+  </ItemGroup>
 </Project>

@@ -38,19 +38,23 @@ void j1Map::Draw()
 	
 
 	
+	p2List_item<layer*>* item_layer = data.layers.start;
+	layer* l = item_layer->data;
+	while (item_layer != NULL)
+	{
+		// TODO 5: Prepare the loop to iterate all the tiles in a layer
+		for (int y = 0; y < data.height; y++) {
+			for (int x = 0; x < data.width; x++) {
 
-	// TODO 5: Prepare the loop to iterate all the tiles in a layer
-	for (int y = 0; y < data.height ;y++) {
-		for (int x = 0; x < data.width; x++) {
-			
-			//data.layers[0]->Get(x, y); //returns index of the position
+				//data.layers[0]->Get(x, y); //returns index of the position
 
-			//Idtile.attribute("gid").as_uint() -1) //data.tilesets.start->data->GetRect(Idtile.attribute("gid").as_uint() - 1)
-			App->render->Blit(data.tilesets.start->data->texture,GetPosX(x),GetPosY(y), data.tilesets.start->data->GetRect(data.layers.start->data->tile_ids[data.layers.start->data->Get(x,y)] -1) ); //finally get the tile id
-			
+				//Idtile.attribute("gid").as_uint() -1) //data.tilesets.start->data->GetRect(Idtile.attribute("gid").as_uint() - 1)
+				App->render->Blit(data.tilesets.start->data->texture, GetPosX(x), GetPosY(y), data.tilesets.start->data->GetRect(l->tile_ids[l->Get(x, y)] - 1)); //finally get the tile id
+			}
 		}
+		item_layer = item_layer->next;
 	}
-	id = 0;
+	id = 0; 
 	// TODO 9: Complete the draw function
 }
 

@@ -10048,7 +10048,7 @@
    <tile/>
   </data>
  </layer>
- <layer name="Waters" width="200" height="50" visible="0">
+ <layer name="Waters" width="200" height="50">
   <data>
    <tile/>
    <tile/>
