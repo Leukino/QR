@@ -40,8 +40,9 @@ void j1Map::Draw()
 	
 	p2List_item<layer*>* item_layer = data.layers.start;
 	layer* l = item_layer->data;
-	while (item_layer != NULL)
+	while (item_layer->next != NULL)
 	{
+		layer* l = item_layer->data;
 		// TODO 5: Prepare the loop to iterate all the tiles in a layer
 		for (int y = 0; y < data.height; y++) {
 			for (int x = 0; x < data.width; x++) {
@@ -51,8 +52,11 @@ void j1Map::Draw()
 				//Idtile.attribute("gid").as_uint() -1) //data.tilesets.start->data->GetRect(Idtile.attribute("gid").as_uint() - 1)
 				App->render->Blit(data.tilesets.start->data->texture, GetPosX(x), GetPosY(y), data.tilesets.start->data->GetRect(l->tile_ids[l->Get(x, y)] - 1)); //finally get the tile id
 			}
+			LOG("ended layer");
 		}
+		LOG("ended all layers");
 		item_layer = item_layer->next;
+		LOG("bool %s", l ? "true" : "false");
 	}
 	id = 0; 
 	// TODO 9: Complete the draw function
