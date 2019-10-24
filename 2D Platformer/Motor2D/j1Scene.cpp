@@ -65,6 +65,11 @@ bool j1Scene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 1;
 
+	int posx;
+	int posy;
+	App->input->GetMousePosition(posx, posy);
+	//camera should depend on player position and player velocity(we just don't have this yet :)
+	App->render->setCamera({ 000, 000 }, /*{ rand() / 100.0f, rand() / 200.0f }*/{ 15, 42 }, { 1.0f, 0.5f });
 	//App->render->Blit(img, 0, 0);
 	App->map->Draw();
 
