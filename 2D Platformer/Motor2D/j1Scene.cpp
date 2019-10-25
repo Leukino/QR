@@ -33,7 +33,8 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	App->map->Load("edgy map.tmx");
+	//App->map->Load("edgy map.tmx");
+	App->map->Load("Map S.tmx");
 	return true;
 	srand(time(NULL));
 }
@@ -69,7 +70,7 @@ bool j1Scene::Update(float dt)
 	int posy;
 	App->input->GetMousePosition(posx, posy);
 	//camera should depend on player position and player velocity(we just don't have this yet :)
-	App->render->setCamera({ 000, 000 }, /*{ rand() / 100.0f, rand() / 200.0f }*/{ 15, 42 }, { 1.0f, 0.5f });
+	//App->render->setCamera({ 000, 000 }, /*{ rand() / 100.0f, rand() / 200.0f }*/{ 15, 42 }, { 1.0f, 0.5f });
 	//App->render->Blit(img, 0, 0);
 	App->map->Draw();
 
