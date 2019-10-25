@@ -110,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\maps\edgy map.tmx" />
+    <None Include="..\Game\maps\Map S.tmx" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />

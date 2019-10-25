@@ -33,7 +33,8 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	App->map->Load("Map R.tmx");
+	//App->map->Load("edgy map.tmx");
+	App->map->Load("Map S.tmx");
 	return true;
 	srand(time(NULL));
 }
