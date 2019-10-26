@@ -4,6 +4,7 @@
 #include "j1Render.h"
 #include "j1Input.h"
 #include "j1Textures.h"
+#include "ModuleCollision.h"
 #include "Player.h"
 #include <math.h>
 #include <cstring>
@@ -43,6 +44,11 @@ bool Player::Awake(pugi::xml_node& conf)
 {
 	position.x = 100;
 	position.y = 100;
+	//player height=34 widht=15
+
+	right_col = App->collision->AddCollider({ 0, 0, 5, 34 }, COLLIDER_PLAYER_RIGHT, this);
+	left_col = App->collision->AddCollider({ 0, 0, 5, 34 }, COLLIDER_PLAYER_LEFT, this);
+	feet_col = App->collision->AddCollider({ 0, 0, 5, 10 }, COLLIDER_PLAYER_FOOT, this);
 
 	Animate(idle_right, 0, 0, 2);
 	Animate(idle_left, 2, 0, 2);
@@ -116,6 +122,10 @@ bool Player::Update(float dt)
 			current_animation = &idle_right;
 		else
 			current_animation = &idle_left;
+
+	right_col->SetPos(24 + position.x + 10, 20 + position.y);
+	left_col->SetPos(20 + position.x, 20 + position.y);
+	feet_col->SetPos(20 + position.x + 5, 20 + position.y + 24);
 
 	SDL_Rect &current_frame = current_animation->GetCurrentFrame();
 	App->render->Blit(player_sprites, position.x, position.y, &current_frame);

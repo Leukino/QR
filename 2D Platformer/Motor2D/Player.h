@@ -20,6 +20,7 @@ public:
 	bool CleanUp();
 
 	void Animate(Animation& anim, const int first_coll, const int first_row,const int n);
+	//void OnCollision(Collider* c1, Collider* c2);
 
 	Animation* current_animation = nullptr;
 
@@ -40,6 +41,11 @@ public:
 	Animation idle_left;
 	Animation run_right;
 	Animation run_left;
+
+	Collider* right_col;
+	Collider* left_col;
+	Collider* head_col;
+	Collider* feet_col;
 
 	bool facing_right = true;
 	bool running = false;
