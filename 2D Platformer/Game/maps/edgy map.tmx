@@ -36,6 +36,11 @@
     <object id="1" x="1" y="5" width="14" height="11"/>
    </objectgroup>
   </tile>
+  <tile id="134">
+   <objectgroup draworder="index">
+    <object id="1" x="1" y="3" width="14" height="13"/>
+   </objectgroup>
+  </tile>
   <tile id="148" terrain=",,4,4"/>
   <tile id="189" terrain=",0,,"/>
   <tile id="190" terrain="0,0,,"/>

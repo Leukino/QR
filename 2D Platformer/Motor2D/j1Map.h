@@ -39,7 +39,8 @@ struct MapLayer
 	int			width;
 	int			height;
 	uint*		data;
-	SDL_Rect*	colliders;
+	//SDL_Rect*	colliders; rotten
+	p2List<SDL_Rect> colliders;
 	Properties	properties;
 
 	MapLayer() : data(NULL)

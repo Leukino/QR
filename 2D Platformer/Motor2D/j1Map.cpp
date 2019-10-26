@@ -349,10 +349,10 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		}
 		pugi::xml_node tsetnode = node.parent().child("tileset");
 		//LOG("PINXE PENDEJO %s", tsetnode.name());
-		for (pugi::xml_node tile = layer_data.child("tile"); tile.empty() == NULL; tile = tile.next_sibling("tile"))
+		for (pugi::xml_node tile = tsetnode.child("tile"); tile.empty() == NULL; tile = tile.next_sibling("tile"))
 		{
-			if (tile.attribute("id").as_int() != 0)
-			LOG("CACACACACACACACACA %d", tile.attribute("id").as_int());
+			//if (tile.attribute("id").as_int() != 0)
+			//LOG("CACACACACACACACACA %d", tile.attribute("id").as_int());
 			if (!(tile.child("objectgroup").empty()))
 			{
 				pugi::xml_node tilenode = tile.child("objectgroup").child("object");
@@ -362,8 +362,9 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 				tilenode.attribute("width").as_int(),
 				tilenode.attribute("height").as_int(),
 				};
-				layer->colliders[i] = r;
-				LOG("LOADED COLLIDER IN TILEID %d POG", i);
+				//layer->colliders[i] = r;
+				layer->colliders.add(r);
+				LOG("LOADED COLLIDER IN LOCATION %d IN LAYER %s POG", i, layer->name.GetString());
 			}
 			i++;
 			
