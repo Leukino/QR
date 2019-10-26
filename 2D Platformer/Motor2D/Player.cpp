@@ -49,11 +49,16 @@ bool Player::Awake(pugi::xml_node& conf)
 	right_col = App->collision->AddCollider({ 0, 0, 5, 34 }, COLLIDER_PLAYER_RIGHT, this);
 	left_col = App->collision->AddCollider({ 0, 0, 5, 34 }, COLLIDER_PLAYER_LEFT, this);
 	feet_col = App->collision->AddCollider({ 0, 0, 5, 10 }, COLLIDER_PLAYER_FOOT, this);
+	floor_col = App->collision->AddCollider({ 0, 200, 3000, 100 }, COLLIDER_GROUND, this);
 
 	Animate(idle_right, 0, 0, 2);
 	Animate(idle_left, 2, 0, 2);
 	Animate(run_right, 4, 0, 6);
 	Animate(run_left, 10, 0, 6);
+	Animate(jump_up_right, 16, 0, 1);
+	Animate(jump_down_right, 1, 1, 1);
+	Animate(jump_up_left, 3, 1, 1);
+	Animate(jump_down_left, 5, 1, 1);
 
 	idle_right.speed = 0.01f;
 	idle_left.speed = 0.01f;
@@ -69,6 +74,10 @@ bool Player::CleanUp()
 
 bool Player::Update(float dt)
 {
+	if (collissioncounter == 0)
+		grounded = false;
+	collissioncounter = 0;
+
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		facing_right = true;
@@ -95,13 +104,22 @@ bool Player::Update(float dt)
 	{
 		running_timer = 0;
 	}
-	
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && !jumping)
+	{
+		jumping = true;
+		grounded = false;
+		velocityY = -10;
+		falling_timer = 4;
+	}
+
 	if (running)
 		if (facing_right)
 		{
-			current_animation = &run_right;
+			if (!jumping)
+				current_animation = &run_right;
 			running_timer++;
-			if (running_timer == 3)
+			if (running_timer == 2)
 			{
 				position.x++;
 				running_timer = 0;
@@ -109,19 +127,49 @@ bool Player::Update(float dt)
 		}
 		else
 		{
-			current_animation = &run_left;
+			if (!jumping)
+				current_animation = &run_left;
 			running_timer++;
-			if (running_timer == 3)
+			if (running_timer == 2)
 			{
 				position.x--;
 				running_timer = 0;
 			}
 		}
 	else
-		if (facing_right)
+		if (facing_right && !jumping)
 			current_animation = &idle_right;
-		else
+		else if (!jumping)
 			current_animation = &idle_left;
+	if (jumping)
+		if (velocityY <= 0)
+			if (facing_right)
+				current_animation = &jump_up_right;
+			else
+				current_animation = &jump_up_left;
+		else
+			if (facing_right)
+				current_animation = &jump_down_right;
+			else
+				current_animation = &jump_down_left;
+
+	falling_timer++;
+	if (falling_timer == 5)
+	{
+		if (!grounded)
+		{
+			timer++;
+			velocityY += timer/5;
+
+		}
+		else
+		{
+			velocityY = 0;
+			timer = 0;
+		}
+		position.y += velocityY;
+		falling_timer = 0;
+	}
 
 	right_col->SetPos(24 + position.x + 10, 20 + position.y);
 	left_col->SetPos(20 + position.x, 20 + position.y);
@@ -130,4 +178,15 @@ bool Player::Update(float dt)
 	SDL_Rect &current_frame = current_animation->GetCurrentFrame();
 	App->render->Blit(player_sprites, position.x, position.y, &current_frame);
 	return true;
+}
+
+void Player::OnCollision(Collider* c1, Collider* c2)
+{
+	if (c1->type == COLLIDER_PLAYER_FOOT && c2->type == COLLIDER_GROUND)
+	{
+		jumping = false;
+		grounded = true;
+		position.y = c2->rect.y - 53;
+		collissioncounter++;
+	}
 }
