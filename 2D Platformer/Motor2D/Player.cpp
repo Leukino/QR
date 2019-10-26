@@ -113,6 +113,13 @@ bool Player::Update(float dt)
 		falling_timer = 4;
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && jumping)
+	{
+		velocityY = -10;
+		timer = 0;
+		falling_timer = 4;
+	}
+
 	if (running)
 		if (facing_right)
 		{
@@ -142,16 +149,10 @@ bool Player::Update(float dt)
 		else if (!jumping)
 			current_animation = &idle_left;
 	if (jumping)
-		if (velocityY <= 0)
 			if (facing_right)
 				current_animation = &jump_up_right;
 			else
 				current_animation = &jump_up_left;
-		else
-			if (facing_right)
-				current_animation = &jump_down_right;
-			else
-				current_animation = &jump_down_left;
 
 	falling_timer++;
 	if (falling_timer == 5)
@@ -160,7 +161,10 @@ bool Player::Update(float dt)
 		{
 			timer++;
 			velocityY += timer/5;
-
+			if (velocityY > 7)
+			{
+				velocityY = 7;
+			}
 		}
 		else
 		{
@@ -184,6 +188,11 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 {
 	if (c1->type == COLLIDER_PLAYER_FOOT && c2->type == COLLIDER_GROUND)
 	{
+		if (jumping)
+		{
+			run_right.SetFrame(2);
+			run_left.SetFrame(5);
+		}
 		jumping = false;
 		grounded = true;
 		position.y = c2->rect.y - 53;

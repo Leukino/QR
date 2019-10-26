@@ -44,6 +44,11 @@ public:
 	{
 		current_frame = 0;
 	}
+
+	void SetFrame(int frame)
+	{
+		current_frame = frame;
+	}
 };
 
 #endif
