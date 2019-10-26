@@ -54,7 +54,7 @@ void j1Map::Draw()
 
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
-
+					// TODO 2: ADD COLLIDERS FOR EACH TILE (IF THEY HAVE IT) 
 					App->render->Blit(tileset->texture, pos.x, pos.y, &r);
 				}
 			}
@@ -146,6 +146,7 @@ bool j1Map::Load(const char* file_name)
 		data.tilesets.add(set);
 	}
 	// Layer info
+	pugi::xml_node layercollset = map_file.child("map").child("tileset");
 	pugi::xml_node layerset;
 	for (layerset = map_file.child("map").child("layer"); layerset && ret; layerset = layerset.next_sibling("layer")) {
 		
@@ -153,10 +154,10 @@ bool j1Map::Load(const char* file_name)
 		if (ret == true)
 		{
 			ret = LoadLayer(layerset, newLayer);
+			//ret = LoadLayerColliders(layercollset, newLayer);
 		}
 		data.layers.add(newLayer);
 	}
-
 
 	if(ret == true)
 	{
@@ -187,7 +188,6 @@ bool j1Map::Load(const char* file_name)
 	}
 
 	map_loaded = ret;
-
 	return ret;
 }
 
@@ -342,17 +342,50 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		int i = 0;
 		for (pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
 		{
-			layer->data[i++] = tile.attribute("gid").as_int(0);
+			layer->data[i] = tile.attribute("gid").as_int(0);
+
+			i++;
+			
 		}
+		pugi::xml_node tsetnode = node.parent().child("tileset");
+		//LOG("PINXE PENDEJO %s", tsetnode.name());
+		for (pugi::xml_node tile = layer_data.child("tile"); tile.empty() == NULL; tile = tile.next_sibling("tile"))
+		{
+			if (tile.attribute("id").as_int() != 0)
+			LOG("CACACACACACACACACA %d", tile.attribute("id").as_int());
+			if (!(tile.child("objectgroup").empty()))
+			{
+				pugi::xml_node tilenode = tile.child("objectgroup").child("object");
+				SDL_Rect r{ 
+				tilenode.attribute("x").as_int(),
+				tilenode.attribute("y").as_int(),
+				tilenode.attribute("width").as_int(),
+				tilenode.attribute("height").as_int(),
+				};
+				layer->colliders[i] = r;
+				LOG("LOADED COLLIDER IN TILEID %d POG", i);
+			}
+			i++;
+			
+		}
+		// for all layers, load collider rects 
+		// TODO 1: LOAD COLLIDER INFORMATION IN EACH TILE
+			//if ()
+
 	}
 
 	return ret;
 }
 
+/*bool j1Map::LoadLayerColliders(pugi::xml_node& node, MapLayer* layer)
+{
+	
+}*/
+
 bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 {
 	bool ret = false;
-
+	
 	pugi::xml_node data = node.child("properties");
 
 	if (data != NULL)

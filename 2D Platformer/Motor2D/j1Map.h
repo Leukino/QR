@@ -38,7 +38,8 @@ struct MapLayer
 	p2SString	name;
 	int			width;
 	int			height;
-	uint* data;
+	uint*		data;
+	SDL_Rect*	colliders;
 	Properties	properties;
 
 	MapLayer() : data(NULL)
@@ -134,6 +135,7 @@ private:
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
+	bool LoadLayerColliders(pugi::xml_node& node, MapLayer* layer);		//TODO 1: This bitch empty			YEET
 	TileSet* GetTilesetFromTileId(int id) const;
 
 public:

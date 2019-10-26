@@ -31,6 +31,11 @@
   <tile id="108" terrain=",0,,0"/>
   <tile id="110" terrain="0,,0,"/>
   <tile id="111" terrain="1,1,1,1"/>
+  <tile id="133">
+   <objectgroup draworder="index">
+    <object id="1" x="1" y="5" width="14" height="11"/>
+   </objectgroup>
+  </tile>
   <tile id="148" terrain=",,4,4"/>
   <tile id="189" terrain=",0,,"/>
   <tile id="190" terrain="0,0,,"/>
@@ -46,8 +51,8 @@
  </tileset>
  <layer id="1" name="Background" width="200" height="50">
   <data>
-   <tile/>
-   <tile/>
+   <tile gid="134"/>
+   <tile gid="134"/>
    <tile/>
    <tile/>
    <tile gid="4"/>
@@ -246,8 +251,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="134"/>
+   <tile gid="134"/>
    <tile/>
    <tile gid="4"/>
    <tile gid="4"/>
