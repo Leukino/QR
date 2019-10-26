@@ -19,7 +19,7 @@ public:
 	bool Update(float dt);
 	bool CleanUp();
 
-	void Animate(Animation anim, const int first_coll, const int first_row, int n);
+	void Animate(Animation& anim, const int first_coll, const int first_row,const int n);
 
 	Animation* current_animation = nullptr;
 
@@ -40,6 +40,12 @@ public:
 	Animation idle_left;
 	Animation run_right;
 	Animation run_left;
+
+	bool facing_right = true;
+	bool running = false;
+	int running_timer;
+	
+
 private:
 
 	pugi::xml_document	player_file;
