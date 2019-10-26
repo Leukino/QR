@@ -124,7 +124,7 @@
     <None Include="..\Game\maps\edgy map.tmx">
       <Filter>Desenvolupament  ========</Filter>
     </None>
-    <None Include="..\Game\maps\Map R.tmx">
+    <None Include="..\Game\maps\Map S.tmx">
       <Filter>Desenvolupament  ========</Filter>
     </None>
   </ItemGroup>

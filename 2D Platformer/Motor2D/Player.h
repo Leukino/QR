@@ -16,20 +16,30 @@ public:
 
 	bool Awake(pugi::xml_node& conf);
 	bool Start();
-	void Update();
+	bool Update(float dt);
 	bool CleanUp();
+
+	void Animate(Animation anim, const int first_coll, const int first_row, int n);
 
 	Animation* current_animation = nullptr;
 
 private:
 
-	SDL_Texture* graphics = nullptr;
+	SDL_Texture* player_sprites = nullptr;
 
 public:
 	//PASS TO XML
 	iPoint position;
 	int speed = 3;
+	int sprite_wh = 60;
+	int xy_increase = 61;
+	int n_row = 2;
+	int n_coll = 17;
 
+	Animation idle_right;
+	Animation idle_left;
+	Animation run_right;
+	Animation run_left;
 private:
 
 	pugi::xml_document	player_file;
