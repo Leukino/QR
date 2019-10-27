@@ -48,7 +48,7 @@ bool Player::Awake(pugi::xml_node& conf)
 
 	right_col = App->collision->AddCollider({ 0, 0, 5, 34 }, COLLIDER_PLAYER_RIGHT, this);
 	left_col = App->collision->AddCollider({ 0, 0, 5, 34 }, COLLIDER_PLAYER_LEFT, this);
-	feet_col = App->collision->AddCollider({ 0, 0, 5, 10 }, COLLIDER_PLAYER_FOOT, this);
+	feet_col = App->collision->AddCollider({ 0, 0, 13, 10 }, COLLIDER_PLAYER_FOOT, this);
 	floor_col = App->collision->AddCollider({ 0, 200, 3000, 100 }, COLLIDER_GROUND, this);
 
 	slide_vel = exp_vel;
@@ -66,8 +66,8 @@ bool Player::Awake(pugi::xml_node& conf)
 
 	idle_right.speed = 0.01f;
 	idle_left.speed = 0.01f;
-	run_right.speed = 0.03f;
-	run_left.speed = 0.03f;
+	run_right.speed = 0.1f;
+	run_left.speed = 0.1f;
 	return true;
 }
 
@@ -107,6 +107,12 @@ bool Player::Update(float dt)
 		running = false;
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+		run_right.Reset();
+	
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+		run_left.Reset();
+
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && !jumping)
 	{
 		jumping = true;
@@ -121,7 +127,7 @@ bool Player::Update(float dt)
 		velocityY = jump_vel;
 		vo = velocityY;
 		timer = 0;
-
+		running = false;
 	}
 
 	if (running)
@@ -178,7 +184,7 @@ bool Player::Update(float dt)
 	if (sliding)
 	{
 		timer++;
-		if (timer < 90)
+		if (timer < 50)
 		{
 			if (facing_right)
 			{
@@ -190,7 +196,7 @@ bool Player::Update(float dt)
 				current_animation = &slide_left;
 				position.x -= slide_vel;
 			}
-			slide_vel -= 0.005f;
+			slide_vel -= ground_friction;
 			if (slide_vel < 0.1f)
 				slide_vel = 0.1;
 		}
@@ -205,7 +211,7 @@ bool Player::Update(float dt)
 
 	right_col->SetPos(24 + position.x + 10, 20 + position.y);
 	left_col->SetPos(20 + position.x, 20 + position.y);
-	feet_col->SetPos(20 + position.x + 5, 20 + position.y + 24);
+	feet_col->SetPos(20 + position.x + 1, 20 + position.y + 24);
 
 	SDL_Rect &current_frame = current_animation->GetCurrentFrame();
 	App->render->Blit(player_sprites, position.x, position.y, &current_frame);

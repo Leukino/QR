@@ -31,7 +31,6 @@ private:
 public:
 	//PASS TO XML
 	fPoint position;
-	float speed = 3.0f;
 	int sprite_wh = 60;
 	int xy_increase = 61;
 	int n_row = 2;
@@ -62,11 +61,12 @@ public:
 	bool sliding = false;
 	int collissioncounter = 0;
 	int timer;
-	float run_vel = 0.5f;
-	float exp_vel = 0.75f;
+	float run_vel = 2.0f;
+	float exp_vel = 4.0f;
+	float ground_friction = 0.15f;
 	float slide_vel;
-	float jump_vel = -3.0f;
-	float a = 0.05f;
+	float jump_vel = -10.0f;
+	float a = 0.5f;
 	float vo;
 	float velocityY;
 	
