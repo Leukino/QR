@@ -45,6 +45,8 @@ public:
 	Animation jump_down_right;
 	Animation jump_up_left;
 	Animation jump_down_left;
+	Animation slide_right;
+	Animation slide_left;
 
 	Collider* right_col;
 	Collider* left_col;
@@ -56,10 +58,13 @@ public:
 	bool running = false;
 	bool grounded = false;
 	bool jumping = false;
+	bool EXPUROSHON = false;
+	bool sliding = false;
 	int collissioncounter = 0;
 	int timer;
 	float run_vel = 0.5f;
-	float exp_vel = 2.0f;
+	float exp_vel = 0.75f;
+	float slide_vel;
 	float jump_vel = -3.0f;
 	float a = 0.05f;
 	float vo;

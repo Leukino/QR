@@ -51,6 +51,8 @@ bool Player::Awake(pugi::xml_node& conf)
 	feet_col = App->collision->AddCollider({ 0, 0, 5, 10 }, COLLIDER_PLAYER_FOOT, this);
 	floor_col = App->collision->AddCollider({ 0, 200, 3000, 100 }, COLLIDER_GROUND, this);
 
+	slide_vel = exp_vel;
+
 	Animate(idle_right, 0, 0, 2);
 	Animate(idle_left, 2, 0, 2);
 	Animate(run_right, 4, 0, 6);
@@ -59,6 +61,8 @@ bool Player::Awake(pugi::xml_node& conf)
 	Animate(jump_down_right, 1, 1, 1);
 	Animate(jump_up_left, 3, 1, 1);
 	Animate(jump_down_left, 5, 1, 1);
+	Animate(slide_right, 2, 1, 1);
+	Animate(slide_left, 6, 1, 1);
 
 	idle_right.speed = 0.01f;
 	idle_left.speed = 0.01f;
@@ -78,16 +82,19 @@ bool Player::Update(float dt)
 		grounded = false;
 	collissioncounter = 0;
 
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	if (!EXPUROSHON)
 	{
-		facing_right = true;
-		running = true;
-	}
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		{
+			facing_right = true;
+			running = true;
+		}
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
-		facing_right = false;
-		running = true;
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+			facing_right = false;
+			running = true;
+		}
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
@@ -108,8 +115,9 @@ bool Player::Update(float dt)
 		vo = velocityY;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && jumping)
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && jumping && !EXPUROSHON)
 	{
+		EXPUROSHON = true;
 		velocityY = jump_vel;
 		vo = velocityY;
 		timer = 0;
@@ -140,6 +148,18 @@ bool Player::Update(float dt)
 			else
 				current_animation = &jump_up_left;
 
+	if (EXPUROSHON && !sliding)
+		if (facing_right)
+		{
+			current_animation = &jump_down_right;
+			position.x += exp_vel;
+		}
+		else
+		{ 
+			current_animation = &jump_down_left;
+			position.x -= exp_vel;
+		}	
+
 	if (!grounded)
 	{
 		timer++;
@@ -148,9 +168,40 @@ bool Player::Update(float dt)
 	else
 	{
 		velocityY = 0.0f;
-		timer = 0;
+		if (!sliding)
+		{
+			timer = 0;
+		}
 	}
 	position.y += velocityY;
+
+	if (sliding)
+	{
+		timer++;
+		if (timer < 90)
+		{
+			if (facing_right)
+			{
+				current_animation = &slide_right;
+				position.x += slide_vel;
+			}
+			else
+			{
+				current_animation = &slide_left;
+				position.x -= slide_vel;
+			}
+			slide_vel -= 0.005f;
+			if (slide_vel < 0.1f)
+				slide_vel = 0.1;
+		}
+		else
+		{
+			sliding = false;
+			EXPUROSHON = false;
+			slide_vel = exp_vel;
+			timer = 0;
+		}
+	}
 
 	right_col->SetPos(24 + position.x + 10, 20 + position.y);
 	left_col->SetPos(20 + position.x, 20 + position.y);
@@ -169,8 +220,13 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		{
 			run_right.SetFrame(2);
 			run_left.SetFrame(5);
+			jumping = false;
 		}
-		jumping = false;
+		if (EXPUROSHON && !sliding)
+		{
+			sliding = true;
+			timer = 0;
+		}
 		grounded = true;
 		vo = 0.0f;
 		position.y = c2->rect.y - 53;
