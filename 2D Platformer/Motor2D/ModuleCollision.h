@@ -1,7 +1,7 @@
 #ifndef __ModuleCollision_H__
 #define __ModuleCollision_H__
 
-#define MAX_COLLIDERS 23057
+#define MAX_COLLIDERS 2000
 
 #include "PugiXml/src/pugixml.hpp"
 #include "p2List.h"

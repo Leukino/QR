@@ -409,6 +409,10 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 				p2SString type = tilenode.attribute("type").as_string();
 				if (SDL_strcmp(type.GetString(), "GROUND") == 0)
 					colltype = COLLIDER_GROUND;
+				else if (SDL_strcmp(type.GetString(), "WALL") == 0)
+					colltype = COLLIDER_WALL;
+				else if (SDL_strcmp(type.GetString(), "DANGER") == 0)
+					colltype = COLLIDER_ENEMY_SHOT;
 				else
 					colltype = COLLIDER_NONE;
 				//else if(SDL_strcmp(type.GetString(), "INVISIBLEZONE") == 0)	//coll type not implemented yet
