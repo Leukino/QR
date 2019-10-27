@@ -40,7 +40,7 @@ void j1Map::DrawMapColliders()
 	{
 		MapLayer* layer = item->data;
 
-		//if (layer->properties.Get("Nodraw") != 0)
+		//if (layer->properties.Get("Nodraw") != 0) //Used for not loading layers in case it's not needed
 		//	continue;
 
 		for (int y = 0; y < data.height; ++y)
@@ -62,12 +62,9 @@ void j1Map::DrawMapColliders()
 							r = layer->collisions[i].collider.rect;
 							type = layer->collisions[i].collider.type;
 							callback = layer->collisions[i].collider.callback;
-							App->collision->AddCollider({ pos.x + r.x, pos.y + r.y, r.w, r.h }, type, callback);
-							//}
+							App->collision->AddCollider({ pos.x + r.x, pos.y + r.y, r.w, r.h }, type, callback); //Load colliders for each tile (if they have it). Once in start of application
 						}
 					}
-					// TODO 2: ADD COLLIDERS FOR EACH TILE (IF THEY HAVE IT)
-					//App->render->Blit(tileset->texture, pos.x, pos.y, &r); ain't useful
 				}
 			}
 		}
@@ -398,15 +395,15 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 			if (!(tile.child("objectgroup").empty()))
 			{
 				pugi::xml_node tilenode = tile.child("objectgroup").child("object");
-				//SDL_Rect r{
+
 				r.x = tilenode.attribute("x").as_int();
 				r.y = tilenode.attribute("y").as_int();
 				r.w = tilenode.attribute("width").as_int();
 				r.h = tilenode.attribute("height").as_int();
-				//};
-				//layer->colliders[i].rect = r;
+
 				COLLIDER_TYPE colltype;
 				p2SString type = tilenode.attribute("type").as_string();
+
 				if (SDL_strcmp(type.GetString(), "GROUND") == 0)
 					colltype = COLLIDER_GROUND;
 				else if (SDL_strcmp(type.GetString(), "WALL") == 0)
@@ -415,17 +412,10 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 					colltype = COLLIDER_ENEMY_SHOT;
 				else
 					colltype = COLLIDER_NONE;
-				//else if(SDL_strcmp(type.GetString(), "INVISIBLEZONE") == 0)	//coll type not implemented yet
-					//	App->collision->AddCollider(r, COLLIDER_INVISIBLEZONE, App->player);
-				//layer->colliders.add(r); //OLD
-				//layer->colliders[i]->rect = r;
-				//layer->colliders[i]->type = colltype;
-				//layer->colliders[i]->callback = App->player;
 				layer->collisions[i].collider.rect = r;
 				layer->collisions[i].collider.type = colltype;
 				layer->collisions[i].collider.callback = App->player;
 				layer->collisions[i].id = tilenode.parent().parent().attribute("id").as_int();
-				//App->collision->AddCollider(r, colltype, App->player);
 			}
 			else
 			{
@@ -433,9 +423,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 				layer->collisions[i].collider.type = COLLIDER_NONE;
 				layer->collisions[i].collider.callback = nullptr;
 				layer->collisions[i].id = 0;
-			}
-				//App->collision->AddCollider({ 0, 0, 0, 0 }, COLLIDER_NONE, nullptr);
-				
+			}			
 			i++;
 		}
 		
@@ -444,29 +432,13 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		{
 			int gid = tile.attribute("gid").as_int(0);
 			layer->data[i] = gid;
-			// TODO 1: LOAD COLLIDER INFORMATION IN EACH TILE
-			//if (layer->colliders[gid].rect.w != 0) //a real collider won't have a width of 0, will it?
-			//{
-			//	App->collision->AddCollider(layer->colliders[gid].rect, layer->colliders[gid].type, App->player);
-			//	LOG("LOADED COLLIDER IN LOCATION %d IN LAYER %s POG", i, layer->name.GetString());
-			//}
-
+			//Loads all tile id's in the map
 			i++;
-			
 		}
-		
-		// for all layers, load collider rects 
-		
-
 	}
 
 	return ret;
 }
-
-/*bool j1Map::LoadLayerColliders(pugi::xml_node& node, MapLayer* layer)
-{
-	
-}*/
 
 bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 {
