@@ -51,6 +51,7 @@ bool Player::Awake(pugi::xml_node& player_data)
 	n_coll = 17;
 	facing_right = true;
 	running = false;
+	running = false;
 	grounded = false;
 	jumping = false;
 	EXPUROSHON = false;
@@ -68,7 +69,7 @@ bool Player::Awake(pugi::xml_node& player_data)
 	right_col = App->collision->AddCollider({ 0, 0, 5, 34 }, COLLIDER_PLAYER_RIGHT, this);
 	left_col = App->collision->AddCollider({ 0, 0, 5, 34 }, COLLIDER_PLAYER_LEFT, this);
 	feet_col = App->collision->AddCollider({ 0, 0, 13, 10 }, COLLIDER_PLAYER_FOOT, this);
-	floor_col = App->collision->AddCollider({ 0, 200, 3000, 100 }, COLLIDER_GROUND, this);
+	//floor_col = App->collision->AddCollider({ 0, 200, 3000, 100 }, COLLIDER_GROUND, this);
 	rightcol_offset.x = 34;
 	rightcol_offset.y = 20;
 	leftcol_offset.x = 20;

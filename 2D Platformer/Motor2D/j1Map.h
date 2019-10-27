@@ -35,9 +35,10 @@ struct Properties
 
 struct TileCollisions
 {
-	SDL_Rect rect;
-	COLLIDER_TYPE type = COLLIDER_NONE;
-	j1Module* callback = nullptr;
+	int id;
+	Collider collider;
+
+	TileCollisions() : collider({ 0, 0, 0, 0 }, COLLIDER_NONE, nullptr), id(0) {}
 };
 
 struct MapLayer
@@ -46,9 +47,7 @@ struct MapLayer
 	int			width;
 	int			height;
 	uint*		data;
-	//TileCollisions collisions[MAX_COLLIDERS];
-	//Collider* colliders[MAX_COLLIDERS] = ({0, 0, 0, 0}, COLLIDER_NONE, nullptr );
-	//p2List<SDL_Rect> colliders;
+	TileCollisions collisions[210];
 	Properties	properties;
 
 	MapLayer() : data(NULL)
@@ -102,7 +101,7 @@ struct MapData
 	SDL_Color			background_color;
 	MapTypes			type;
 	p2List<TileSet*>	tilesets;
-	p2List<MapLayer*>		layers;
+	p2List<MapLayer*>	layers;
 };
 
 // ----------------------------------------------------
