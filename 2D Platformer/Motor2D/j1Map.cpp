@@ -50,20 +50,20 @@ void j1Map::DrawMapColliders()
 				int tile_id = layer->Get(x, y);
 				if (tile_id > 0)
 				{
-					//TileSet* tileset = GetTilesetFromTileId(tile_id);
+					TileSet* tileset = GetTilesetFromTileId(tile_id);
 					SDL_Rect r;
 					COLLIDER_TYPE type;
 					j1Module* callback;
 					iPoint pos = MapToWorld(x, y);
-					for (uint i = 0; i < MAX_COLLIDERS; ++i)
+					for (uint i = 0; i < 210; ++i)
 					{
-						if (App->collision->colliders[i]->rect.w != 0 )
+						if (layer->collisions[i].id == tile_id-1)
 						{
-							//there is a collider here
-							r = App->collision->colliders[i]->rect;
-							type = App->collision->colliders[i]->type;
-							callback = App->collision->colliders[i]->callback;
+							r = layer->collisions[i].collider.rect;
+							type = layer->collisions[i].collider.type;
+							callback = layer->collisions[i].collider.callback;
 							App->collision->AddCollider({ pos.x + r.x, pos.y + r.y, r.w, r.h }, type, callback);
+							//}
 						}
 					}
 					// TODO 2: ADD COLLIDERS FOR EACH TILE (IF THEY HAVE IT)
@@ -203,6 +203,8 @@ bool j1Map::Load(const char* file_name)
 		data.layers.add(newLayer);
 	}
 
+	
+
 	if(ret == true)
 	{
 		LOG("Successfully parsed map XML file: %s", file_name);
@@ -231,9 +233,10 @@ bool j1Map::Load(const char* file_name)
 		}
 	}
 
-	DrawMapColliders();
+	
 
 	map_loaded = ret;
+	DrawMapColliders();
 	return ret;
 }
 
@@ -414,10 +417,21 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 				//layer->colliders[i]->rect = r;
 				//layer->colliders[i]->type = colltype;
 				//layer->colliders[i]->callback = App->player;
-				App->collision->AddCollider(r, colltype, App->player);
+				layer->collisions[i].collider.rect = r;
+				layer->collisions[i].collider.type = colltype;
+				layer->collisions[i].collider.callback = App->player;
+				layer->collisions[i].id = tilenode.parent().parent().attribute("id").as_int();
+				//App->collision->AddCollider(r, colltype, App->player);
 			}
 			else
-				App->collision->AddCollider({ 0, 0, 0, 0 }, COLLIDER_NONE, nullptr);
+			{
+				layer->collisions[i].collider.rect = { 0, 0, 0, 0 };
+				layer->collisions[i].collider.type = COLLIDER_NONE;
+				layer->collisions[i].collider.callback = nullptr;
+				layer->collisions[i].id = 0;
+			}
+				//App->collision->AddCollider({ 0, 0, 0, 0 }, COLLIDER_NONE, nullptr);
+				
 			i++;
 		}
 		
