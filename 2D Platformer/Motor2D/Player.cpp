@@ -43,9 +43,9 @@ void Player::Animate(Animation& anim,const int first_coll,const int first_row,co
 bool Player::Awake(pugi::xml_node& player_data)
 {
 	position.x = 40.0f;
-	position.y = 300.0f;
+	position.y = 450.0f;
 	initial_pos.x = 40.0f;
-	initial_pos.y = 300.0f;
+	initial_pos.y = 450.0f;
 	
 	sprite_wh = 60;
 	xy_increase = 61;
