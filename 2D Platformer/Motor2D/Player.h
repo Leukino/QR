@@ -31,6 +31,7 @@ private:
 public:
 	//PASS TO XML
 	fPoint position;
+	fPoint initial_pos;
 	int sprite_wh;
 	int xy_increase;
 	int n_row;
@@ -65,7 +66,7 @@ public:
 	bool wallhitR;
 	bool wallhitL;
 	int collissioncounter;
-	int wallcolcounter = 0;
+	int wallcolcounter;
 	int timer;
 	float run_vel;
 	float exp_vel;

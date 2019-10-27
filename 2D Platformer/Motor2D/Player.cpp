@@ -44,6 +44,8 @@ bool Player::Awake(pugi::xml_node& player_data)
 {
 	position.x = 100.0f;
 	position.y = 100.0f;
+	initial_pos.x = 100.0f;
+	initial_pos.y = 100.0f;
 	
 	sprite_wh = 60;
 	xy_increase = 61;
@@ -58,6 +60,7 @@ bool Player::Awake(pugi::xml_node& player_data)
 	sliding = false;
 
 	collissioncounter = 0;
+	wallcolcounter = 0;
 
 	run_vel = 2.0f;
 	exp_vel = 4.0f;
@@ -194,12 +197,16 @@ bool Player::Update(float dt)
 			current_animation = &jump_down_right;
 			if (!wallhitR)
 				position.x += exp_vel;
+			else
+				EXPUROSHON = false;
 		}
 		else
 		{ 
 			current_animation = &jump_down_left;
 			if (!wallhitL)
 				position.x -= exp_vel;
+			else
+				EXPUROSHON = false;
 		}	
 
 	if (!grounded)
@@ -304,5 +311,12 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 	{
 		wallhitL = true;
 		wallcolcounter++;
+	}
+	if (c1->type == COLLIDER_PLAYER_FOOT && c2->type == COLLIDER_ENEMY_SHOT)
+	{
+		position.x = initial_pos.x;
+		position.y = initial_pos.y;
+		vo = 0.0f;
+		timer = 0;
 	}
 }

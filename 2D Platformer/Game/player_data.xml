@@ -1,6 +1,7 @@
 <player_data>
   <setup>
     <position x="100" y="100"/>
+    <initial_position x="100" y="100"/>
     <animate sprite_wh="60" xy_increase ="61" n_row ="2" n_coll ="17"/>
   </setup>
 
@@ -27,7 +28,7 @@
 
   <gameplay>
     <checkers facing_right="true" running="false" grounded="false" jumping="false" EXPUROSHON="false" sliding="false"/>
-    <counters timer="0" collisioncounter ="0"/>
+    <counters timer="0" collisioncounter ="0" wallcolcounter = "0"/>
     <velocities run_vel="2" exp_vel="4" jump_vel ="-10"/>
     <physics a="0.5" ground_friction = "0.15f"/>
   </gameplay>
