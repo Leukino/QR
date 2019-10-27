@@ -192,3 +192,15 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 			rect.y < r.y + r.h &&
 			rect.h + rect.y > r.y);
 }
+
+void Collider::set(SDL_Rect rec_, COLLIDER_TYPE type_, j1Module* callback_)
+{
+	//Collider* ret(rec, type, callback);
+	this->rect.x = rec_.x;
+	this->rect.y = rec_.y;
+	this->rect.w = rec_.w;
+	this->rect.h = rec_.h;
+	this->type = type_;
+	this->callback = callback_;
+	return;
+}

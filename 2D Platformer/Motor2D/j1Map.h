@@ -5,7 +5,7 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
-
+#include "ModuleCollision.h"
 struct Properties
 {
 	struct Property
@@ -33,14 +33,22 @@ struct Properties
 	p2List<Property*>	list;
 };
 
+struct TileCollisions
+{
+	SDL_Rect rect;
+	COLLIDER_TYPE type = COLLIDER_NONE;
+	j1Module* callback = nullptr;
+};
+
 struct MapLayer
 {
 	p2SString	name;
 	int			width;
 	int			height;
 	uint*		data;
-	//SDL_Rect*	colliders; rotten
-	p2List<SDL_Rect> colliders;
+	//TileCollisions collisions[MAX_COLLIDERS];
+	//Collider* colliders[MAX_COLLIDERS] = ({0, 0, 0, 0}, COLLIDER_NONE, nullptr );
+	//p2List<SDL_Rect> colliders;
 	Properties	properties;
 
 	MapLayer() : data(NULL)
@@ -121,7 +129,7 @@ public:
 
 	iPoint MapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
-
+	void DrawMapColliders();
 	/*inline int GetPosX(int x) {
 		return x * 16;
 	};

@@ -33,12 +33,7 @@
   <tile id="111" terrain="1,1,1,1"/>
   <tile id="133">
    <objectgroup draworder="index">
-    <object id="1" x="1" y="5" width="14" height="11"/>
-   </objectgroup>
-  </tile>
-  <tile id="134">
-   <objectgroup draworder="index">
-    <object id="1" x="1" y="3" width="14" height="13"/>
+    <object id="1" type="GROUND" x="1" y="5" width="14" height="11"/>
    </objectgroup>
   </tile>
   <tile id="148" terrain=",,4,4"/>

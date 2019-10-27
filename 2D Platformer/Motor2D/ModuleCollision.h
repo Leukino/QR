@@ -1,7 +1,7 @@
 #ifndef __ModuleCollision_H__
 #define __ModuleCollision_H__
 
-#define MAX_COLLIDERS 50
+#define MAX_COLLIDERS 23057
 
 #include "PugiXml/src/pugixml.hpp"
 #include "p2List.h"
@@ -43,12 +43,13 @@ struct Collider
 	}
 
 	bool CheckCollision(const SDL_Rect& r) const;
+	void set(SDL_Rect rec, COLLIDER_TYPE type, j1Module* callback);
 };
 
 class ModuleCollision : public j1Module
 {
 public:
-
+	friend class j1Map;
 	ModuleCollision();
 	~ModuleCollision();
 
