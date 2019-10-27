@@ -19,7 +19,6 @@ Player::~Player()
 bool Player::Start()
 {
 	player_sprites = App->tex->Load("textures/Knight.png");
-	current_animation = &idle_right;
 
 	return true;
 }

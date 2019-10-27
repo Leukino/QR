@@ -183,6 +183,13 @@ Collider* ModuleCollision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Modu
 	return ret;
 }
 
+void ModuleCollision::Delete_all()
+{
+	for (int i = 0; i < MAX_COLLIDERS; i++)
+		if (colliders[i] != nullptr)
+			colliders[i]->to_delete = true;
+}
+
 // -----------------------------------------------------
 
 bool Collider::CheckCollision(const SDL_Rect& r) const

@@ -11,6 +11,8 @@
 #include "WindowsStuff.h"
 #include <time.h>
 #include "WindowsStuff.h"
+#include "ModuleCollision.h"
+#include "Player.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -33,7 +35,7 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	App->map->Load("Map 2.tmx");
+	App->map->Load("edgy map.tmx");
 	//App->map->Load("Map S.tmx");
 	return true;
 	srand(time(NULL));
@@ -65,6 +67,19 @@ bool j1Scene::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 1;
+
+	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_REPEAT)
+	{
+		App->player->a = 0;
+		App->player->vo = 0;
+		App->collision->Delete_all();
+		App->player->right_col = App->collision->AddCollider({ 0, 0, 5, 34 }, COLLIDER_PLAYER_RIGHT, this);
+		App->player->left_col = App->collision->AddCollider({ 0, 0, 5, 34 }, COLLIDER_PLAYER_LEFT, this);
+		App->player->feet_col = App->collision->AddCollider({ 0, 0, 13, 10 }, COLLIDER_PLAYER_FOOT, this);
+		App->map->Load("Map 2.tmx");
+		App->player->position.x = App->player->initial_pos.x;
+		App->player->position.y = App->player->initial_pos.y;
+	}
 
 	int posx;
 	int posy;
@@ -99,6 +114,5 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
-
 	return true;
 }

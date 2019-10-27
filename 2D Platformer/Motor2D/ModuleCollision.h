@@ -56,12 +56,13 @@ public:
 	bool PreUpdate();
 	bool Update(float dt);
 	bool CleanUp();
+	void Delete_all();
 
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
 
 private:
 
-	Collider * colliders[MAX_COLLIDERS] = { nullptr };
+	Collider* colliders[MAX_COLLIDERS] = { nullptr };
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
 	bool debug = false;
 };
