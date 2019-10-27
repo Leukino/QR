@@ -40,7 +40,7 @@ void Player::Animate(Animation& anim,const int first_coll,const int first_row,co
 	}
 }
 
-bool Player::Awake(pugi::xml_node& conf)
+bool Player::Awake(pugi::xml_node& player_data)
 {
 	position.x = 100.0f;
 	position.y = 100.0f;
@@ -138,7 +138,7 @@ bool Player::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
 		run_left.Reset();
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && !jumping)
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && !jumping && !sliding)
 	{
 		jumping = true;
 		grounded = false;
