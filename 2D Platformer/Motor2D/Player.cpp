@@ -42,8 +42,8 @@ void Player::Animate(Animation& anim,const int first_coll,const int first_row,co
 
 bool Player::Awake(pugi::xml_node& conf)
 {
-	position.x = 100;
-	position.y = 100;
+	position.x = 100.0f;
+	position.y = 100.0f;
 	//player height=34 widht=15
 
 	right_col = App->collision->AddCollider({ 0, 0, 5, 34 }, COLLIDER_PLAYER_RIGHT, this);

@@ -246,9 +246,10 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 	return ret;
 }
 
-void j1Render::setCamera(fPoint point, fPoint data, fPoint size)
+void j1Render::setCamera(Player* player, fPoint size)
 {
-	camera.x = point.x + data.x;
-	camera.y = point.y + data.y;
+	
+	camera.x = -player->position.x-player->sprite_wh/2 + camera.w/2;
+	camera.y = -player->position.y + camera.h/2;
 	//SDL_Rect rect = { camera.x, camera.y, App->win->screen_surface->w * size.x, App->win->screen_surface->h * size.y };
 }
