@@ -62,7 +62,10 @@ public:
 	bool jumping;
 	bool EXPUROSHON;
 	bool sliding;
+	bool wallhitR;
+	bool wallhitL;
 	int collissioncounter;
+	int wallcolcounter = 0;
 	int timer;
 	float run_vel;
 	float exp_vel;

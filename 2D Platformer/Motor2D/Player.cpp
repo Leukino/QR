@@ -107,16 +107,22 @@ bool Player::Update(float dt)
 	if (collissioncounter == 0)
 		grounded = false;
 	collissioncounter = 0;
+	if (wallcolcounter == 0)
+	{
+		wallhitR = false;
+		wallhitL = false;
+	}
+	wallcolcounter = 0;
 
 	if (!EXPUROSHON)
 	{
-		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !wallhitR)
 		{
 			facing_right = true;
 			running = true;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !wallhitL)
 		{
 			facing_right = false;
 			running = true;
@@ -157,13 +163,13 @@ bool Player::Update(float dt)
 	}
 
 	if (running)
-		if (facing_right)
+		if (facing_right && !wallhitR)
 		{
 			if (!jumping)
 				current_animation = &run_right;
 			position.x += run_vel;
 		}
-		else
+		else if (!wallhitL)
 		{
 			if (!jumping)
 				current_animation = &run_left;
@@ -184,12 +190,14 @@ bool Player::Update(float dt)
 		if (facing_right)
 		{
 			current_animation = &jump_down_right;
-			position.x += exp_vel;
+			if (!wallhitR)
+				position.x += exp_vel;
 		}
 		else
 		{ 
 			current_animation = &jump_down_left;
-			position.x -= exp_vel;
+			if (!wallhitL)
+				position.x -= exp_vel;
 		}	
 
 	if (!grounded)
@@ -214,13 +222,33 @@ bool Player::Update(float dt)
 		{
 			if (facing_right)
 			{
-				current_animation = &slide_right;
-				position.x += slide_vel;
+				if (!wallhitR)
+				{
+					current_animation = &slide_right;
+					position.x += slide_vel;
+				}
+				else
+				{
+					sliding = false;
+					EXPUROSHON = false;
+					slide_vel = exp_vel;
+					timer = 0;
+				}
 			}
 			else
 			{
-				current_animation = &slide_left;
-				position.x -= slide_vel;
+				if (!wallhitL)
+				{
+					current_animation = &slide_left;
+					position.x -= slide_vel;
+				}
+				else
+				{
+					sliding = false;
+					EXPUROSHON = false;
+					slide_vel = exp_vel;
+					timer = 0;
+				}
 			}
 			slide_vel -= ground_friction;
 			if (slide_vel < 0.1f)
@@ -263,5 +291,16 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		vo = 0.0f;
 		position.y = c2->rect.y - 53;
 		collissioncounter++;
+	}
+	if (c1->type == COLLIDER_PLAYER_RIGHT && c2->type == COLLIDER_WALL)
+	{
+		wallhitR = true;
+		wallcolcounter++;
+	}
+
+	if (c1->type == COLLIDER_PLAYER_LEFT && c2->type == COLLIDER_WALL)
+	{
+		wallhitL = true;
+		wallcolcounter++;
 	}
 }
