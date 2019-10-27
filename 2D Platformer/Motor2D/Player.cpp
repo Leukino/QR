@@ -41,31 +41,67 @@ void Player::Animate(Animation& anim,const int first_coll,const int first_row,co
 
 bool Player::Awake(pugi::xml_node& player_data)
 {
-	position.x = 40.0f;
-	position.y = 450.0f;
-	initial_pos.x = 40.0f;
-	initial_pos.y = 450.0f;
-	
-	sprite_wh = 60;
-	xy_increase = 61;
-	n_row = 2;
-	n_coll = 17;
-	facing_right = true;
-	running = false;
-	running = false;
-	grounded = false;
-	jumping = false;
-	EXPUROSHON = false;
-	sliding = false;
+	pugi::xml_node setup = player_data.child("player_data").child("setup");
+		pugi::xml_node pos = setup.child("position");
+			position.x = pos.attribute("x").as_float();
+			position.y = pos.attribute("y").as_float();
+		pugi::xml_node initpos = setup.child("initial_position");
+			initial_pos.x = initpos.attribute("x").as_float();
+			initial_pos.y = initpos.attribute("y").as_float();
+		pugi::xml_node animate = setup.child("animate");
+		sprite_wh = 60;
+		xy_increase = 61;
+			n_row = animate.attribute("n_row").as_int();
+			n_coll = animate.attribute("n_coll").as_int();
+	pugi::xml_node animations = player_data.child("player_data").child("animations");
+		//pugi::xml_node idle_r = animations.child("idle_right");
+		//Animate(idle_right, idle_r.attribute("first_col").as_int(), idle_r.attribute("first_row").as_int(), idle_r.attribute("n_sprites").as_int());
+		//pugi::xml_node idle_l = animations.child("idle_left");
+		//Animate(idle_left, idle_l.attribute("first_col").as_int(), idle_l.attribute("first_row").as_int(), idle_l.attribute("n_sprites").as_int());
+		//idle_right.speed = animations.child("idle").attribute("speed").as_float();
+		//idle_left.speed = animations.child("idle").attribute("speed").as_float();
+		//pugi::xml_node run_r = animations.child("run_right");
+		//Animate(run_right, run_r.attribute("first_col").as_int(), run_r.attribute("first_row").as_int(), run_r.attribute("n_sprites").as_int());
+		//pugi::xml_node run_l = animations.child("run_left");
+		//Animate(run_left, run_l.attribute("first_col").as_int(), run_l.attribute("first_row").as_int(), run_l.attribute("n_sprites").as_int());
+		//pugi::xml_node j_u_r = animations.child("jump_up_right");
+		//Animate(jump_up_right, j_u_r.attribute("first_col").as_int(), j_u_r.attribute("first_row").as_int(), j_u_r.attribute("n_sprites").as_int());
+		//pugi::xml_node j_d_r = animations.child("jump_down_left");
+		//Animate(jump_down_right, j_d_r.attribute("first_col").as_int(), j_d_r.attribute("first_row").as_int(), j_d_r.attribute("n_sprites").as_int());
+		//pugi::xml_node j_u_l = animations.child("jump_up_left");
+		//Animate(jump_up_left, j_u_l.attribute("first_col").as_int(), j_u_l.attribute("first_row").as_int(), j_u_l.attribute("n_sprites").as_int()); //don't juul in schuul
+		//Animate(jump_down_left, 5, 1, 1);
+		//Animate(slide_right, 2, 1, 1);
+		//Animate(slide_left, 6, 1, 1);
+	Animate(idle_right, 0, 0, 2);
+	Animate(idle_left, 2, 0, 2);
+	Animate(run_right, 4, 0, 6);
+	Animate(run_left, 10, 0, 6);
+	Animate(jump_up_right, 16, 0, 1);
+	Animate(jump_down_right, 1, 1, 1);
+	Animate(jump_up_left, 3, 1, 1);
+	Animate(jump_down_left, 5, 1, 1);
+	Animate(slide_right, 2, 1, 1);
+	Animate(slide_left, 6, 1, 1);
 
-	collissioncounter = 0;
-	wallcolcounter = 0;
-
+	pugi::xml_node gameplay = player_data.child("player_data").child("gameplay");
+	pugi::xml_node checkers = gameplay.child("checkers");
+	facing_right = checkers.attribute("facing_right").as_bool();
+	running = checkers.attribute("running").as_bool();
+	grounded = checkers.attribute("grounded").as_bool();
+	jumping = checkers.attribute("jumping").as_bool();
+	EXPUROSHON = checkers.attribute("EXPUROSHON").as_bool();
+	sliding = checkers.attribute("sliding").as_bool();
+	pugi::xml_node counters = gameplay.child("counters");
+	timer = counters.attribute("timer").as_int();
+	collissioncounter = counters.attribute("collisioncounter").as_int();
+	wallcolcounter = counters.attribute("wallcolcounter").as_int();
+	pugi::xml_node velocities = gameplay.child("velocities");
 	run_vel = 2.0f;
 	exp_vel = 4.0f;
-	ground_friction = 0.15f;
-
 	jump_vel = -10.0f;
+
+	ground_friction = 0.15f;
 	a = 0.5f;
 
 	right_col = App->collision->AddCollider({ 0, 0, 5, 34 }, COLLIDER_PLAYER_RIGHT, this);
@@ -81,19 +117,6 @@ bool Player::Awake(pugi::xml_node& player_data)
 
 	slide_vel = exp_vel;
 
-	Animate(idle_right, 0, 0, 2);
-	Animate(idle_left, 2, 0, 2);
-	Animate(run_right, 4, 0, 6);
-	Animate(run_left, 10, 0, 6);
-	Animate(jump_up_right, 16, 0, 1);
-	Animate(jump_down_right, 1, 1, 1);
-	Animate(jump_up_left, 3, 1, 1);
-	Animate(jump_down_left, 5, 1, 1);
-	Animate(slide_right, 2, 1, 1);
-	Animate(slide_left, 6, 1, 1);
-
-	idle_right.speed = 0.01f;
-	idle_left.speed = 0.01f;
 	run_right.speed = 0.2f;
 	run_left.speed = 0.2f;
 	return true;
