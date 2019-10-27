@@ -30,7 +30,7 @@ private:
 
 public:
 	//PASS TO XML
-	fPoint position;
+	iPoint position;
 	int speed = 3;
 	int sprite_wh = 60;
 	int xy_increase = 61;
