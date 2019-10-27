@@ -14,7 +14,7 @@ public:
 	Player();
 	~Player();
 
-	bool Awake(pugi::xml_node& conf);
+	bool Awake(pugi::xml_node& player_data);
 	bool Start();
 	bool Update(float dt);
 	bool CleanUp();
