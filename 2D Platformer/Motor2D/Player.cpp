@@ -117,6 +117,8 @@ bool Player::Awake(pugi::xml_node& player_data)
 
 	slide_vel = exp_vel;
 
+	idle_right.speed = 0.01f;
+	idle_left.speed = 0.01f;
 	run_right.speed = 0.2f;
 	run_left.speed = 0.2f;
 	return true;
