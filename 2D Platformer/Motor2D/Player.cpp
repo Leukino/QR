@@ -109,13 +109,13 @@ bool Player::Update(float dt)
 	{
 		jumping = true;
 		grounded = false;
-		velocityY = -10;
+		velocityY = -2.0f;
 		falling_timer = 4;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && jumping)
 	{
-		velocityY = -10;
+		velocityY = -2.0f;
 		timer = 0;
 		falling_timer = 4;
 	}
@@ -125,23 +125,13 @@ bool Player::Update(float dt)
 		{
 			if (!jumping)
 				current_animation = &run_right;
-			running_timer++;
-			if (running_timer == 2)
-			{
-				position.x++;
-				running_timer = 0;
-			}
+			position.x += 0.5f;
 		}
 		else
 		{
 			if (!jumping)
 				current_animation = &run_left;
-			running_timer++;
-			if (running_timer == 2)
-			{
-				position.x--;
-				running_timer = 0;
-			}
+			position.x -= 0.5f;
 		}
 	else
 		if (facing_right && !jumping)
@@ -154,26 +144,17 @@ bool Player::Update(float dt)
 			else
 				current_animation = &jump_up_left;
 
-	falling_timer++;
-	if (falling_timer == 5)
+	if (!grounded)
 	{
-		if (!grounded)
-		{
-			timer++;
-			velocityY += timer/5;
-			if (velocityY > 7)
-			{
-				velocityY = 7;
-			}
-		}
-		else
-		{
-			velocityY = 0;
-			timer = 0;
-		}
-		position.y += velocityY;
-		falling_timer = 0;
+		timer++;
+		velocityY += timer/100;
 	}
+	else
+	{
+		velocityY = 0.0f;
+		timer = 0;
+	}
+	position.y += velocityY;
 
 	right_col->SetPos(24 + position.x + 10, 20 + position.y);
 	left_col->SetPos(20 + position.x, 20 + position.y);

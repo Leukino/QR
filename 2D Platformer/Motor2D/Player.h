@@ -30,8 +30,8 @@ private:
 
 public:
 	//PASS TO XML
-	iPoint position;
-	int speed = 3;
+	fPoint position;
+	float speed = 3.0f;
 	int sprite_wh = 60;
 	int xy_increase = 61;
 	int n_row = 2;
@@ -60,7 +60,7 @@ public:
 	int falling_timer = 0;
 	int collissioncounter = 0;
 	int timer;
-	int velocityY;
+	float velocityY;
 	
 
 	
