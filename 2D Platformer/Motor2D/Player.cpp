@@ -100,24 +100,20 @@ bool Player::Update(float dt)
 		running = false;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP && App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
-	{
-		running_timer = 0;
-	}
-
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && !jumping)
 	{
 		jumping = true;
 		grounded = false;
-		velocityY = -2.0f;
-		falling_timer = 4;
+		velocityY = jump_vel;
+		vo = velocityY;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && jumping)
 	{
-		velocityY = -2.0f;
+		velocityY = jump_vel;
+		vo = velocityY;
 		timer = 0;
-		falling_timer = 4;
+
 	}
 
 	if (running)
@@ -125,13 +121,13 @@ bool Player::Update(float dt)
 		{
 			if (!jumping)
 				current_animation = &run_right;
-			position.x += 0.5f;
+			position.x += run_vel;
 		}
 		else
 		{
 			if (!jumping)
 				current_animation = &run_left;
-			position.x -= 0.5f;
+			position.x -= run_vel;
 		}
 	else
 		if (facing_right && !jumping)
@@ -147,7 +143,7 @@ bool Player::Update(float dt)
 	if (!grounded)
 	{
 		timer++;
-		velocityY += timer/100;
+		velocityY = vo + a*timer;
 	}
 	else
 	{
@@ -176,6 +172,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		}
 		jumping = false;
 		grounded = true;
+		vo = 0.0f;
 		position.y = c2->rect.y - 53;
 		collissioncounter++;
 	}

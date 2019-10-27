@@ -56,10 +56,13 @@ public:
 	bool running = false;
 	bool grounded = false;
 	bool jumping = false;
-	int running_timer = 0;
-	int falling_timer = 0;
 	int collissioncounter = 0;
 	int timer;
+	float run_vel = 0.5f;
+	float exp_vel = 2.0f;
+	float jump_vel = -3.0f;
+	float a = 0.05f;
+	float vo;
 	float velocityY;
 	
 

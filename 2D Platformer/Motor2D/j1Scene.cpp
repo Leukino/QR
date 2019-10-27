@@ -70,8 +70,8 @@ bool j1Scene::Update(float dt)
 	int posy;
 	App->input->GetMousePosition(posx, posy);
 	//camera should depend on player position and player velocity(we just don't have this yet :)
-	App->render->setCamera(App->player, { 1.0f, 1.0f });
-	setScreenCursorPosition(1920/2, 1080/2);
+	App->render->setCamera(App->player, { 0.5f, 0.5f });
+	//setScreenCursorPosition(160, 90);
 	//App->render->Blit(img, 0, 0);
 	App->map->Draw();
 
