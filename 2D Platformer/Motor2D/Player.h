@@ -31,10 +31,10 @@ private:
 public:
 	//PASS TO XML
 	fPoint position;
-	int sprite_wh = 60;
-	int xy_increase = 61;
-	int n_row = 2;
-	int n_coll = 17;
+	int sprite_wh;
+	int xy_increase;
+	int n_row;
+	int n_coll;
 
 	Animation idle_right;
 	Animation idle_left;
@@ -52,21 +52,24 @@ public:
 	Collider* head_col;
 	Collider* feet_col;
 	Collider* floor_col;
+	iPoint rightcol_offset;
+	iPoint leftcol_offset;
+	iPoint footcol_offset;
 
-	bool facing_right = true;
-	bool running = false;
-	bool grounded = false;
-	bool jumping = false;
-	bool EXPUROSHON = false;
-	bool sliding = false;
-	int collissioncounter = 0;
+	bool facing_right;
+	bool running;
+	bool grounded;
+	bool jumping;
+	bool EXPUROSHON;
+	bool sliding;
+	int collissioncounter;
 	int timer;
-	float run_vel = 2.0f;
-	float exp_vel = 4.0f;
-	float ground_friction = 0.15f;
+	float run_vel;
+	float exp_vel;
+	float ground_friction;
 	float slide_vel;
-	float jump_vel = -10.0f;
-	float a = 0.5f;
+	float jump_vel;
+	float a;
 	float vo;
 	float velocityY;
 	

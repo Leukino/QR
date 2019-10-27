@@ -1,0 +1,39 @@
+<player_data>
+  <setup>
+    <position x="100" y="100"/>
+    <animate sprite_wh="60" xy_increase ="61" n_row ="2" n_coll ="17"/>
+  </setup>
+
+  <collisions>
+    <right_col rightcol_x_offset="34" rightcol_y_offset="20" rightcol_w="5" rightcol_h="34"/>
+    <left_col leftcol_x_offset="20" leftcol_y_offset="20" leftcol_w="5" leftcol_h="34"/>
+    <feet_col feetcol_x_offset="21" feetcol_y_offset="44" feetcol_w="13" feetcol_h="10"/>
+  </collisions>
+
+  <animations>
+    <idle_right first_col="0" first_row="0" n_sprites="2"/>
+    <idle_left first_col="2" first_row="0" n_sprites="2"/>
+    <idle speed="0.01"/>
+    <run_right first_col="4" first_row="0" n_sprites="6"/>
+    <run_left first_col="10" first_row="0" n_sprites="6"/>
+    <run speed="0.2"/>
+    <jump_up_right first_col="16" first_row="0" n_sprites="1"/>
+    <jump_down_right first_col="1" first_row="1" n_sprites="1"/>
+    <jump_up_left first_col="3" first_row="1" n_sprites="1"/>
+    <jump_down_left first_col="5" first_row="1" n_sprites="1"/>
+    <slide_right first_col="2" first_row="1" n_sprites="1"/>
+    <slide_left first_col="6" first_row="1" n_sprites="1"/>
+  </animations>
+
+  <gameplay>
+    <checkers facing_right="true" running="false" grounded="false" jumping="false" EXPUROSHON="false" sliding="false"/>
+    <counters timer="0" collisioncounter ="0"/>
+    <velocities run_vel="2" exp_vel="4" jump_vel ="-10"/>
+    <physics a="0.5" ground_friction = "0.15f"/>
+  </gameplay>
+
+  <file_system>
+    <path>data.zip</path>
+  </file_system>
+  
+</player_data>

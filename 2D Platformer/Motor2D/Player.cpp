@@ -44,12 +44,37 @@ bool Player::Awake(pugi::xml_node& conf)
 {
 	position.x = 100.0f;
 	position.y = 100.0f;
-	//player height=34 widht=15
+	
+	sprite_wh = 60;
+	xy_increase = 61;
+	n_row = 2;
+	n_coll = 17;
+	facing_right = true;
+	running = false;
+	grounded = false;
+	jumping = false;
+	EXPUROSHON = false;
+	sliding = false;
+
+	collissioncounter = 0;
+
+	run_vel = 2.0f;
+	exp_vel = 4.0f;
+	ground_friction = 0.15f;
+
+	jump_vel = -10.0f;
+	a = 0.5f;
 
 	right_col = App->collision->AddCollider({ 0, 0, 5, 34 }, COLLIDER_PLAYER_RIGHT, this);
 	left_col = App->collision->AddCollider({ 0, 0, 5, 34 }, COLLIDER_PLAYER_LEFT, this);
 	feet_col = App->collision->AddCollider({ 0, 0, 13, 10 }, COLLIDER_PLAYER_FOOT, this);
 	floor_col = App->collision->AddCollider({ 0, 200, 3000, 100 }, COLLIDER_GROUND, this);
+	rightcol_offset.x = 34;
+	rightcol_offset.y = 20;
+	leftcol_offset.x = 20;
+	leftcol_offset.y = 20;
+	footcol_offset.x = 21;
+	footcol_offset.y = 44;
 
 	slide_vel = exp_vel;
 
@@ -66,8 +91,8 @@ bool Player::Awake(pugi::xml_node& conf)
 
 	idle_right.speed = 0.01f;
 	idle_left.speed = 0.01f;
-	run_right.speed = 0.1f;
-	run_left.speed = 0.1f;
+	run_right.speed = 0.2f;
+	run_left.speed = 0.2f;
 	return true;
 }
 
@@ -209,9 +234,9 @@ bool Player::Update(float dt)
 		}
 	}
 
-	right_col->SetPos(24 + position.x + 10, 20 + position.y);
-	left_col->SetPos(20 + position.x, 20 + position.y);
-	feet_col->SetPos(20 + position.x + 1, 20 + position.y + 24);
+	right_col->SetPos(position.x + rightcol_offset.x, position.y + rightcol_offset.y);
+	left_col->SetPos(position.x + leftcol_offset.x, position.y + leftcol_offset.y);
+	feet_col->SetPos(position.x + footcol_offset.x, position.y + footcol_offset.y);
 
 	SDL_Rect &current_frame = current_animation->GetCurrentFrame();
 	App->render->Blit(player_sprites, position.x, position.y, &current_frame);
