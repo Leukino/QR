@@ -36,7 +36,7 @@ bool j1Scene::Awake()
 bool j1Scene::Start()
 {
 	//App->map->Load("edgy map.tmx");
-	App->map->Load("Map 2.tmx");
+	App->map->Load("Map 2 retextured.tmx");
 	return true;
 	srand(time(NULL));
 }

@@ -40,9 +40,6 @@ void j1Map::DrawMapColliders()
 	{
 		MapLayer* layer = item->data;
 
-		//if (layer->properties.Get("Nodraw") != 0) //Used for not loading layers in case it's not needed
-		//	continue;
-
 		for (int y = 0; y < data.height; ++y)
 		{
 			for (int x = 0; x < data.width; ++x)
@@ -82,7 +79,7 @@ void j1Map::Draw()
 	{
 		MapLayer* layer = item->data;
 
-		//if (layer->properties.Get("Nodraw") != 0)
+		//if (layer->properties.Get("NoDraw") != 0)
 		//	continue;
 
 		for (int y = 0; y < data.height; ++y)											
@@ -413,9 +410,11 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 				else
 					colltype = COLLIDER_NONE;
 				layer->collisions[i].collider.rect = r;
+				LOG("rect set to: %d - %d", r.x,r.y);
 				layer->collisions[i].collider.type = colltype;
 				layer->collisions[i].collider.callback = App->player;
 				layer->collisions[i].id = tilenode.parent().parent().attribute("id").as_int();
+				LOG("id set to: %d", tilenode.parent().parent().attribute("id").as_int());
 			}
 			else
 			{
@@ -455,7 +454,9 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 			Properties::Property* p = new Properties::Property();
 
 			p->name = prop.attribute("name").as_string();
+			LOG("property name: %s", prop.attribute("name").as_string());
 			p->value = prop.attribute("value").as_int();
+			LOG("property value: %d", prop.attribute("value").as_int());
 
 			properties.list.add(p);
 		}

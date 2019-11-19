@@ -125,13 +125,19 @@
     <Filter Include="Desenvolupament  ========\Tools\PuguiXML">
       <UniqueIdentifier>{7cb78d67-17cc-45eb-af97-e2106becce7b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Maps">
+      <UniqueIdentifier>{2e43b943-0505-43dc-95a7-50dc63b6bb09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\maps\edgy map.tmx">
-      <Filter>Desenvolupament  ========</Filter>
+      <Filter>Desenvolupament  ========\Modules\Maps</Filter>
     </None>
     <None Include="..\Game\maps\Map S.tmx">
-      <Filter>Desenvolupament  ========</Filter>
+      <Filter>Desenvolupament  ========\Modules\Maps</Filter>
+    </None>
+    <None Include="..\Game\maps\Map 2 retextured.tmx">
+      <Filter>Desenvolupament  ========\Modules\Maps</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
