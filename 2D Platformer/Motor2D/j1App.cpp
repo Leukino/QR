@@ -13,6 +13,7 @@
 #include "j1App.h"
 #include "Player.h"
 #include "ModuleCollision.h"
+#include "brofiler/Brofiler/Brofiler.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -122,6 +123,7 @@ bool j1App::Start()
 bool j1App::Update()
 {
 	bool ret = true;
+	BROFILER_FRAME("YourThreadName");
 	PrepareUpdate();
 
 	if(input->GetWindowEvent(WE_QUIT) == true)
