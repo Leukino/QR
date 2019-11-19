@@ -1,7 +1,7 @@
 #ifndef __ModuleCollision_H__
 #define __ModuleCollision_H__
 
-#define MAX_COLLIDERS 2000
+#define MAX_COLLIDERS 4000
 
 #include "PugiXml/src/pugixml.hpp"
 #include "p2List.h"
@@ -35,7 +35,15 @@ struct Collider
 		type(type),
 		callback(callback)
 	{}
-
+	Collider()
+	{
+		rect.x = 0;
+		rect.y = 0;
+		rect.w = 0;
+		rect.h = 0;
+		type = COLLIDER_NONE;
+		callback = nullptr;
+	}
 	void SetPos(int x, int y)
 	{
 		rect.x = x;

@@ -36,9 +36,9 @@ struct Properties
 struct TileCollisions
 {
 	int id;
-	Collider collider;
-
-	TileCollisions() : collider({ 0, 0, 0, 0 }, COLLIDER_NONE, nullptr), id(0) {}
+	Collider collider[20] = {};
+	//TileCollisions() : collider({ 0, 0, 0, 0 }, COLLIDER_NONE, nullptr), id(0) {}
+	TileCollisions() : collider(), id(0) {}
 };
 
 struct MapLayer

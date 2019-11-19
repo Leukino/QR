@@ -56,10 +56,14 @@ void j1Map::DrawMapColliders()
 					{
 						if (layer->collisions[i].id == tile_id-1)
 						{
-							r = layer->collisions[i].collider.rect;
-							type = layer->collisions[i].collider.type;
-							callback = layer->collisions[i].collider.callback;
-							App->collision->AddCollider({ pos.x + r.x, pos.y + r.y, r.w, r.h }, type, callback); //Load colliders for each tile (if they have it). Once in start of application
+							for (int e = 0; e < 20; e++)
+							{
+								r = layer->collisions[i].collider[e].rect;
+								type = layer->collisions[i].collider[e].type;
+								callback = layer->collisions[i].collider[e].callback;
+								if (r.w != 0)
+									App->collision->AddCollider({ pos.x + r.x, pos.y + r.y, r.w, r.h }, type, callback); //Load colliders for each tile (if they have it). Once in start of application
+							}
 						}
 					}
 				}
@@ -384,44 +388,50 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 
 		pugi::xml_node tsetnode = node.parent().child("tileset");
 		int i = 0;
-		
 		SDL_Rect r;
 
 		for (pugi::xml_node tile = tsetnode.child("tile"); tile.empty() == NULL; tile = tile.next_sibling("tile"))
 		{
 			if (!(tile.child("objectgroup").empty()))
 			{
-				pugi::xml_node tilenode = tile.child("objectgroup").child("object");
+				int e = 0;
+				for (pugi::xml_node tilenode = tile.child("objectgroup").child("object"); tilenode.empty() == NULL; tilenode = tilenode.next_sibling("object"))
+				{
+					int idesito = tilenode.parent().parent().attribute("id").as_int();
+					r.x = tilenode.attribute("x").as_int();
+					r.y = tilenode.attribute("y").as_int();
+					r.w = tilenode.attribute("width").as_int();
+					r.h = tilenode.attribute("height").as_int();
+					
+					COLLIDER_TYPE colltype;
+					p2SString type = tilenode.attribute("type").as_string();
 
-				r.x = tilenode.attribute("x").as_int();
-				r.y = tilenode.attribute("y").as_int();
-				r.w = tilenode.attribute("width").as_int();
-				r.h = tilenode.attribute("height").as_int();
-
-				COLLIDER_TYPE colltype;
-				p2SString type = tilenode.attribute("type").as_string();
-
-				if (SDL_strcmp(type.GetString(), "GROUND") == 0)
-					colltype = COLLIDER_GROUND;
-				else if (SDL_strcmp(type.GetString(), "WALL") == 0)
-					colltype = COLLIDER_WALL;
-				else if (SDL_strcmp(type.GetString(), "DANGER") == 0)
-					colltype = COLLIDER_ENEMY_SHOT;
-				else
-					colltype = COLLIDER_NONE;
-				layer->collisions[i].collider.rect = r;
-				LOG("rect set to: %d - %d", r.x,r.y);
-				layer->collisions[i].collider.type = colltype;
-				layer->collisions[i].collider.callback = App->player;
-				layer->collisions[i].id = tilenode.parent().parent().attribute("id").as_int();
-				LOG("id set to: %d", tilenode.parent().parent().attribute("id").as_int());
+					if (SDL_strcmp(type.GetString(), "GROUND") == 0)
+						colltype = COLLIDER_GROUND;
+					else if (SDL_strcmp(type.GetString(), "WALL") == 0)
+						colltype = COLLIDER_WALL;
+					else if (SDL_strcmp(type.GetString(), "DANGER") == 0)
+						colltype = COLLIDER_ENEMY_SHOT;
+					else
+						colltype = COLLIDER_NONE;
+					layer->collisions[i].collider[e].rect = r;
+					LOG("rect set to: %d - %d - %d - %d number %d", r.x, r.y, r.w, r.h, e);
+					layer->collisions[i].collider[e].type = colltype;
+					layer->collisions[i].collider[e].callback = App->player;
+					layer->collisions[i].id = tilenode.parent().parent().attribute("id").as_int();
+					LOG("id set to: %d", tilenode.parent().parent().attribute("id").as_int());
+					e++;
+				}
 			}
 			else
 			{
-				layer->collisions[i].collider.rect = { 0, 0, 0, 0 };
-				layer->collisions[i].collider.type = COLLIDER_NONE;
-				layer->collisions[i].collider.callback = nullptr;
-				layer->collisions[i].id = 0;
+				for (int e = 0; e < 20; e++)
+				{
+					layer->collisions[i].collider[e].rect = { 0, 0, 0, 0 };
+					layer->collisions[i].collider[e].type = COLLIDER_NONE;
+					layer->collisions[i].collider[e].callback = nullptr;
+					layer->collisions[i].id = 0;
+				}
 			}			
 			i++;
 		}
