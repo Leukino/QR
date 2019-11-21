@@ -99,16 +99,18 @@ bool Player::Awake(pugi::xml_node& player_data)
 	ground_friction = 0.15f;
 	a = 0.5f;
 
-	right_col = App->collision->AddCollider({ 0, 0, 5, 20 }, COLLIDER_PLAYER_RIGHT, this);
-	left_col = App->collision->AddCollider({ 0, 0, 5, 20 }, COLLIDER_PLAYER_LEFT, this);
+	right_col = App->collision->AddCollider({ 0, 0, 5, 25 }, COLLIDER_PLAYER_RIGHT, this);
+	left_col = App->collision->AddCollider({ 0, 0, 5, 25 }, COLLIDER_PLAYER_LEFT, this);
 	feet_col = App->collision->AddCollider({ 0, 0, 13, 10 }, COLLIDER_PLAYER_FOOT, this);
-	//floor_col = App->collision->AddCollider({ 0, 200, 3000, 100 }, COLLIDER_GROUND, this);
+	head_col = App->collision->AddCollider({ 0, 0, 13, 10 }, COLLIDER_PLAYER_HEAD, this);
 	rightcol_offset.x = 34;
 	rightcol_offset.y = 20;
 	leftcol_offset.x = 20;
 	leftcol_offset.y = 20;
 	footcol_offset.x = 21;
 	footcol_offset.y = 44;
+	headcol_offset.x = 21;
+	headcol_offset.y = 20;
 
 	slide_vel = exp_vel;
 
@@ -127,6 +129,8 @@ bool Player::CleanUp()
 
 bool Player::Update(float dt)
 {
+	/*if (headcollissioncounter ==1)
+		velocityY = 0;*/
 
 	if (collissioncounter == 0)
 		grounded = false;
@@ -296,7 +300,8 @@ bool Player::Update(float dt)
 	right_col->SetPos(position.x + rightcol_offset.x, position.y + rightcol_offset.y);
 	left_col->SetPos(position.x + leftcol_offset.x, position.y + leftcol_offset.y);
 	feet_col->SetPos(position.x + footcol_offset.x, position.y + footcol_offset.y);
-
+	head_col->SetPos(position.x + headcol_offset.x, position.y + headcol_offset.y);
+	
 	SDL_Rect &current_frame = current_animation->GetCurrentFrame();
 	App->render->Blit(player_sprites, position.x, position.y, &current_frame);
 	return true;
@@ -323,6 +328,12 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		vo = 0.0f;
 		collissioncounter++;
 	}
+	/*if (c1->type == COLLIDER_PLAYER_HEAD && c2->type == COLLIDER_GROUND)
+	{
+		if (jumping)
+			jumping = false;
+		headcollissioncounter++;
+	}*/
 	if (c1->type == COLLIDER_PLAYER_RIGHT && c2->type == COLLIDER_WALL)
 	{
 		wallhitR = true;
@@ -336,7 +347,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		wallcolcounter++;
 		position.x = (c2->rect.x + c2->rect.w) - 21;
 	}
-	if (c1->type == COLLIDER_PLAYER_FOOT && c2->type == COLLIDER_ENEMY_SHOT)
+	if ((c1->type == COLLIDER_PLAYER_FOOT || c1->type == COLLIDER_PLAYER_HEAD) && c2->type == COLLIDER_ENEMY_SHOT)
 	{
 		position.x = initial_posX;
 		position.y = initial_posY;

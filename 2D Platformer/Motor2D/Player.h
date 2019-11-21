@@ -53,10 +53,10 @@ public:
 	Collider* left_col;
 	Collider* head_col;
 	Collider* feet_col;
-	Collider* floor_col;
 	iPoint rightcol_offset;
 	iPoint leftcol_offset;
 	iPoint footcol_offset;
+	iPoint headcol_offset;
 
 	bool facing_right;
 	bool running;
@@ -67,6 +67,7 @@ public:
 	bool wallhitR;
 	bool wallhitL;
 	int collissioncounter;
+	int headcollissioncounter;
 	int wallcolcounter;
 	int timer;
 	float run_vel;
