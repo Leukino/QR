@@ -19,7 +19,8 @@ Player::~Player()
 bool Player::Start()
 {
 	player_sprites = App->tex->Load("textures/Knight.png");
-
+	position.x = initial_posX;
+	position.y = initial_posY;
 	return true;
 }
 
@@ -42,12 +43,6 @@ void Player::Animate(Animation& anim,const int first_coll,const int first_row,co
 bool Player::Awake(pugi::xml_node& player_data)
 {
 	pugi::xml_node setup = player_data.child("player_data").child("setup");
-		pugi::xml_node pos = setup.child("position");
-			position.x = pos.attribute("x").as_float();
-			position.y = pos.attribute("y").as_float();
-		pugi::xml_node initpos = setup.child("initial_position");
-			initial_pos.x = initpos.attribute("x").as_float();
-			initial_pos.y = initpos.attribute("y").as_float();
 		pugi::xml_node animate = setup.child("animate");
 		sprite_wh = 60;
 		xy_increase = 61;
@@ -104,8 +99,8 @@ bool Player::Awake(pugi::xml_node& player_data)
 	ground_friction = 0.15f;
 	a = 0.5f;
 
-	right_col = App->collision->AddCollider({ 0, 0, 5, 34 }, COLLIDER_PLAYER_RIGHT, this);
-	left_col = App->collision->AddCollider({ 0, 0, 5, 34 }, COLLIDER_PLAYER_LEFT, this);
+	right_col = App->collision->AddCollider({ 0, 0, 5, 20 }, COLLIDER_PLAYER_RIGHT, this);
+	left_col = App->collision->AddCollider({ 0, 0, 5, 20 }, COLLIDER_PLAYER_LEFT, this);
 	feet_col = App->collision->AddCollider({ 0, 0, 13, 10 }, COLLIDER_PLAYER_FOOT, this);
 	//floor_col = App->collision->AddCollider({ 0, 200, 3000, 100 }, COLLIDER_GROUND, this);
 	rightcol_offset.x = 34;
@@ -121,6 +116,7 @@ bool Player::Awake(pugi::xml_node& player_data)
 	idle_left.speed = 0.01f;
 	run_right.speed = 0.2f;
 	run_left.speed = 0.2f;
+
 	return true;
 }
 
@@ -131,6 +127,7 @@ bool Player::CleanUp()
 
 bool Player::Update(float dt)
 {
+
 	if (collissioncounter == 0)
 		grounded = false;
 	collissioncounter = 0;
@@ -320,26 +317,29 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 			sliding = true;
 			timer = 0;
 		}
+		if(c2->rect.y != 0)
+			position.y = c2->rect.y - 53;
 		grounded = true;
 		vo = 0.0f;
-		position.y = c2->rect.y - 53;
 		collissioncounter++;
 	}
 	if (c1->type == COLLIDER_PLAYER_RIGHT && c2->type == COLLIDER_WALL)
 	{
 		wallhitR = true;
 		wallcolcounter++;
+		position.x = c2->rect.x - 38;
 	}
 
 	if (c1->type == COLLIDER_PLAYER_LEFT && c2->type == COLLIDER_WALL)
 	{
 		wallhitL = true;
 		wallcolcounter++;
+		position.x = (c2->rect.x + c2->rect.w) - 21;
 	}
 	if (c1->type == COLLIDER_PLAYER_FOOT && c2->type == COLLIDER_ENEMY_SHOT)
 	{
-		position.x = initial_pos.x;
-		position.y = initial_pos.y;
+		position.x = initial_posX;
+		position.y = initial_posY;
 		vo = 0.0f;
 		timer = 0;
 		facing_right = true;

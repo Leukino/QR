@@ -31,7 +31,8 @@ private:
 public:
 	//PASS TO XML
 	fPoint position;
-	fPoint initial_pos;
+	float initial_posX = 200.0f;
+	float initial_posY = 400.0f;
 	int sprite_wh;
 	int xy_increase;
 	int n_row;

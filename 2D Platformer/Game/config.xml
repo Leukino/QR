@@ -29,7 +29,7 @@
   <player_data>
     <setup>
       <position x="40.0" y="450.0"/>
-      <initial_position x="40.0" y="450.0"/>
+      <initial_position x="100.0" y="450.0"/>
       <animate sprite_wh="60" xy_increase ="61" n_row ="2" n_coll ="17"/>
     </setup>
 
