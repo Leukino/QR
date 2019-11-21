@@ -78,6 +78,8 @@ bool Player::Awake(pugi::xml_node& player_data)
 	Animate(jump_down_left, 5, 1, 1);
 	Animate(slide_right, 2, 1, 1);
 	Animate(slide_left, 6, 1, 1);
+	Animate(attack_right, 7, 1, 5);
+	Animate(attack_left, 12, 1, 5);
 
 	pugi::xml_node gameplay = player_data.child("player_data").child("gameplay");
 	pugi::xml_node checkers = gameplay.child("checkers");
@@ -89,8 +91,11 @@ bool Player::Awake(pugi::xml_node& player_data)
 	sliding = checkers.attribute("sliding").as_bool();
 	pugi::xml_node counters = gameplay.child("counters");
 	timer = counters.attribute("timer").as_int();
+	attack_timer = 0;
 	collissioncounter = counters.attribute("collisioncounter").as_int();
 	wallcolcounter = counters.attribute("wallcolcounter").as_int();
+	headcollided = false;
+	attacking_idle = false;
 	pugi::xml_node velocities = gameplay.child("velocities");
 	run_vel = 2.0f;
 	exp_vel = 4.0f;
@@ -99,17 +104,17 @@ bool Player::Awake(pugi::xml_node& player_data)
 	ground_friction = 0.15f;
 	a = 0.5f;
 
-	right_col = App->collision->AddCollider({ 0, 0, 5, 25 }, COLLIDER_PLAYER_RIGHT, this);
-	left_col = App->collision->AddCollider({ 0, 0, 5, 25 }, COLLIDER_PLAYER_LEFT, this);
+	right_col = App->collision->AddCollider({ 0, 0, 5, 18 }, COLLIDER_PLAYER_RIGHT, this);
+	left_col = App->collision->AddCollider({ 0, 0, 5, 18 }, COLLIDER_PLAYER_LEFT, this);
 	feet_col = App->collision->AddCollider({ 0, 0, 13, 10 }, COLLIDER_PLAYER_FOOT, this);
-	head_col = App->collision->AddCollider({ 0, 0, 13, 10 }, COLLIDER_PLAYER_HEAD, this);
+	head_col = App->collision->AddCollider({ 0, 0, 10, 10 }, COLLIDER_PLAYER_HEAD, this);
 	rightcol_offset.x = 34;
-	rightcol_offset.y = 20;
+	rightcol_offset.y = 28;
 	leftcol_offset.x = 20;
-	leftcol_offset.y = 20;
-	footcol_offset.x = 21;
+	leftcol_offset.y = 28;
+	footcol_offset.x = 23;
 	footcol_offset.y = 44;
-	headcol_offset.x = 21;
+	headcol_offset.x = 24;
 	headcol_offset.y = 20;
 
 	slide_vel = exp_vel;
@@ -118,6 +123,8 @@ bool Player::Awake(pugi::xml_node& player_data)
 	idle_left.speed = 0.01f;
 	run_right.speed = 0.2f;
 	run_left.speed = 0.2f;
+	attack_right.speed = 0.1f;
+	attack_left.speed = 0.1f;
 
 	return true;
 }
@@ -129,9 +136,6 @@ bool Player::CleanUp()
 
 bool Player::Update(float dt)
 {
-	/*if (headcollissioncounter ==1)
-		velocityY = 0;*/
-
 	if (collissioncounter == 0)
 		grounded = false;
 	collissioncounter = 0;
@@ -181,7 +185,7 @@ bool Player::Update(float dt)
 		vo = velocityY;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && jumping && !EXPUROSHON)
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && jumping && !EXPUROSHON && !wallhitL && !wallhitR)
 	{
 		EXPUROSHON = true;
 		velocityY = jump_vel;
@@ -190,31 +194,55 @@ bool Player::Update(float dt)
 		running = false;
 	}
 
-	if (running)
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && grounded && !jumping && !EXPUROSHON && !sliding & !attacking_idle)
 	{
-		if (facing_right && !wallhitR)
-		{
-			if (!jumping)
-				current_animation = &run_right;
-			position.x += run_vel;
-		}
-		if (!facing_right && !wallhitL)
-		{
-			if (!jumping)
-				current_animation = &run_left;
-			position.x -= run_vel;
-		}
+		attacking_idle = true;
+		attack_timer = 0;
 	}
-	else
-		if (facing_right && !jumping)
-			current_animation = &idle_right;
-		else if (!jumping)
-			current_animation = &idle_left;
-	if (jumping)
+
+	if (!attacking_idle)
+	{
+		if (running)
+		{
+			if (facing_right && !wallhitR)
+			{
+				if (!jumping)
+					current_animation = &run_right;
+				position.x += run_vel;
+			}
+			if (!facing_right && !wallhitL)
+			{
+				if (!jumping)
+					current_animation = &run_left;
+				position.x -= run_vel;
+			}
+		}
+		else
+			if (facing_right && !jumping)
+				current_animation = &idle_right;
+			else if (!jumping)
+				current_animation = &idle_left;
+		if (jumping)
 			if (facing_right)
 				current_animation = &jump_up_right;
 			else
 				current_animation = &jump_up_left;
+	}
+	else
+	{
+		attack_timer++;
+		if (attack_timer <= 50)
+			if (facing_right)
+				current_animation = &attack_right;
+			else
+				current_animation = &attack_left;
+		else
+		{
+			attacking_idle = false;
+			attack_right.Reset();
+			attack_left.Reset();
+		}
+	}
 
 	if (EXPUROSHON && !sliding)
 		if (facing_right)
@@ -238,16 +266,24 @@ bool Player::Update(float dt)
 	{
 		timer++;
 		velocityY = vo + a*timer;
+		if (velocityY > 10.0f)
+			velocityY = 10.0f;
+		if (sliding)
+			sliding = false;
 	}
 	else
 	{
+		headcollided = false;
 		velocityY = 0.0f;
 		if (!sliding)
 		{
 			timer = 0;
 		}
 	}
-	position.y += velocityY;
+	if (headcollided && velocityY < 0)
+		timer += 2;
+	else
+		position.y += velocityY;
 
 	if (sliding)
 	{
@@ -302,7 +338,7 @@ bool Player::Update(float dt)
 	feet_col->SetPos(position.x + footcol_offset.x, position.y + footcol_offset.y);
 	head_col->SetPos(position.x + headcol_offset.x, position.y + headcol_offset.y);
 	
-	SDL_Rect &current_frame = current_animation->GetCurrentFrame();
+	SDL_Rect& current_frame = current_animation->GetCurrentFrame();
 	App->render->Blit(player_sprites, position.x, position.y, &current_frame);
 	return true;
 }
@@ -328,12 +364,10 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		vo = 0.0f;
 		collissioncounter++;
 	}
-	/*if (c1->type == COLLIDER_PLAYER_HEAD && c2->type == COLLIDER_GROUND)
+	if (c1->type == COLLIDER_PLAYER_HEAD && c2->type == COLLIDER_GROUND)
 	{
-		if (jumping)
-			jumping = false;
-		headcollissioncounter++;
-	}*/
+		headcollided = true;
+	}
 	if (c1->type == COLLIDER_PLAYER_RIGHT && c2->type == COLLIDER_WALL)
 	{
 		wallhitR = true;
@@ -359,6 +393,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		grounded = false;
 		jumping = false;
 		EXPUROSHON = false;
+		headcollided = false;
 		sliding = false;
 	}
 }

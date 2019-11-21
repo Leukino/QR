@@ -148,6 +148,9 @@ bool ModuleCollision::Update(float dt)
 			case COLLIDER_PLAYER_FOOT: // yellow
 			App->render->DrawQuad(colliders[i]->rect, 0, 255, 255, alpha);
 			break;
+			case COLLIDER_PLAYER_HEAD: // yellow
+				App->render->DrawQuad(colliders[i]->rect, 255, 0, 255, alpha);
+				break;
 			case COLLIDER_ENEMY_SHOT: // magenta
 			App->render->DrawQuad(colliders[i]->rect, 0, 255, 255, alpha);
 			break;

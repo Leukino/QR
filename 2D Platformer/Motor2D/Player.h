@@ -48,6 +48,8 @@ public:
 	Animation jump_down_left;
 	Animation slide_right;
 	Animation slide_left;
+	Animation attack_right;
+	Animation attack_left;
 
 	Collider* right_col;
 	Collider* left_col;
@@ -64,12 +66,14 @@ public:
 	bool jumping;
 	bool EXPUROSHON;
 	bool sliding;
+	bool attacking_idle;
 	bool wallhitR;
 	bool wallhitL;
+	bool headcollided;
 	int collissioncounter;
-	int headcollissioncounter;
 	int wallcolcounter;
 	int timer;
+	int attack_timer;
 	float run_vel;
 	float exp_vel;
 	float ground_friction;
