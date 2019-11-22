@@ -50,6 +50,10 @@ public:
 	Animation slide_left;
 	Animation attack_right;
 	Animation attack_left;
+	Animation air_atk1_right;
+	Animation air_atk1_left;
+	Animation air_atk2_right;
+	Animation air_atk2_left;
 
 	Collider* right_col;
 	Collider* left_col;
@@ -64,7 +68,8 @@ public:
 	bool running;
 	bool grounded;
 	bool jumping;
-	bool EXPUROSHON;
+	bool air_atking;
+	bool air_atk;
 	bool sliding;
 	bool attacking_idle;
 	bool wallhitR;
@@ -72,6 +77,7 @@ public:
 	bool headcollided;
 	int collissioncounter;
 	int wallcolcounter;
+	int air_atk_counter;
 	int timer;
 	int attack_timer;
 	float run_vel;

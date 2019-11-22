@@ -80,6 +80,10 @@ bool Player::Awake(pugi::xml_node& player_data)
 	Animate(slide_left, 6, 1, 1);
 	Animate(attack_right, 7, 1, 5);
 	Animate(attack_left, 12, 1, 5);
+	Animate(air_atk1_right, 0, 2, 5);
+	Animate(air_atk2_right, 5, 2, 6);
+	Animate(air_atk1_left, 11, 2, 5);
+	Animate(air_atk2_left, 0, 3, 5);
 
 	pugi::xml_node gameplay = player_data.child("player_data").child("gameplay");
 	pugi::xml_node checkers = gameplay.child("checkers");
@@ -87,7 +91,7 @@ bool Player::Awake(pugi::xml_node& player_data)
 	running = checkers.attribute("running").as_bool();
 	grounded = checkers.attribute("grounded").as_bool();
 	jumping = checkers.attribute("jumping").as_bool();
-	EXPUROSHON = checkers.attribute("EXPUROSHON").as_bool();
+	air_atking = checkers.attribute("EXPUROSHON").as_bool();
 	sliding = checkers.attribute("sliding").as_bool();
 	pugi::xml_node counters = gameplay.child("counters");
 	timer = counters.attribute("timer").as_int();
@@ -125,6 +129,14 @@ bool Player::Awake(pugi::xml_node& player_data)
 	run_left.speed = 0.2f;
 	attack_right.speed = 0.1f;
 	attack_left.speed = 0.1f;
+	air_atk1_right.speed = 0.5f;
+	air_atk2_right.speed = 0.5f;
+	air_atk1_left.speed = 0.5f;
+	air_atk2_left.speed = 0.5f;
+	air_atk1_right.loop = false;
+	air_atk2_right.loop = false;
+	air_atk1_left.loop = false;
+	air_atk2_left.loop = false;
 
 	return true;
 }
@@ -146,7 +158,7 @@ bool Player::Update(float dt)
 	}
 	wallcolcounter = 0;
 
-	if (!EXPUROSHON)
+	if (!air_atking && !sliding)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !wallhitR)
 		{
@@ -185,19 +197,31 @@ bool Player::Update(float dt)
 		vo = velocityY;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && jumping && !EXPUROSHON && !wallhitL && !wallhitR)
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+		air_atk_counter++;
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		EXPUROSHON = true;
-		velocityY = jump_vel;
-		vo = velocityY;
-		timer = 0;
-		running = false;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && grounded && !jumping && !EXPUROSHON && !sliding & !attacking_idle)
-	{
-		attacking_idle = true;
-		attack_timer = 0;
+   		if (grounded && !jumping && !air_atking && !sliding & !attacking_idle)
+		{
+			attacking_idle = true;
+			attack_timer = 0;
+		}
+		if (!grounded && !wallhitL && !wallhitR && !air_atk)
+		{
+			if (!air_atking)
+			{
+				running = false;
+				air_atking = true;
+				air_atk = true;
+			}
+			else
+				air_atk = true;
+			air_atk_counter--;
+			air_atk1_left.Reset();
+			air_atk1_right.Reset();
+			air_atk2_left.Reset();
+			air_atk2_right.Reset();
+		}
 	}
 
 	if (!attacking_idle)
@@ -222,7 +246,7 @@ bool Player::Update(float dt)
 				current_animation = &idle_right;
 			else if (!jumping)
 				current_animation = &idle_left;
-		if (jumping)
+		if (jumping || (!grounded && !jumping))
 			if (facing_right)
 				current_animation = &jump_up_right;
 			else
@@ -244,23 +268,59 @@ bool Player::Update(float dt)
 		}
 	}
 
-	if (EXPUROSHON && !sliding)
+	if (air_atking)
+	{
 		if (facing_right)
-		{
-			current_animation = &jump_down_right;
 			if (!wallhitR)
 				position.x += exp_vel;
 			else
-				EXPUROSHON = false;
-		}
+				air_atking = false;
 		else
-		{ 
-			current_animation = &jump_down_left;
 			if (!wallhitL)
 				position.x -= exp_vel;
 			else
-				EXPUROSHON = false;
-		}	
+				air_atking = false;
+		if (air_atk)
+		{
+			if (facing_right)
+			{
+				current_animation = &air_atk1_right;
+				if (air_atk1_right.GetFrameNum() == 4 && air_atk_counter != 0)
+				{
+					if (air_atk2_right.GetFrameNum() == 0)
+					{
+						velocityY = jump_vel;
+						vo = velocityY;
+						timer = 0;
+					}
+					current_animation = &air_atk2_right;
+				}
+				if (air_atk2_right.GetFrameNum() == 5)
+					air_atk = false;
+			}
+			else
+			{
+				current_animation = &air_atk1_left;
+				if (air_atk1_left.GetFrameNum() == 4 && air_atk_counter != 0)
+				{
+					if (air_atk2_left.GetFrameNum() == 0)
+					{
+						velocityY = jump_vel;
+						vo = velocityY;
+						timer = 0;
+					}
+					current_animation = &air_atk2_left;
+				}
+				if (air_atk2_left.GetFrameNum() == 4)
+					air_atk = false;
+			}
+		}
+		else
+			if (facing_right)			
+				current_animation = &jump_down_right;
+			else
+				current_animation = &jump_down_left;
+	}
 
 	if (!grounded)
 	{
@@ -288,6 +348,7 @@ bool Player::Update(float dt)
 	if (sliding)
 	{
 		timer++;
+		air_atking = false;
 		if (timer < 50)
 		{
 			if (facing_right)
@@ -300,7 +361,6 @@ bool Player::Update(float dt)
 				else
 				{
 					sliding = false;
-					EXPUROSHON = false;
 					slide_vel = exp_vel;
 					timer = 0;
 				}
@@ -315,7 +375,6 @@ bool Player::Update(float dt)
 				else
 				{
 					sliding = false;
-					EXPUROSHON = false;
 					slide_vel = exp_vel;
 					timer = 0;
 				}
@@ -327,7 +386,6 @@ bool Player::Update(float dt)
 		else
 		{
 			sliding = false;
-			EXPUROSHON = false;
 			slide_vel = exp_vel;
 			timer = 0;
 		}
@@ -353,14 +411,17 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 			run_left.SetFrame(5);
 			jumping = false;
 		}
-		if (EXPUROSHON && !sliding)
+		if (air_atking && !sliding)
 		{
+			air_atking = false;
+			air_atk = false;
 			sliding = true;
 			timer = 0;
 		}
 		if(c2->rect.y != 0)
 			position.y = c2->rect.y - 53;
 		grounded = true;
+		air_atk_counter = 2;
 		vo = 0.0f;
 		collissioncounter++;
 	}
@@ -392,7 +453,8 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		running = false;
 		grounded = false;
 		jumping = false;
-		EXPUROSHON = false;
+		air_atking = false;
+		air_atk = false;
 		headcollided = false;
 		sliding = false;
 	}

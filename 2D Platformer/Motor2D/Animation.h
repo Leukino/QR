@@ -49,6 +49,11 @@ public:
 	{
 		current_frame = frame;
 	}
+
+	int GetFrameNum()
+	{
+		return current_frame;
+	}
 };
 
 #endif
