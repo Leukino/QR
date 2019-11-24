@@ -148,6 +148,7 @@ bool Player::CleanUp()
 
 bool Player::Update(float dt)
 {
+	LOG("player: %f x, %f y", position.x, position.y);
 	if (collissioncounter == 0)
 		grounded = false;
 	collissioncounter = 0;
@@ -189,7 +190,7 @@ bool Player::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
 		run_left.Reset();
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && !jumping && !sliding)
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && !jumping && !sliding && !attacking_idle)
 	{
 		jumping = true;
 		grounded = false;
@@ -421,6 +422,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		if(c2->rect.y != 0)
 			position.y = c2->rect.y - 53;
 		grounded = true;
+		air_atk = false;
 		air_atk_counter = 2;
 		vo = 0.0f;
 		collissioncounter++;

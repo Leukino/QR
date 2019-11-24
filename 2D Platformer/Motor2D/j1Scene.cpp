@@ -71,10 +71,7 @@ bool j1Scene::Update(float dt)
 	int posx;
 	int posy;
 	App->input->GetMousePosition(posx, posy);
-	//camera should depend on player position and player velocity(we just don't have this yet :)
 	App->render->setCamera(App->player, { 0.5f, 0.5f });
-	//setScreenCursorPosition(160, 90);
-	//App->render->Blit(img, 0, 0);
 	App->map->Draw();
 
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
