@@ -148,7 +148,7 @@ bool Player::CleanUp()
 
 bool Player::Update(float dt)
 {
-	LOG("player: %f x, %f y", position.x, position.y);
+	//LOG("player: %f x, %f y", position.x, position.y);
 	if (collissioncounter == 0)
 		grounded = false;
 	collissioncounter = 0;
