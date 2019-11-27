@@ -59,6 +59,8 @@ public:
 	Collider* left_col;
 	Collider* head_col;
 	Collider* feet_col;
+	Collider* player_atk;
+	SDL_Rect pl_atk_idle_r = {0,0,20,30};
 	iPoint rightcol_offset;
 	iPoint leftcol_offset;
 	iPoint footcol_offset;

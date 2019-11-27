@@ -180,6 +180,9 @@ bool ModuleCollision::Update(float dt)
 				case COLLIDER_ENEMY_SHOT: // magenta
 				App->render->DrawQuad(colliders[i]->rect, 0, 255, 255, alpha);
 				break;
+				case COLLIDER_PLAYER_ATK: // magenta
+					App->render->DrawQuad(colliders[i]->rect, 100, 100, 100, alpha);
+					break;
 			}
 	}
 

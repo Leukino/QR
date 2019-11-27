@@ -200,12 +200,12 @@ bool Player::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
 		air_atk_counter++;
+
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
    		if (grounded && !jumping && !air_atking && !sliding & !attacking_idle)
 		{
 			attacking_idle = true;
-			attack_timer = 0;
 		}
 		if (!grounded && !wallhitL && !wallhitR && !air_atk)
 		{
@@ -255,20 +255,27 @@ bool Player::Update(float dt)
 	}
 	else
 	{
-		attack_timer++;
-		if (attack_timer <= 50)
-			if (facing_right)
-				current_animation = &attack_right;
-			else
-				current_animation = &attack_left;
-		else
+		if (attack_right.GetFrameNum() == 4 || attack_left.GetFrameNum() == 4)
 		{
 			attacking_idle = false;
 			attack_right.Reset();
 			attack_left.Reset();
 		}
-	}
+		else
+			if (facing_right)
+				current_animation = &attack_right;
+			else
+				current_animation = &attack_left;
 
+	//	if (attack_right.GetFrameNum() == 2 || attack_left.GetFrameNum() == 2)
+	//		if (facing_right)
+	//			player_atk = App->collision->AddCollider({ (int)position.x + 20, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+	//		else
+	//			player_atk = App->collision->AddCollider({ (int)position.x, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+	//
+	//	if (attack_right.GetFrameNum() == 3 || attack_left.GetFrameNum() == 3)
+	//		player_atk->to_delete = true;
+	}
 	if (air_atking)
 	{
 		if (facing_right)
