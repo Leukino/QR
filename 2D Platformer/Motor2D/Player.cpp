@@ -112,6 +112,7 @@ bool Player::Awake(pugi::xml_node& player_data)
 	left_col = App->collision->AddCollider({ 0, 0, 5, 18 }, COLLIDER_PLAYER_LEFT, this);
 	feet_col = App->collision->AddCollider({ 0, 0, 13, 10 }, COLLIDER_PLAYER_FOOT, this);
 	head_col = App->collision->AddCollider({ 0, 0, 10, 10 }, COLLIDER_PLAYER_HEAD, this);
+	player_atk = App->collision->AddCollider({ 0, 0, 20, 30 }, COLLIDER_PLAYER_ATK, this);
 	rightcol_offset.x = 34;
 	rightcol_offset.y = 28;
 	leftcol_offset.x = 20;
@@ -225,6 +226,29 @@ bool Player::Update(float dt)
 		}
 	}
 
+	if (!grounded)
+	{
+		timer++;
+		velocityY = vo + a*timer;
+		if (velocityY > 10.0f)
+			velocityY = 10.0f;
+		if (sliding)
+			sliding = false;
+	}
+	else
+	{
+		headcollided = false;
+		velocityY = 0.0f;
+		if (!sliding)
+		{
+			timer = 0;
+		}
+	}
+	if (headcollided && velocityY < 0)
+		timer += 2;
+	else
+		position.y += velocityY;
+
 	if (!attacking_idle)
 	{
 		if (running)
@@ -255,6 +279,12 @@ bool Player::Update(float dt)
 	}
 	else
 	{
+		if (attack_right.GetFrameNum() != attack_left.GetFrameNum())
+			if (facing_right)
+				attack_left.SetFrame(attack_right.GetFrameNum());
+			else
+				attack_right.SetFrame(attack_left.GetFrameNum());
+
 		if (attack_right.GetFrameNum() == 4 || attack_left.GetFrameNum() == 4)
 		{
 			attacking_idle = false;
@@ -267,14 +297,14 @@ bool Player::Update(float dt)
 			else
 				current_animation = &attack_left;
 
-	//	if (attack_right.GetFrameNum() == 2 || attack_left.GetFrameNum() == 2)
-	//		if (facing_right)
-	//			player_atk = App->collision->AddCollider({ (int)position.x + 20, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
-	//		else
-	//			player_atk = App->collision->AddCollider({ (int)position.x, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
-	//
-	//	if (attack_right.GetFrameNum() == 3 || attack_left.GetFrameNum() == 3)
-	//		player_atk->to_delete = true;
+		if (attack_right.GetFrameNum() == 2 || attack_left.GetFrameNum() == 2)
+			if (facing_right)
+				player_atk->set({ (int)position.x + 39, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+			else
+				player_atk->set({ (int)position.x, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+
+		if (attack_right.GetFrameNum() == 3 || attack_left.GetFrameNum() == 3)
+			player_atk->set({ -10, -10, 20, 30 }, COLLIDER_PLAYER_ATK, this);
 	}
 	if (air_atking)
 	{
@@ -282,12 +312,19 @@ bool Player::Update(float dt)
 			if (!wallhitR)
 				position.x += exp_vel;
 			else
+			{
 				air_atking = false;
+				player_atk->set({ -10, -10, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+			}
 		else
 			if (!wallhitL)
 				position.x -= exp_vel;
 			else
+			{
 				air_atking = false;
+				air_atking = false; player_atk->set({ -10, -10, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+			}
+
 		if (air_atk)
 		{
 			if (facing_right)
@@ -305,6 +342,24 @@ bool Player::Update(float dt)
 				}
 				if (air_atk2_right.GetFrameNum() == 5)
 					air_atk = false;
+				if (current_animation == &air_atk1_right)
+				{
+					if (air_atk1_right.GetFrameNum() == 0)
+						player_atk->set({ (int)position.x + 18, (int)position.y + 10, 20, 10 }, COLLIDER_PLAYER_ATK, this);
+					if (air_atk1_right.GetFrameNum() == 4)
+						player_atk->set({ (int)position.x + 18, (int)position.y + 54, 20, 20 }, COLLIDER_PLAYER_ATK, this);
+					if (air_atk1_right.GetFrameNum() >= 1 && air_atk1_right.GetFrameNum() <= 3)
+						player_atk->set({ (int)position.x + 39, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+				}
+				else if (current_animation == &air_atk2_right)
+				{
+					if (air_atk2_right.GetFrameNum() == 5)
+						player_atk->set({ (int)position.x + 18, (int)position.y + 10, 20, 10 }, COLLIDER_PLAYER_ATK, this);
+					if (air_atk2_right.GetFrameNum() == 0 || air_atk2_right.GetFrameNum() == 1)
+						player_atk->set({ (int)position.x + 18, (int)position.y + 54, 20, 20 }, COLLIDER_PLAYER_ATK, this);
+					if (air_atk2_right.GetFrameNum() >= 2 && air_atk2_right.GetFrameNum() <= 4)
+						player_atk->set({ (int)position.x, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+				}
 			}
 			else
 			{
@@ -321,37 +376,35 @@ bool Player::Update(float dt)
 				}
 				if (air_atk2_left.GetFrameNum() == 4)
 					air_atk = false;
+				if (current_animation == &air_atk1_left)
+				{
+					if (air_atk1_left.GetFrameNum() == 0)
+						player_atk->set({ (int)position.x + 18, (int)position.y + 10, 20, 10 }, COLLIDER_PLAYER_ATK, this);
+					else if (air_atk1_left.GetFrameNum() == 4)
+						player_atk->set({ (int)position.x + 18, (int)position.y + 54, 20, 20 }, COLLIDER_PLAYER_ATK, this);
+					else if (air_atk1_left.GetFrameNum() >= 1 && air_atk1_left.GetFrameNum() <= 3)
+						player_atk->set({ (int)position.x, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+				}
+				else if (current_animation == &air_atk2_left)
+				{
+					if (air_atk2_left.GetFrameNum() == 4)
+						player_atk->set({ (int)position.x + 18, (int)position.y + 10, 20, 10 }, COLLIDER_PLAYER_ATK, this);
+					else if (air_atk2_left.GetFrameNum() == 0)
+						player_atk->set({ (int)position.x + 18, (int)position.y + 54, 20, 20 }, COLLIDER_PLAYER_ATK, this);
+					else if (air_atk2_left.GetFrameNum() >= 1 && air_atk2_left.GetFrameNum() <= 3)
+						player_atk->set({ (int)position.x + 39, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+				}
 			}
 		}
 		else
-			if (facing_right)			
+		{
+			player_atk->set({ -10, -10, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+			if (facing_right)
 				current_animation = &jump_down_right;
 			else
 				current_animation = &jump_down_left;
-	}
-
-	if (!grounded)
-	{
-		timer++;
-		velocityY = vo + a*timer;
-		if (velocityY > 10.0f)
-			velocityY = 10.0f;
-		if (sliding)
-			sliding = false;
-	}
-	else
-	{
-		headcollided = false;
-		velocityY = 0.0f;
-		if (!sliding)
-		{
-			timer = 0;
 		}
 	}
-	if (headcollided && velocityY < 0)
-		timer += 2;
-	else
-		position.y += velocityY;
 
 	if (sliding)
 	{
@@ -430,6 +483,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 			position.y = c2->rect.y - 53;
 		grounded = true;
 		air_atk = false;
+		player_atk->set({ -10, -10, 20, 30 }, COLLIDER_PLAYER_ATK, this);
 		air_atk_counter = 2;
 		vo = 0.0f;
 		collissioncounter++;
@@ -451,7 +505,12 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		wallcolcounter++;
 		position.x = (c2->rect.x + c2->rect.w) - 21;
 	}
-	if ((c1->type == COLLIDER_PLAYER_FOOT || c1->type == COLLIDER_PLAYER_HEAD) && c2->type == COLLIDER_ENEMY_SHOT)
+	if ((c1->type == COLLIDER_PLAYER_ATK && c2->type == COLLIDER_ENEMY_SHOT))
+	{
+		if (air_atk_counter < 1)
+			air_atk_counter++;
+	}
+	else if ((c1->type == COLLIDER_PLAYER_FOOT || c1->type == COLLIDER_PLAYER_HEAD) && c2->type == COLLIDER_ENEMY_SHOT)
 	{
 		position.x = initial_posX;
 		position.y = initial_posY;

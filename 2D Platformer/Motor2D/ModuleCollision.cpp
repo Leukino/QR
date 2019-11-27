@@ -114,8 +114,9 @@ bool ModuleCollision::PreUpdate()
 
 		c1 = colliders[i];
 
-		int scale = App->win->GetScale();
-		if ((c1->rect.x * scale) > -App->render->camera.x && (c1->rect.x * scale) < -(App->render->camera.x - App->render->camera.w) && (c1->rect.y * scale) > -App->render->camera.y && (c1->rect.y * scale) < -(App->render->camera.y - App->render->camera.h))
+		//int scale = App->win->GetScale();
+		if(c1->rect.x > App->player->position.x - 50.0f && c1->rect.x < App->player->position.x + 50.0f && c1->rect.y > App->player->position.y - 50.0f && c1->rect.y < App->player->position.y + 100.0f)
+		//if ((c1->rect.x * scale) > -App->render->camera.x && (c1->rect.x * scale) < -(App->render->camera.x - App->render->camera.w) && (c1->rect.y * scale) > -App->render->camera.y && (c1->rect.y * scale) < -(App->render->camera.y - App->render->camera.h))
 			for(uint k = i+1; k < MAX_COLLIDERS; ++k)
 			{
 				// skip empty colliders
@@ -148,12 +149,13 @@ bool ModuleCollision::Update(float dt)
 	if(debug == false)
 		return true;
 	Uint8 alpha = 80;
-	int scale = App->win->GetScale();
+	//int scale = App->win->GetScale();
 	for(uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
 		if(colliders[i] == nullptr)
 			continue;
-		if ((colliders[i]->rect.x *scale) > -App->render->camera.x && (colliders[i]->rect.x * scale) < -(App->render->camera.x - App->render->camera.w) && (colliders[i]->rect.y * scale) > -App->render->camera.y && (colliders[i]->rect.y * scale) < -(App->render->camera.y - App->render->camera.h))
+		if (colliders[i]->rect.x > App->player->position.x - 50.0f && colliders[i]->rect.x < App->player->position.x + 50.0f && colliders[i]->rect.y > App->player->position.y - 50.0f && colliders[i]->rect.y < App->player->position.y + 100.0f)
+		//if ((colliders[i]->rect.x *scale) > -App->render->camera.x && (colliders[i]->rect.x * scale) < -(App->render->camera.x - App->render->camera.w) && (colliders[i]->rect.y * scale) > -App->render->camera.y && (colliders[i]->rect.y * scale) < -(App->render->camera.y - App->render->camera.h))
 			switch(colliders[i]->type)
 			{
 				case COLLIDER_NONE: // white
@@ -181,7 +183,7 @@ bool ModuleCollision::Update(float dt)
 				App->render->DrawQuad(colliders[i]->rect, 0, 255, 255, alpha);
 				break;
 				case COLLIDER_PLAYER_ATK: // magenta
-					App->render->DrawQuad(colliders[i]->rect, 100, 100, 100, alpha);
+					App->render->DrawQuad(colliders[i]->rect, 255, 100, 100, alpha);
 					break;
 			}
 	}
