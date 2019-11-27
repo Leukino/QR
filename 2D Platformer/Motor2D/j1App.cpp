@@ -160,6 +160,12 @@ pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 // ---------------------------------------------
 void j1App::PrepareUpdate()
 {
+	frame_count++;
+	last_sec_frame_count++;
+
+	dt = frame_time.ReadSec();
+
+	frame_time.Start();
 }
 
 // ---------------------------------------------
@@ -170,6 +176,47 @@ void j1App::FinishUpdate()
 
 	if(want_to_load == true)
 		LoadGameNow();
+
+	if (last_sec_frame_time.Read() > 1000)
+	{
+		last_sec_frame_time.Start();
+		prev_last_sec_frame_count = last_sec_frame_count;
+		last_sec_frame_count = 0;
+	}
+
+	//if (App->input->GetKey(SDL_SCANCODE_F11) == j1KeyState::KEY_DOWN) {
+	//	capFPS = !capFPS;
+	//	frame_count = 0;
+	//}
+
+	float avg_fps = float(frame_count) / startup_time.ReadSec();
+	float seconds_since_startup = startup_time.ReadSec();
+	uint32 last_frame_ms = frame_time.Read();
+	uint32 frames_on_last_update = prev_last_sec_frame_count;
+
+	static char title[256];
+	char* cap;
+	char* vsync;
+
+	//if (capFPS)
+	//	cap = "ON";
+	//else
+	//	cap = "OFF";
+	//
+	//if (App->render->vsyncOn)
+	//	vsync = "ON";
+	//else
+	//	vsync = "OFF";
+
+	sprintf_s(title, 256, "Thalassa || FPS: %02u / Av.FPS: %.2f / Last Frame Ms: %02u / Cap: %s / Vsync: %s / dt: %f",
+		frames_on_last_update, avg_fps, last_frame_ms, cap, vsync, dt);
+	App->win->SetTitle(title);
+
+	//if ((last_frame_ms < (1000 / framerate_cap)) && capFPS) {
+	//	SDL_Delay((1000 / framerate_cap) - last_frame_ms);
+	//}
+
+	//LOG("We waited for %d miliseconds and we got back in %d", (1000 / framerate_cap) - last_frame_ms, last_frame_ms);
 }
 
 // Call modules before each loop iteration
