@@ -118,7 +118,18 @@ private:
 	float dt = 0.1f;
 public: 
 	uint32 getFpsCap() { return framerate_cap; }
-	void setFpsCap(uint32 fps) { framerate_cap = fps; }
+	void setFpsCap(uint32 fps) {
+		if (fps <= 0)
+		{
+			fpscap = false;
+			framerate_cap = 30;
+		}
+		else
+		{
+			framerate_cap = fps;
+			fpscap = true;
+		}
+		}
 };
 
 extern j1App* App; // No student is asking me about that ... odd :-S

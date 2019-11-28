@@ -212,8 +212,11 @@ void j1App::FinishUpdate()
 		frames_on_last_update, avg_fps, last_frame_ms, cap, vsync, dt);
 	App->win->SetTitle(title);
 
-	if ((last_frame_ms < (1000 / framerate_cap)) && fpscap) {
-		SDL_Delay((1000 / framerate_cap) - last_frame_ms);
+	if ((framerate_cap >= 0) && fpscap)
+	{
+		if ((last_frame_ms < (1000 / framerate_cap))) {
+			SDL_Delay((1000 / framerate_cap) - last_frame_ms);
+		}
 	}
 
 	//LOG("We waited for %d miliseconds and we got back in %d", (1000 / framerate_cap) - last_frame_ms, last_frame_ms);

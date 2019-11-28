@@ -143,7 +143,7 @@ bool ModuleCollision::PreUpdate()
 // Called before render is available
 bool ModuleCollision::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 		debug = !debug;
 
 	if(debug == false)
