@@ -111,8 +111,9 @@ private:
 	j1Timer				last_sec_frame_time;
 	uint32				last_sec_frame_count = 0;
 	uint32				prev_last_sec_frame_count = 0;
-	uint32				framerate_cap = 0;
+	uint32				framerate_cap = 30;
 
+	bool fpscap = true;
 	float dt = 0.1f;
 };
 
