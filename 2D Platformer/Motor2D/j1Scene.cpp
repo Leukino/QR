@@ -67,7 +67,10 @@ bool j1Scene::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 1;
-
+	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
+		App->setFpsCap(App->getFpsCap() + 10);
+	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN && App->getFpsCap() > 10)
+		App->setFpsCap(App->getFpsCap() - 10);
 	int posx;
 	int posy;
 	App->input->GetMousePosition(posx, posy);

@@ -76,7 +76,7 @@ private:
 	// Load / Save
 	bool LoadGameNow();
 	bool SavegameNow() const;
-
+	
 public:
 
 	// Modules
@@ -111,10 +111,14 @@ private:
 	j1Timer				last_sec_frame_time;
 	uint32				last_sec_frame_count = 0;
 	uint32				prev_last_sec_frame_count = 0;
+public:
 	uint32				framerate_cap = 30;
-
+private:
 	bool fpscap = true;
 	float dt = 0.1f;
+public: 
+	uint32 getFpsCap() { return framerate_cap; }
+	void setFpsCap(uint32 fps) { framerate_cap = fps; }
 };
 
 extern j1App* App; // No student is asking me about that ... odd :-S

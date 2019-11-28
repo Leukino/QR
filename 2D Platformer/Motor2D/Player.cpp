@@ -257,13 +257,13 @@ bool Player::Update(float dt)
 			{
 				if (!jumping)
 					current_animation = &run_right;
-				position.x += run_vel;
+				position.x += run_vel * dt/0.016f;
 			}
 			if (!facing_right && !wallhitL)
 			{
 				if (!jumping)
 					current_animation = &run_left;
-				position.x -= run_vel;
+				position.x -= run_vel * dt/0.016f;
 			}
 		}
 		else
