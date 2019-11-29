@@ -230,7 +230,7 @@ bool Player::Update(float dt)
 	if (!grounded)
 	{
 		timer++;
-		velocityY = vo + a* timer;
+		velocityY = vo + a * timer *dt/0.016f;
 		if (velocityY > 10.0f)
 			velocityY = 10.0f;
 		if (sliding)
@@ -248,7 +248,7 @@ bool Player::Update(float dt)
 	if (headcollided && velocityY < 0)
 		timer += 2;
 	else
-		position.y += velocityY;
+		position.y += velocityY * dt / 0.016f;
 
 	if (!attacking_idle)
 	{
