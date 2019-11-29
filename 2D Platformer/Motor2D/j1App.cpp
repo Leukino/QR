@@ -208,8 +208,8 @@ void j1App::FinishUpdate()
 	else
 		vsync = "OFF";
 
-	sprintf_s(title, 256, "Thalassa || FPS: %02u / Av.FPS: %.2f / Last Frame Ms: %02u / Cap: %s / Vsync: %s / dt: %f",
-		frames_on_last_update, avg_fps, last_frame_ms, cap, vsync, dt);
+	sprintf_s(title, 256, "Thalassa || FPS: %02u / EstFPS: %02u/ Av.FPS: %.2f / Last Frame Ms: %02u / Cap: %s / Vsync: %s / dt: %f",
+		frames_on_last_update, framerate_cap, avg_fps, last_frame_ms, cap, vsync, dt);
 	App->win->SetTitle(title);
 
 	if ((framerate_cap >= 0) && fpscap)
