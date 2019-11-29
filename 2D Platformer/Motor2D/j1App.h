@@ -115,21 +115,12 @@ public:
 	uint32				framerate_cap = 30;
 private:
 	bool fpscap = true;
-	float dt = 0.1f;
+	
 public: 
+	float dt = 0.1f;
 	uint32 getFpsCap() { return framerate_cap; }
-	void setFpsCap(uint32 fps) {
-		if (fps <= 0)
-		{
-			fpscap = false;
-			framerate_cap = 30;
-		}
-		else
-		{
-			framerate_cap = fps;
-			fpscap = true;
-		}
-		}
+	void setFpsCap(uint32 fps);
+	float SyncVelocity(float vel);
 };
 
 extern j1App* App; // No student is asking me about that ... odd :-S

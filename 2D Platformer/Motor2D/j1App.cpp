@@ -164,7 +164,7 @@ void j1App::PrepareUpdate()
 	last_sec_frame_count++;
 
 	dt = frame_time.ReadSec();
-
+	LOG("dt: %f", dt);
 	frame_time.Start();
 }
 
@@ -421,4 +421,23 @@ bool j1App::SavegameNow() const
 	data.reset();
 	want_to_save = false;
 	return ret;
+}
+
+void j1App::setFpsCap(uint32 fps)
+{
+	if (fps <= 0)
+	{
+		fpscap = false;
+		framerate_cap = 30;
+	}
+	else
+	{
+		framerate_cap = fps;
+		fpscap = true;
+	}
+}
+
+float j1App::SyncVelocity(float vel)
+{
+	return vel* (dt / 0.016f);
 }
