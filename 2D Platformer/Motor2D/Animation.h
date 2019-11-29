@@ -2,6 +2,7 @@
 #define __ANIMATION_H__
 
 #include "SDL/include/SDL_rect.h"
+#include "j1App.h"
 #define MAX_FRAMES 200
 
 class Animation
@@ -25,7 +26,7 @@ public:
 
 	SDL_Rect& GetCurrentFrame()
 	{
-		current_frame += speed;
+		current_frame += speed*(App->dt / 0.016f);
 		if (current_frame >= last_frame)
 		{
 			current_frame = (loop) ? 0.0f : last_frame - 1;

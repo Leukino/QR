@@ -20,7 +20,7 @@ bool Player::Start()
 {
 	player_sprites = App->tex->Load("textures/Knight.png");
 	position.x = initial_posX;
-	position.y = initial_posY;
+	position.y = initial_posY - 100;
 	return true;
 }
 
@@ -149,6 +149,7 @@ bool Player::CleanUp()
 
 bool Player::Update(float dt)
 {
+	LOG("pos Y: %f",position.y);
 	//LOG("player: %f x, %f y", position.x, position.y);
 	if (collissioncounter == 0)
 		grounded = false;
@@ -229,7 +230,7 @@ bool Player::Update(float dt)
 	if (!grounded)
 	{
 		timer++;
-		velocityY = vo + a*timer;
+		velocityY = vo + a* timer;
 		if (velocityY > 10.0f)
 			velocityY = 10.0f;
 		if (sliding)
@@ -257,13 +258,13 @@ bool Player::Update(float dt)
 			{
 				if (!jumping)
 					current_animation = &run_right;
-				position.x += run_vel * dt/0.016f;
+				position.x += App->SyncVelocity(run_vel);
 			}
 			if (!facing_right && !wallhitL)
 			{
 				if (!jumping)
 					current_animation = &run_left;
-				position.x -= run_vel * dt/0.016f;
+				position.x -= App->SyncVelocity(run_vel);
 			}
 		}
 		else
@@ -310,7 +311,7 @@ bool Player::Update(float dt)
 	{
 		if (facing_right)
 			if (!wallhitR)
-				position.x += exp_vel;
+				position.x += App->SyncVelocity(exp_vel);
 			else
 			{
 				air_atking = false;
@@ -318,7 +319,7 @@ bool Player::Update(float dt)
 			}
 		else
 			if (!wallhitL)
-				position.x -= exp_vel;
+				position.x -= App->SyncVelocity(exp_vel);
 			else
 			{
 				air_atking = false;
@@ -408,7 +409,7 @@ bool Player::Update(float dt)
 
 	if (sliding)
 	{
-		timer++;
+		timer+= dt / 0.016f;
 		air_atking = false;
 		if (timer < 50)
 		{
@@ -417,7 +418,7 @@ bool Player::Update(float dt)
 				if (!wallhitR)
 				{
 					current_animation = &slide_right;
-					position.x += slide_vel;
+					position.x += App->SyncVelocity(slide_vel);
 				}
 				else
 				{
@@ -431,7 +432,7 @@ bool Player::Update(float dt)
 				if (!wallhitL)
 				{
 					current_animation = &slide_left;
-					position.x -= slide_vel;
+					position.x -= App->SyncVelocity(slide_vel);
 				}
 				else
 				{
@@ -451,7 +452,7 @@ bool Player::Update(float dt)
 			timer = 0;
 		}
 	}
-
+	LOG("vel Y: %f", velocityY);
 	right_col->SetPos(position.x + rightcol_offset.x, position.y + rightcol_offset.y);
 	left_col->SetPos(position.x + leftcol_offset.x, position.y + leftcol_offset.y);
 	feet_col->SetPos(position.x + footcol_offset.x, position.y + footcol_offset.y);

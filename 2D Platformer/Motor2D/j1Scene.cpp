@@ -67,13 +67,14 @@ bool j1Scene::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 1;
-	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
 		App->setFpsCap(App->getFpsCap() + 10);
-	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
 	{
 		//if (App->getFpsCap() > 10)
 		App->setFpsCap(App->getFpsCap() - 10);
 	}
+
 	//if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 	//	App->
 	int posx;
