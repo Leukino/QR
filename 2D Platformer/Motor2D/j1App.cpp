@@ -184,10 +184,10 @@ void j1App::FinishUpdate()
 		last_sec_frame_count = 0;
 	}
 
-	//if (App->input->GetKey(SDL_SCANCODE_F11) == j1KeyState::KEY_DOWN) {
-	//	capFPS = !capFPS;
-	//	frame_count = 0;
-	//}
+	if (App->input->GetKey(SDL_SCANCODE_F11) == j1KeyState::KEY_DOWN) {
+		fpscap = !fpscap;
+		frame_count = 0;
+	}
 
 	float avg_fps = float(frame_count) / startup_time.ReadSec();
 	float seconds_since_startup = startup_time.ReadSec();

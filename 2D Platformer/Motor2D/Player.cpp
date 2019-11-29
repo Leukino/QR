@@ -20,11 +20,11 @@ bool Player::Start()
 {
 	player_sprites = App->tex->Load("textures/Knight.png");
 	position.x = initial_posX;
-	position.y = initial_posY - 100;
+	position.y = initial_posY;
 	return true;
 }
 
-void Player::Animate(Animation& anim,const int first_coll,const int first_row,const int n)
+void Player::Animate(Animation& anim,const int first_coll,const int first_row,const int n, float speed, bool loop)
 {
 	int coll = first_coll;
 	int row = first_row;
@@ -38,10 +38,14 @@ void Player::Animate(Animation& anim,const int first_coll,const int first_row,co
 			row++;
 		}
 	}
+	anim.speed = speed;
+	anim.loop = loop;
 }
 
 bool Player::Awake(pugi::xml_node& player_data)
 {
+	initial_posX = 200.0f;
+	initial_posY = 200.0f;
 	pugi::xml_node setup = player_data.child("player_data").child("setup");
 		pugi::xml_node animate = setup.child("animate");
 		sprite_wh = 60;
@@ -68,22 +72,22 @@ bool Player::Awake(pugi::xml_node& player_data)
 		//Animate(jump_down_left, 5, 1, 1);
 		//Animate(slide_right, 2, 1, 1);
 		//Animate(slide_left, 6, 1, 1);
-	Animate(idle_right, 0, 0, 2);
-	Animate(idle_left, 2, 0, 2);
-	Animate(run_right, 4, 0, 6);
-	Animate(run_left, 10, 0, 6);
+	Animate(idle_right, 0, 0, 2, 0.01f);
+	Animate(idle_left, 2, 0, 2, 0.01f);
+	Animate(run_right, 4, 0, 6, 0.2f);
+	Animate(run_left, 10, 0, 6, 0.2f);
 	Animate(jump_up_right, 16, 0, 1);
 	Animate(jump_down_right, 1, 1, 1);
 	Animate(jump_up_left, 3, 1, 1);
 	Animate(jump_down_left, 5, 1, 1);
 	Animate(slide_right, 2, 1, 1);
 	Animate(slide_left, 6, 1, 1);
-	Animate(attack_right, 7, 1, 5);
-	Animate(attack_left, 12, 1, 5);
-	Animate(air_atk1_right, 0, 2, 5);
-	Animate(air_atk2_right, 5, 2, 6);
-	Animate(air_atk1_left, 11, 2, 5);
-	Animate(air_atk2_left, 0, 3, 5);
+	Animate(attack_right, 7, 1, 5, 0.15f, false);
+	Animate(attack_left, 12, 1, 5, 0.15f, false);
+	Animate(air_atk1_right, 0, 2, 5, 0.5f, false);
+	Animate(air_atk2_right, 5, 2, 6, 0.5f, false);
+	Animate(air_atk1_left, 11, 2, 5, 0.5f, false);
+	Animate(air_atk2_left, 0, 3, 5, 0.5f, false);
 
 	pugi::xml_node gameplay = player_data.child("player_data").child("gameplay");
 	pugi::xml_node checkers = gameplay.child("checkers");
@@ -95,11 +99,11 @@ bool Player::Awake(pugi::xml_node& player_data)
 	sliding = checkers.attribute("sliding").as_bool();
 	pugi::xml_node counters = gameplay.child("counters");
 	timer = counters.attribute("timer").as_int();
-	attack_timer = 0;
 	collissioncounter = counters.attribute("collisioncounter").as_int();
 	wallcolcounter = counters.attribute("wallcolcounter").as_int();
 	headcollided = false;
 	attacking_idle = false;
+	godmode = false;
 	pugi::xml_node velocities = gameplay.child("velocities");
 	run_vel = 2.0f;
 	exp_vel = 4.0f;
@@ -124,21 +128,6 @@ bool Player::Awake(pugi::xml_node& player_data)
 
 	slide_vel = exp_vel;
 
-	idle_right.speed = 0.01f;
-	idle_left.speed = 0.01f;
-	run_right.speed = 0.2f;
-	run_left.speed = 0.2f;
-	attack_right.speed = 0.1f;
-	attack_left.speed = 0.1f;
-	air_atk1_right.speed = 0.5f;
-	air_atk2_right.speed = 0.5f;
-	air_atk1_left.speed = 0.5f;
-	air_atk2_left.speed = 0.5f;
-	air_atk1_right.loop = false;
-	air_atk2_right.loop = false;
-	air_atk1_left.loop = false;
-	air_atk2_left.loop = false;
-
 	return true;
 }
 
@@ -147,10 +136,244 @@ bool Player::CleanUp()
 	return true;
 }
 
+void Player::Gravity(float dt)
+{
+	if (!grounded)
+	{
+		timer++;
+		velocityY = vo + a * timer * dt / 0.016f;
+		if (velocityY > 10.0f)
+			velocityY = 10.0f;
+		if (sliding)
+			sliding = false;
+	}
+	else
+	{
+		headcollided = false;
+		velocityY = 0.0f;
+		if (!sliding)
+		{
+			timer = 0;
+		}
+	}
+
+	if (headcollided && velocityY < 0)
+		timer += 2;
+	else
+		position.y += App->SyncVelocity(velocityY);
+}
+
+void Player::Move()
+{
+	if (facing_right && !wallhitR)
+	{
+		if (!jumping)
+			current_animation = &run_right;
+		position.x += App->SyncVelocity(run_vel);
+	}
+	if (!facing_right && !wallhitL)
+	{
+		if (!jumping)
+			current_animation = &run_left;
+		position.x -= App->SyncVelocity(run_vel);
+	}
+}
+
+void Player::Idle()
+{
+	if (facing_right && !jumping)
+		current_animation = &idle_right;
+	else if (!jumping)
+		current_animation = &idle_left;
+}
+
+void Player::Jump()
+{
+	if (facing_right)
+		current_animation = &jump_up_right;
+	else
+		current_animation = &jump_up_left;
+}
+
+void Player::Attack()
+{
+	if (attack_right.GetFrameNum() != attack_left.GetFrameNum()) 
+		if (facing_right)
+			attack_left.SetFrame(attack_right.GetFrameNum());
+		else
+			attack_right.SetFrame(attack_left.GetFrameNum());
+
+	if (attack_right.GetFrameNum() == 4 || attack_left.GetFrameNum() == 4)
+	{
+		attacking_idle = false;
+		attack_right.Reset();
+		attack_left.Reset();
+	}
+	else
+		if (facing_right)
+			current_animation = &attack_right;
+		else
+			current_animation = &attack_left;
+
+	if (attack_right.GetFrameNum() == 2 || attack_left.GetFrameNum() == 2)
+		if (facing_right)
+			player_atk->set({ (int)position.x + 39, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+		else
+			player_atk->set({ (int)position.x, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+
+	if (attack_right.GetFrameNum() == 3 || attack_left.GetFrameNum() == 3)
+		player_atk->set({ -10, -10, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+}
+
+void Player::AirAttack()
+{
+	if (facing_right)
+	{
+		current_animation = &air_atk1_right;
+		if (air_atk1_right.GetFrameNum() == 4 && air_atk_counter != 0)
+		{
+			if (air_atk2_right.GetFrameNum() == 0)
+			{
+				velocityY = jump_vel;
+				vo = velocityY;
+				timer = 0;
+			}
+			current_animation = &air_atk2_right;
+		}
+		if (air_atk2_right.GetFrameNum() == 5)
+			air_atk = false;
+		if (current_animation == &air_atk1_right)
+		{
+			if (air_atk1_right.GetFrameNum() == 0)
+				player_atk->set({ (int)position.x + 18, (int)position.y + 10, 20, 10 }, COLLIDER_PLAYER_ATK, this);
+			if (air_atk1_right.GetFrameNum() == 4)
+				player_atk->set({ (int)position.x + 18, (int)position.y + 54, 20, 20 }, COLLIDER_PLAYER_ATK, this);
+			if (air_atk1_right.GetFrameNum() >= 1 && air_atk1_right.GetFrameNum() <= 3)
+				player_atk->set({ (int)position.x + 39, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+		}
+		else if (current_animation == &air_atk2_right)
+		{
+			if (air_atk2_right.GetFrameNum() == 5)
+				player_atk->set({ (int)position.x + 18, (int)position.y + 10, 20, 10 }, COLLIDER_PLAYER_ATK, this);
+			if (air_atk2_right.GetFrameNum() == 0 || air_atk2_right.GetFrameNum() == 1)
+				player_atk->set({ (int)position.x + 18, (int)position.y + 54, 20, 20 }, COLLIDER_PLAYER_ATK, this);
+			if (air_atk2_right.GetFrameNum() >= 2 && air_atk2_right.GetFrameNum() <= 4)
+				player_atk->set({ (int)position.x, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+		}
+	}
+	else
+	{
+		current_animation = &air_atk1_left;
+		if (air_atk1_left.GetFrameNum() == 4 && air_atk_counter != 0)
+		{
+			if (air_atk2_left.GetFrameNum() == 0)
+			{
+				velocityY = jump_vel;
+				vo = velocityY;
+				timer = 0;
+			}
+			current_animation = &air_atk2_left;
+		}
+		if (air_atk2_left.GetFrameNum() == 4)
+			air_atk = false;
+		if (current_animation == &air_atk1_left)
+		{
+			if (air_atk1_left.GetFrameNum() == 0)
+				player_atk->set({ (int)position.x + 18, (int)position.y + 10, 20, 10 }, COLLIDER_PLAYER_ATK, this);
+			else if (air_atk1_left.GetFrameNum() == 4)
+				player_atk->set({ (int)position.x + 18, (int)position.y + 54, 20, 20 }, COLLIDER_PLAYER_ATK, this);
+			else if (air_atk1_left.GetFrameNum() >= 1 && air_atk1_left.GetFrameNum() <= 3)
+				player_atk->set({ (int)position.x, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+		}
+		else if (current_animation == &air_atk2_left)
+		{
+			if (air_atk2_left.GetFrameNum() == 4)
+				player_atk->set({ (int)position.x + 18, (int)position.y + 10, 20, 10 }, COLLIDER_PLAYER_ATK, this);
+			else if (air_atk2_left.GetFrameNum() == 0)
+				player_atk->set({ (int)position.x + 18, (int)position.y + 54, 20, 20 }, COLLIDER_PLAYER_ATK, this);
+			else if (air_atk2_left.GetFrameNum() >= 1 && air_atk2_left.GetFrameNum() <= 3)
+				player_atk->set({ (int)position.x + 39, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+		}
+	}
+}
+
+void Player::AirMove()
+{
+	if (facing_right)
+		if (!wallhitR)
+		{
+			position.x += App->SyncVelocity(exp_vel);
+			if (!air_atk)
+				current_animation = &jump_down_right;
+		}
+		else
+		{
+			air_atking = false;
+			player_atk->set({ -10, -10, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+		}
+	else
+		if (!wallhitL)
+		{
+			position.x -= App->SyncVelocity(exp_vel);
+			if (!air_atk)
+				current_animation = &jump_down_left;
+		}
+		else
+		{
+			air_atking = false;
+			air_atking = false; player_atk->set({ -10, -10, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+		}
+}
+
+void Player::Slide(float dt)
+{
+	timer += dt / 0.016f;
+	air_atking = false;
+	if (timer < 50 * 0.016f / dt)
+	{
+		if (facing_right)
+		{
+			if (!wallhitR)
+			{
+				current_animation = &slide_right;
+				position.x += App->SyncVelocity(slide_vel);
+			}
+			else
+			{
+				sliding = false;
+				slide_vel = exp_vel;
+				timer = 0;
+			}
+		}
+		else
+		{
+			if (!wallhitL)
+			{
+				current_animation = &slide_left;
+				position.x -= App->SyncVelocity(slide_vel);
+			}
+			else
+			{
+				sliding = false;
+				slide_vel = exp_vel;
+				timer = 0;
+			}
+		}
+		slide_vel -= App->SyncVelocity(ground_friction);
+		if (slide_vel < 0.1f)
+			slide_vel = 0.1;
+	}
+	else
+	{
+		sliding = false;
+		slide_vel = exp_vel;
+		timer = 0;
+	}
+}
+
 bool Player::Update(float dt)
 {
-	LOG("pos Y: %f",position.y);
-	//LOG("player: %f x, %f y", position.x, position.y);
+
 	if (collissioncounter == 0)
 		grounded = false;
 	collissioncounter = 0;
@@ -161,43 +384,81 @@ bool Player::Update(float dt)
 	}
 	wallcolcounter = 0;
 
-	if (!air_atking && !sliding)
+	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
-		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !wallhitR)
-		{
-			facing_right = true;
-			running = true;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !wallhitL)
-		{
-			facing_right = false;
-			running = true;
-		}
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
+		godmode = !godmode;
+		vo = 0.0f;
+		timer = 0;
+		facing_right = true;
 		running = false;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_D) != KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) != KEY_REPEAT)
-	{
 		running = false;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
-		run_right.Reset();
-	
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
-		run_left.Reset();
-
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && !jumping && !sliding && !attacking_idle)
-	{
-		jumping = true;
 		grounded = false;
-		velocityY = jump_vel;
-		vo = velocityY;
+		jumping = false;
+		air_atking = false;
+		air_atk = false;
+		headcollided = false;
+		sliding = false;
+
+	}
+
+	if (!godmode)
+	{
+		if (!air_atking && !sliding)
+		{
+			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !wallhitR)
+			{
+				facing_right = true;
+				running = true;
+			}
+
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !wallhitL)
+			{
+				facing_right = false;
+				running = true;
+			}
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+			running = false;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_D) != KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_A) != KEY_REPEAT)
+		{
+			running = false;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+			run_right.Reset();
+
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+			run_left.Reset();
+
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && !jumping && !sliding && !attacking_idle)
+		{
+			jumping = true;
+			grounded = false;
+			velocityY = jump_vel;
+			vo = velocityY;
+		}
+	}
+	else
+	{
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			position.x += App->SyncVelocity(run_vel * 4);
+
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			position.x -= App->SyncVelocity(run_vel * 4);
+
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		{
+			position.y -= App->SyncVelocity(run_vel * 4);
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		{
+			position.y += App->SyncVelocity(run_vel * 4);
+		}
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
@@ -226,233 +487,44 @@ bool Player::Update(float dt)
 			air_atk2_right.Reset();
 		}
 	}
-
-	if (!grounded)
-	{
-		timer++;
-		velocityY = vo + a * timer *dt/0.016f;
-		if (velocityY > 10.0f)
-			velocityY = 10.0f;
-		if (sliding)
-			sliding = false;
-	}
-	else
-	{
-		headcollided = false;
-		velocityY = 0.0f;
-		if (!sliding)
-		{
-			timer = 0;
-		}
-	}
-	if (headcollided && velocityY < 0)
-		timer += 2;
-	else
-		position.y += velocityY * dt / 0.016f;
-
+	
+	if(!godmode)
+		Gravity(dt);
+	
 	if (!attacking_idle)
 	{
 		if (running)
 		{
-			if (facing_right && !wallhitR)
-			{
-				if (!jumping)
-					current_animation = &run_right;
-				position.x += App->SyncVelocity(run_vel);
-			}
-			if (!facing_right && !wallhitL)
-			{
-				if (!jumping)
-					current_animation = &run_left;
-				position.x -= App->SyncVelocity(run_vel);
-			}
+			Move();
 		}
 		else
-			if (facing_right && !jumping)
-				current_animation = &idle_right;
-			else if (!jumping)
-				current_animation = &idle_left;
+			Idle();
 		if (jumping || (!grounded && !jumping))
-			if (facing_right)
-				current_animation = &jump_up_right;
-			else
-				current_animation = &jump_up_left;
+			Jump();
 	}
 	else
 	{
-		if (attack_right.GetFrameNum() != attack_left.GetFrameNum())
-			if (facing_right)
-				attack_left.SetFrame(attack_right.GetFrameNum());
-			else
-				attack_right.SetFrame(attack_left.GetFrameNum());
-
-		if (attack_right.GetFrameNum() == 4 || attack_left.GetFrameNum() == 4)
-		{
-			attacking_idle = false;
-			attack_right.Reset();
-			attack_left.Reset();
-		}
-		else
-			if (facing_right)
-				current_animation = &attack_right;
-			else
-				current_animation = &attack_left;
-
-		if (attack_right.GetFrameNum() == 2 || attack_left.GetFrameNum() == 2)
-			if (facing_right)
-				player_atk->set({ (int)position.x + 39, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
-			else
-				player_atk->set({ (int)position.x, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
-
-		if (attack_right.GetFrameNum() == 3 || attack_left.GetFrameNum() == 3)
-			player_atk->set({ -10, -10, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+		Attack();
 	}
 	if (air_atking)
 	{
-		if (facing_right)
-			if (!wallhitR)
-				position.x += App->SyncVelocity(exp_vel);
-			else
-			{
-				air_atking = false;
-				player_atk->set({ -10, -10, 20, 30 }, COLLIDER_PLAYER_ATK, this);
-			}
-		else
-			if (!wallhitL)
-				position.x -= App->SyncVelocity(exp_vel);
-			else
-			{
-				air_atking = false;
-				air_atking = false; player_atk->set({ -10, -10, 20, 30 }, COLLIDER_PLAYER_ATK, this);
-			}
+		AirMove();
 
 		if (air_atk)
 		{
-			if (facing_right)
-			{
-				current_animation = &air_atk1_right;
-				if (air_atk1_right.GetFrameNum() == 4 && air_atk_counter != 0)
-				{
-					if (air_atk2_right.GetFrameNum() == 0)
-					{
-						velocityY = jump_vel;
-						vo = velocityY;
-						timer = 0;
-					}
-					current_animation = &air_atk2_right;
-				}
-				if (air_atk2_right.GetFrameNum() == 5)
-					air_atk = false;
-				if (current_animation == &air_atk1_right)
-				{
-					if (air_atk1_right.GetFrameNum() == 0)
-						player_atk->set({ (int)position.x + 18, (int)position.y + 10, 20, 10 }, COLLIDER_PLAYER_ATK, this);
-					if (air_atk1_right.GetFrameNum() == 4)
-						player_atk->set({ (int)position.x + 18, (int)position.y + 54, 20, 20 }, COLLIDER_PLAYER_ATK, this);
-					if (air_atk1_right.GetFrameNum() >= 1 && air_atk1_right.GetFrameNum() <= 3)
-						player_atk->set({ (int)position.x + 39, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
-				}
-				else if (current_animation == &air_atk2_right)
-				{
-					if (air_atk2_right.GetFrameNum() == 5)
-						player_atk->set({ (int)position.x + 18, (int)position.y + 10, 20, 10 }, COLLIDER_PLAYER_ATK, this);
-					if (air_atk2_right.GetFrameNum() == 0 || air_atk2_right.GetFrameNum() == 1)
-						player_atk->set({ (int)position.x + 18, (int)position.y + 54, 20, 20 }, COLLIDER_PLAYER_ATK, this);
-					if (air_atk2_right.GetFrameNum() >= 2 && air_atk2_right.GetFrameNum() <= 4)
-						player_atk->set({ (int)position.x, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
-				}
-			}
-			else
-			{
-				current_animation = &air_atk1_left;
-				if (air_atk1_left.GetFrameNum() == 4 && air_atk_counter != 0)
-				{
-					if (air_atk2_left.GetFrameNum() == 0)
-					{
-						velocityY = jump_vel;
-						vo = velocityY;
-						timer = 0;
-					}
-					current_animation = &air_atk2_left;
-				}
-				if (air_atk2_left.GetFrameNum() == 4)
-					air_atk = false;
-				if (current_animation == &air_atk1_left)
-				{
-					if (air_atk1_left.GetFrameNum() == 0)
-						player_atk->set({ (int)position.x + 18, (int)position.y + 10, 20, 10 }, COLLIDER_PLAYER_ATK, this);
-					else if (air_atk1_left.GetFrameNum() == 4)
-						player_atk->set({ (int)position.x + 18, (int)position.y + 54, 20, 20 }, COLLIDER_PLAYER_ATK, this);
-					else if (air_atk1_left.GetFrameNum() >= 1 && air_atk1_left.GetFrameNum() <= 3)
-						player_atk->set({ (int)position.x, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
-				}
-				else if (current_animation == &air_atk2_left)
-				{
-					if (air_atk2_left.GetFrameNum() == 4)
-						player_atk->set({ (int)position.x + 18, (int)position.y + 10, 20, 10 }, COLLIDER_PLAYER_ATK, this);
-					else if (air_atk2_left.GetFrameNum() == 0)
-						player_atk->set({ (int)position.x + 18, (int)position.y + 54, 20, 20 }, COLLIDER_PLAYER_ATK, this);
-					else if (air_atk2_left.GetFrameNum() >= 1 && air_atk2_left.GetFrameNum() <= 3)
-						player_atk->set({ (int)position.x + 39, (int)position.y + 20, 20, 30 }, COLLIDER_PLAYER_ATK, this);
-				}
-			}
+			AirAttack();
 		}
 		else
 		{
 			player_atk->set({ -10, -10, 20, 30 }, COLLIDER_PLAYER_ATK, this);
-			if (facing_right)
-				current_animation = &jump_down_right;
-			else
-				current_animation = &jump_down_left;
 		}
 	}
 
 	if (sliding)
 	{
-		timer+= dt / 0.016f;
-		air_atking = false;
-		if (timer < 50)
-		{
-			if (facing_right)
-			{
-				if (!wallhitR)
-				{
-					current_animation = &slide_right;
-					position.x += App->SyncVelocity(slide_vel);
-				}
-				else
-				{
-					sliding = false;
-					slide_vel = exp_vel;
-					timer = 0;
-				}
-			}
-			else
-			{
-				if (!wallhitL)
-				{
-					current_animation = &slide_left;
-					position.x -= App->SyncVelocity(slide_vel);
-				}
-				else
-				{
-					sliding = false;
-					slide_vel = exp_vel;
-					timer = 0;
-				}
-			}
-			slide_vel -= ground_friction;
-			if (slide_vel < 0.1f)
-				slide_vel = 0.1;
-		}
-		else
-		{
-			sliding = false;
-			slide_vel = exp_vel;
-			timer = 0;
-		}
+		Slide(dt);
 	}
-	LOG("vel Y: %f", velocityY);
+
 	right_col->SetPos(position.x + rightcol_offset.x, position.y + rightcol_offset.y);
 	left_col->SetPos(position.x + leftcol_offset.x, position.y + leftcol_offset.y);
 	feet_col->SetPos(position.x + footcol_offset.x, position.y + footcol_offset.y);
@@ -465,66 +537,69 @@ bool Player::Update(float dt)
 
 void Player::OnCollision(Collider* c1, Collider* c2)
 {
-	if (c1->type == COLLIDER_PLAYER_FOOT && c2->type == COLLIDER_GROUND)
+	if (!godmode)
 	{
-		if (jumping)
+		if (c1->type == COLLIDER_PLAYER_FOOT && c2->type == COLLIDER_GROUND)
 		{
-			run_right.SetFrame(2);
-			run_left.SetFrame(5);
-			jumping = false;
+			if (jumping)
+			{
+				run_right.SetFrame(2);
+				run_left.SetFrame(5);
+				jumping = false;
+			}
+			if (air_atking && !sliding)
+			{
+				air_atking = false;
+				air_atk = false;
+				sliding = true;
+				timer = 0;
+			}
+			if (c2->rect.y != 0)
+				position.y = c2->rect.y - 53;
+			grounded = true;
+			air_atk = false;
+			player_atk->set({ -10, -10, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+			air_atk_counter = 2;
+			vo = 0.0f;
+			collissioncounter++;
 		}
-		if (air_atking && !sliding)
+		if (c1->type == COLLIDER_PLAYER_HEAD && c2->type == COLLIDER_GROUND)
 		{
+			headcollided = true;
+		}
+		if (c1->type == COLLIDER_PLAYER_RIGHT && c2->type == COLLIDER_WALL)
+		{
+			wallhitR = true;
+			wallcolcounter++;
+			position.x = c2->rect.x - 38;
+		}
+
+		if (c1->type == COLLIDER_PLAYER_LEFT && c2->type == COLLIDER_WALL)
+		{
+			wallhitL = true;
+			wallcolcounter++;
+			position.x = (c2->rect.x + c2->rect.w) - 21;
+		}
+		if ((c1->type == COLLIDER_PLAYER_ATK && c2->type == COLLIDER_ENEMY_SHOT))
+		{
+			if (air_atk_counter < 1)
+				air_atk_counter++;
+		}
+		else if ((c1->type == COLLIDER_PLAYER_FOOT || c1->type == COLLIDER_PLAYER_HEAD) && c2->type == COLLIDER_ENEMY_SHOT)
+		{
+			position.x = initial_posX;
+			position.y = initial_posY;
+			vo = 0.0f;
+			timer = 0;
+			facing_right = true;
+			running = false;
+			running = false;
+			grounded = false;
+			jumping = false;
 			air_atking = false;
 			air_atk = false;
-			sliding = true;
-			timer = 0;
+			headcollided = false;
+			sliding = false;
 		}
-		if(c2->rect.y != 0)
-			position.y = c2->rect.y - 53;
-		grounded = true;
-		air_atk = false;
-		player_atk->set({ -10, -10, 20, 30 }, COLLIDER_PLAYER_ATK, this);
-		air_atk_counter = 2;
-		vo = 0.0f;
-		collissioncounter++;
-	}
-	if (c1->type == COLLIDER_PLAYER_HEAD && c2->type == COLLIDER_GROUND)
-	{
-		headcollided = true;
-	}
-	if (c1->type == COLLIDER_PLAYER_RIGHT && c2->type == COLLIDER_WALL)
-	{
-		wallhitR = true;
-		wallcolcounter++;
-		position.x = c2->rect.x - 38;
-	}
-
-	if (c1->type == COLLIDER_PLAYER_LEFT && c2->type == COLLIDER_WALL)
-	{
-		wallhitL = true;
-		wallcolcounter++;
-		position.x = (c2->rect.x + c2->rect.w) - 21;
-	}
-	if ((c1->type == COLLIDER_PLAYER_ATK && c2->type == COLLIDER_ENEMY_SHOT))
-	{
-		if (air_atk_counter < 1)
-			air_atk_counter++;
-	}
-	else if ((c1->type == COLLIDER_PLAYER_FOOT || c1->type == COLLIDER_PLAYER_HEAD) && c2->type == COLLIDER_ENEMY_SHOT)
-	{
-		position.x = initial_posX;
-		position.y = initial_posY;
-		vo = 0.0f;
-		timer = 0;
-		facing_right = true;
-		running = false;
-		running = false;
-		grounded = false;
-		jumping = false;
-		air_atking = false;
-		air_atk = false;
-		headcollided = false;
-		sliding = false;
 	}
 }

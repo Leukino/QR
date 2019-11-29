@@ -47,6 +47,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 		camera.h = App->win->screen_surface->h;
 		camera.x = 0;
 		camera.y = 0;
+		camera_speed_y = 2.0f;
 	}
 
 	return ret;
@@ -253,6 +254,12 @@ void j1Render::setCamera(Player* player, fPoint size)
 {
 	uint scale = App->win->GetScale();
 	camera.x = camera.w / 2 - (player->position.x + 250)* scale;
-	camera.y = camera.h / 2 - (player->position.y)* scale;
-	//SDL_Rect rect = { camera.x, camera.y, App->win->screen_surface->w * size.x, App->win->screen_surface->h * size.y };
+	camera.y = camera.h / 2 - (player->position.y) * scale;
+	//if (camera.y != camera.h / 2 -(player->position.y) * scale)
+	//{
+	//	if (camera.y < camera.h / 2 -(player->position.y) * scale)
+	//		camera.y += App->SyncVelocity(camera_speed_y);
+	//	else if (camera.y > camera.h / 2 -(player->position.y) * scale)
+	//		camera.y -= App->SyncVelocity(camera_speed_y);
+	//}
 }
