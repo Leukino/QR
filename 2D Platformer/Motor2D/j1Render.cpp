@@ -47,7 +47,8 @@ bool j1Render::Awake(pugi::xml_node& config)
 		camera.h = App->win->screen_surface->h;
 		camera.x = 0;
 		camera.y = 0;
-		camera_speed_y = 2.0f;
+		initial_camera_speed_y = 2.0f;
+		camera_speed_y = initial_camera_speed_y;
 	}
 
 	return ret;
@@ -253,13 +254,20 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 void j1Render::setCamera(Player* player, fPoint size)
 {
 	uint scale = App->win->GetScale();
-	camera.x = camera.w / 2 - (player->position.x + 250)* scale;
-	camera.y = camera.h / 2 - (player->position.y) * scale;
-	//if (camera.y != camera.h / 2 -(player->position.y) * scale)
-	//{
-	//	if (camera.y < camera.h / 2 -(player->position.y) * scale)
-	//		camera.y += App->SyncVelocity(camera_speed_y);
-	//	else if (camera.y > camera.h / 2 -(player->position.y) * scale)
-	//		camera.y -= App->SyncVelocity(camera_speed_y);
-	//}
+	camera.x = camera.w / 2 - ((int)player->position.x + 250)* scale;
+
+	if (camera.y != camera.h / 2 - (player->position.y) * scale)
+	{
+		if (camera.y < camera.h / 2 - (player->position.y) * scale)
+			if (App->dt < 0.007f)
+				camera.y++;
+			else
+				camera.y += App->SyncVelocity(camera_speed_y);
+		else if (camera.y > camera.h / 2 - (player->position.y) * scale)
+			if (App->dt < 0.007f)
+				camera.y--;
+			else
+				camera.y -= App->SyncVelocity(camera_speed_y);
+	}
+
 }

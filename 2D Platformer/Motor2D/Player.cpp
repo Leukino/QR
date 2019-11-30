@@ -45,7 +45,7 @@ void Player::Animate(Animation& anim,const int first_coll,const int first_row,co
 bool Player::Awake(pugi::xml_node& player_data)
 {
 	initial_posX = 200.0f;
-	initial_posY = 200.0f;
+	initial_posY = 400.0f;
 	pugi::xml_node setup = player_data.child("player_data").child("setup");
 		pugi::xml_node animate = setup.child("animate");
 		sprite_wh = 60;
@@ -98,7 +98,8 @@ bool Player::Awake(pugi::xml_node& player_data)
 	air_atking = checkers.attribute("EXPUROSHON").as_bool();
 	sliding = checkers.attribute("sliding").as_bool();
 	pugi::xml_node counters = gameplay.child("counters");
-	timer = counters.attribute("timer").as_int();
+	//timer = counters.attribute("timer").as_int();
+	timer = -1;
 	collissioncounter = counters.attribute("collisioncounter").as_int();
 	wallcolcounter = counters.attribute("wallcolcounter").as_int();
 	headcollided = false;
@@ -373,7 +374,7 @@ void Player::Slide(float dt)
 
 bool Player::Update(float dt)
 {
-
+	//LOG("START position Y: %f - velocity Y: %f", position.y, velocityY);
 	if (collissioncounter == 0)
 		grounded = false;
 	collissioncounter = 0;
@@ -487,10 +488,10 @@ bool Player::Update(float dt)
 			air_atk2_right.Reset();
 		}
 	}
-	
+
 	if(!godmode)
 		Gravity(dt);
-	
+
 	if (!attacking_idle)
 	{
 		if (running)
@@ -532,6 +533,7 @@ bool Player::Update(float dt)
 	
 	SDL_Rect& current_frame = current_animation->GetCurrentFrame();
 	App->render->Blit(player_sprites, position.x, position.y, &current_frame);
+	//LOG("END position Y: %f - velocity Y: %f", position.y, velocityY);
 	return true;
 }
 

@@ -56,7 +56,7 @@
 
     <gameplay>
       <checkers facing_right="true" running="false" grounded="false" jumping="false" EXPUROSHON="false" sliding="false"/>
-      <counters timer="0" collisioncounter ="0" wallcolcounter = "0"/>
+      <counters timer="-1" collisioncounter ="0" wallcolcounter = "0"/>
       <velocities run_vel="2" exp_vel="4.0" jump_vel ="-10.0"/>
       <physics a="0.5f" ground_friction = "0.15"/>
     </gameplay>
