@@ -21,6 +21,7 @@ public:
 
 	Animation* current_animation = nullptr;
 
+	Animation idle;
 	Animation run;
 	//Collider* col;
 

@@ -14,8 +14,9 @@
 Bat::Bat()
 {
 	type = enemy;
-	enemy_sprites = App->tex->Load("textures/Enemy.png");
-	Animate(run, 0, 0, 8, 0.1f);
+	enemy_sprites = App->tex->Load("textures/Bat.png");
+	Animate(idle, 0, 0, 1);
+	Animate(run, 1, 0, 2, 0.2f);
 	initialpos = { -69420.0f, 0.0f };
 	velocity = 1.0f;
 	fliped = false;
@@ -42,15 +43,17 @@ void Bat::Animate(Animation& anim, const int first_coll, const int first_row, co
 
 bool Bat::Update(float dt)
 {
-	current_animation = &run;
+	
 	if (initialpos.x == -69420.0f)
 		initialpos = { THIS->position.x, THIS->position.y };
 	if (THIS->position.x < App->player->position.x - 300.f || THIS->position.x > App->player->position.x + 300.f)
 	{
+		current_animation = &idle;
 		THIS->position = initialpos;
 	}
 	else
 	{
+		current_animation = &run;
 		if (THIS->position.x < App->player->position.x)
 		{
 			THIS->position.x += App->SyncVelocity(velocity);
