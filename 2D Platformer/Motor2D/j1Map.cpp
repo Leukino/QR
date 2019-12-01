@@ -4,6 +4,7 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Map.h"
+#include "EntityManager.h"
 #include <math.h>
 #include <cstring>
 
@@ -58,17 +59,45 @@ void j1Map::DrawMapColliders()
 						{
 							for (int e = 0; e < 20; e++)
 							{
-								r = layer->collisions[i].collider[e].rect;
-								type = layer->collisions[i].collider[e].type;
-								callback = layer->collisions[i].collider[e].callback;
-								if (r.w != 0)
-									App->collision->AddCollider({ pos.x + r.x, pos.y + r.y, r.w, r.h }, type, callback); //Load colliders for each tile (if they have it). Once in start of application
+									r = layer->collisions[i].collider[e].rect;
+									type = layer->collisions[i].collider[e].type;
+									callback = layer->collisions[i].collider[e].callback;
+									if (r.w != 0)
+										App->collision->AddCollider({ pos.x + r.x, pos.y + r.y, r.w, r.h }, type, callback); //Load colliders for each tile (if they have it). Once in start of application
 							}
 						}
 					}
 				}
 			}
 		}
+	}
+}
+
+void j1Map::DrawMapEntities()
+{
+	if (map_loaded == false)
+		return;
+
+	p2List_item<MapLayer*>* item = data.layers.start;
+
+	for (; item != NULL; item = item->next)
+	{
+		MapLayer* layer = item->data;
+
+		if (layer->properties.list.At(0)->data->value != 0)
+			for (int y = 0; y < data.height; ++y)
+			{
+				
+				for (int x = 0; x < data.width; ++x)
+				{
+					int tile_id = layer->Get(x, y);
+					if (tile_id == 0)
+					{
+						iPoint pos = MapToWorld(x, y);
+						App->entities->CreateEntity(pos.x, pos.y, enemy);
+					}
+				}
+			}
 	}
 }
 
@@ -83,26 +112,31 @@ void j1Map::Draw()
 	{
 		MapLayer* layer = item->data;
 
-		//if (layer->properties.Get("NoDraw") != 0)
-		//	continue;
+		if (layer->properties.list.At(2)->data->value == 0)
+			for (int y = 0; y < data.height; ++y)
+			{
+				for (int x = 0; x < data.width; ++x)
+				{
+					int tile_id = layer->Get(x, y);
+					if (tile_id > 0)
+					{
+						iPoint pos = MapToWorld(x, y);
+						if (layer->properties.list.At(0)->data->value == 0)
+						{
+							TileSet* tileset = GetTilesetFromTileId(tile_id);
 
-		for (int y = 0; y < data.height; ++y)											
-		{																				
-			for (int x = 0; x < data.width; ++x)										
-			{																			
-				int tile_id = layer->Get(x, y);											
-				if (tile_id > 0)														
-				{																		
-					TileSet* tileset = GetTilesetFromTileId(tile_id);					
-																						
-					SDL_Rect r = tileset->GetTileRect(tile_id);							
-					iPoint pos = MapToWorld(x, y);										
-					App->render->Blit(tileset->texture, pos.x, pos.y, &r);
-				}																		
-			}																			
-		}																				
+							SDL_Rect r = tileset->GetTileRect(tile_id);
+							App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+						}
+						else if (first)
+						{
+							App->entities->CreateEntity(pos.x - 16, pos.y - 16, enemy);
+						}
+					}
+				}
+			}
 	}																					
-
+	first = false;
 }
 
 TileSet* j1Map::GetTilesetFromTileId(int id) const
@@ -412,7 +446,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 						colltype = COLLIDER_WALL;
 					else if (SDL_strcmp(type.GetString(), "DANGER") == 0)
 						colltype = COLLIDER_ENEMY_SHOT;
-					else
+					else 
 						colltype = COLLIDER_NONE;
 					layer->collisions[i].collider[e].rect = r;
 					LOG("rect set to: %d - %d - %d - %d number %d", r.x, r.y, r.w, r.h, e);
@@ -498,7 +532,7 @@ iPoint j1Map::MapToWorld(int x, int y) const
 	return ret;
 }
 
-iPoint j1Map::WorldToMap(int x, int y) const
+iPoint j1Map::WorldToMap(float x, float y) const
 {
 	iPoint ret(0, 0);
 

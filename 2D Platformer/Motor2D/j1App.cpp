@@ -41,8 +41,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(map);
 	AddModule(scene);
-	AddModule(player);
 	AddModule(entities);
+	AddModule(player);
 	AddModule(collision);
 
 	// render last to swap buffer
@@ -210,7 +210,7 @@ void j1App::FinishUpdate()
 	else
 		vsync = "OFF";
 
-	sprintf_s(title, 256, "Thalassa || FPS: %02u / EstFPS: %02u/ Av.FPS: %.2f / Last Frame Ms: %02u / Cap: %s / Vsync: %s / dt: %f",
+	sprintf_s(title, 256, "QR || FPS: %02u / EstFPS: %02u/ Av.FPS: %.2f / Last Frame Ms: %02u / Cap: %s / Vsync: %s / dt: %f",
 		frames_on_last_update, framerate_cap, avg_fps, last_frame_ms, cap, vsync, dt);
 	App->win->SetTitle(title);
 

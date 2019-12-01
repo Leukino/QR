@@ -23,6 +23,8 @@ public:
 
 	entity_type GetType();
 
+	Collider* col;
+
 	fPoint position;
 	bool exists;
 	int index;
@@ -45,6 +47,7 @@ public:
 	bool CleanUp();
 
 	void CreateEntity(float x, float y, entity_type type, bool exists = true);
+	void OnCollision(Collider* c1, Collider* c2);
 
 	p2List<Entity*> Entities;
 

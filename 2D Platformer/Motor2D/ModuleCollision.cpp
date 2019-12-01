@@ -115,8 +115,8 @@ bool ModuleCollision::PreUpdate()
 		c1 = colliders[i];
 
 		//int scale = App->win->GetScale();
-		if(c1->rect.x > App->player->position.x - 50.0f && c1->rect.x < App->player->position.x + 50.0f && c1->rect.y > App->player->position.y - 50.0f && c1->rect.y < App->player->position.y + 100.0f)
 		//if ((c1->rect.x * scale) > -App->render->camera.x && (c1->rect.x * scale) < -(App->render->camera.x - App->render->camera.w) && (c1->rect.y * scale) > -App->render->camera.y && (c1->rect.y * scale) < -(App->render->camera.y - App->render->camera.h))
+		if(c1->rect.x > App->player->position.x - 100.0f && c1->rect.x < App->player->position.x + 100.0f && c1->rect.y > App->player->position.y - 100.0f && c1->rect.y < App->player->position.y + 100.0f)
 			for(uint k = i+1; k < MAX_COLLIDERS; ++k)
 			{
 				// skip empty colliders
@@ -154,7 +154,7 @@ bool ModuleCollision::Update(float dt)
 	{
 		if(colliders[i] == nullptr)
 			continue;
-		if (colliders[i]->rect.x > App->player->position.x - 50.0f && colliders[i]->rect.x < App->player->position.x + 50.0f && colliders[i]->rect.y > App->player->position.y - 50.0f && colliders[i]->rect.y < App->player->position.y + 100.0f)
+		if (colliders[i]->rect.x > App->player->position.x - 100.0f && colliders[i]->rect.x < App->player->position.x + 100.0f && colliders[i]->rect.y > App->player->position.y - 100.0f && colliders[i]->rect.y < App->player->position.y + 100.0f)
 		//if ((colliders[i]->rect.x *scale) > -App->render->camera.x && (colliders[i]->rect.x * scale) < -(App->render->camera.x - App->render->camera.w) && (colliders[i]->rect.y * scale) > -App->render->camera.y && (colliders[i]->rect.y * scale) < -(App->render->camera.y - App->render->camera.h))
 			switch(colliders[i]->type)
 			{

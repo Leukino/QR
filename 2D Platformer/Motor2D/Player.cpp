@@ -5,6 +5,7 @@
 #include "j1Input.h"
 #include "j1Textures.h"
 #include "ModuleCollision.h"
+#include "j1Map.h"
 #include "Player.h"
 #include <math.h>
 #include <cstring>
@@ -586,6 +587,10 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		{
 			if (air_atk_counter < 1)
 				air_atk_counter++;
+			for (int i = 0; i < App->entities->Entities.count(); i++)
+				if(App->entities->Entities[i]->col != nullptr)
+					if (App->entities->Entities[i]->col->rect.x == c2->rect.x && App->entities->Entities[i]->col->rect.y == c2->rect.y)
+						App->entities->Entities[i]->exists = false;
 		}
 		else if ((c1->type == COLLIDER_PLAYER_FOOT || c1->type == COLLIDER_PLAYER_HEAD) && c2->type == COLLIDER_ENEMY_SHOT)
 		{

@@ -127,8 +127,9 @@ public:
 	bool Load(const char* path);
 
 	iPoint MapToWorld(int x, int y) const;
-	iPoint WorldToMap(int x, int y) const;
+	iPoint WorldToMap(float x, float y) const;
 	void DrawMapColliders();
+	void DrawMapEntities();
 	/*inline int GetPosX(int x) {
 		return x * 16;
 	};
@@ -138,6 +139,7 @@ public:
 
 private:
 
+	bool first = true;
 	bool LoadMap();
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);

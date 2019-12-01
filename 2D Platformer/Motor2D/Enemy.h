@@ -17,10 +17,12 @@ public:
 
 	bool Update(float dt); 
 	bool CleanUp(); 
+	void Animate(Animation& anim, const int first_coll, const int first_row, const int n, float speed = 1.0f, bool loop = true);
 
 	Animation* current_animation = nullptr;
 
-	Animation idle;
+	Animation run;
+	//Collider* col;
 
 private:
 

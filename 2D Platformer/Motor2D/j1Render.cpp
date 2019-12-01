@@ -269,5 +269,6 @@ void j1Render::setCamera(Player* player, fPoint size)
 			else
 				camera.y -= App->SyncVelocity(camera_speed_y);
 	}
-
+	if (camera.y > 0)
+		camera.y = 0;
 }
