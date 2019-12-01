@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "EntityManager.h"
 #include "Enemy.h"
+#include "Bat.h"
 #include <math.h>
 #include <cstring>
 
@@ -43,6 +44,7 @@ void EntityManager::CreateEntity(float x, float y, entity_type type, bool exists
 	{
 	case player: this->entity = new Entity(); break;
 	case enemy: this->entity = new Enemy(); break;
+	case bat: this->entity = new Bat(); break;
 	}
 	this->entity->position.x = x;
 	this->entity->position.y = y;

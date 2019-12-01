@@ -130,7 +130,7 @@ void j1Map::Draw()
 						}
 						else if (first)
 						{
-							App->entities->CreateEntity(pos.x - 16, pos.y - 16, enemy);
+							App->entities->CreateEntity(pos.x - 16, pos.y - 16, bat);
 						}
 					}
 				}

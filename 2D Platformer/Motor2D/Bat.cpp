@@ -45,13 +45,36 @@ bool Bat::Update(float dt)
 	current_animation = &run;
 	if (initialpos.x == -69420.0f)
 		initialpos = { THIS->position.x, THIS->position.y };
+	if (THIS->position.x < App->player->position.x - 300.f || THIS->position.x > App->player->position.x + 300.f)
+	{
+		THIS->position = initialpos;
+	}
+	else
+	{
+		if (THIS->position.x < App->player->position.x)
+		{
+			THIS->position.x += App->SyncVelocity(velocity);
+			fliped = true;
+		}
+		else
+		{
+			THIS->position.x -= App->SyncVelocity(velocity);
+			fliped = false;
+		}
 
-	THIS->position.x += App->SyncVelocity(velocity);
+		if (THIS->position.y < App->player->position.y)
+			THIS->position.y += App->SyncVelocity(velocity);
+		else
+			THIS->position.y -= App->SyncVelocity(velocity);
+	}
 
 	SDL_Rect& current_frame = current_animation->GetCurrentFrame();
 	col->SetPos(position.x + 21, position.y + 17);
 
-	App->render->Blit(enemy_sprites, THIS->position.x, THIS->position.y, &current_frame/*, fliped*/);
+	if (fliped)
+		App->render->Blit(enemy_sprites, THIS->position.x, THIS->position.y, &current_frame, SDL_FLIP_HORIZONTAL);
+	else
+		App->render->Blit(enemy_sprites, THIS->position.x, THIS->position.y, &current_frame);
 
 	return true;
 }

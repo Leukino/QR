@@ -18,7 +18,7 @@ Enemy::Enemy()
 	Animate(run, 0, 0, 8, 0.1f);
 	initialposx = -69420.0f;
 	velocity = 0.5f;
-	fliped = false;
+	fliped = true;
 	col = App->collision->AddCollider({ 0, 0, 20, 27}, COLLIDER_ENEMY_SHOT, App->entities);
 }
 
@@ -63,7 +63,10 @@ bool Enemy::Update(float dt)
 	SDL_Rect& current_frame = current_animation->GetCurrentFrame();
 	col->SetPos(position.x + 21, position.y + 17);
 
-	App->render->Blit(enemy_sprites, THIS->position.x, THIS->position.y, &current_frame/*, fliped*/);
+	if (fliped)
+		App->render->Blit(enemy_sprites, THIS->position.x, THIS->position.y, &current_frame, SDL_FLIP_HORIZONTAL);
+	else
+		App->render->Blit(enemy_sprites, THIS->position.x, THIS->position.y, &current_frame);
 
 
 	return true; 
