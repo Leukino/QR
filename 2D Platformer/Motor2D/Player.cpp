@@ -572,7 +572,7 @@ bool Player::Update(float dt)
 	head_col->SetPos(position.x + headcol_offset.x, position.y + headcol_offset.y);
 	
 	SDL_Rect& current_frame = current_animation->GetCurrentFrame();
-	App->render->Blit(player_sprites, position.x, position.y, &current_frame);
+	App->render->Blit(player_sprites, position.x, position.y, &current_frame, SDL_FLIP_NONE);
 	//LOG("END position Y: %f - velocity Y: %f", position.y, velocityY);
 	return true;
 }
