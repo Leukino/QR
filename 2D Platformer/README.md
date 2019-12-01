@@ -18,6 +18,10 @@ For more information see our wiki page [HERE](https://github.com/Leukino/QR/wiki
 
 Download the last version of the game [HERE](https://github.com/Leukino/QR/releases/tag/1.0)
 
+Innovation: 
+- Double jump attack that can kill enemies in the air and resets jump
+- Slide when landing from an air attack
+
 ## Controls for keyboard
 
 					    PLAYER 1
@@ -34,5 +38,5 @@ Download the last version of the game [HERE](https://github.com/Leukino/QR/relea
 	F8 -> Entity Debug(Console)  	F9 -> Collider Debug On/Off  	F11 -> Cap and Uncap Fps
 
 
-	
+
 
