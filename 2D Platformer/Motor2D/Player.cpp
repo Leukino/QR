@@ -597,13 +597,13 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 				air_atking = false;
 				air_atk = false;
 				sliding = true;
+				player_atk->set({ -10, -10, 20, 30 }, COLLIDER_PLAYER_ATK, this);
 				timer = 0;
 			}
 			if (c2->rect.y != 0)
 				position.y = c2->rect.y - 53;
 			grounded = true;
 			air_atk = false;
-			player_atk->set({ -10, -10, 20, 30 }, COLLIDER_PLAYER_ATK, this);
 			air_atk_counter = 2;
 			vo = 0.0f;
 			collissioncounter++;
