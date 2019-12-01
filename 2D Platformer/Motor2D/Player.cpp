@@ -439,9 +439,9 @@ bool Player::Update(float dt)
 		air_atk = false;
 		headcollided = false;
 		sliding = false;
-
 	}
-
+	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+		Dead();
 	if (!godmode)
 	{
 		if (!air_atking && !sliding)
