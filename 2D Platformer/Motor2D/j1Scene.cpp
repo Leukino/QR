@@ -80,7 +80,7 @@ bool j1Scene::Update(float dt)
 		App->map->CleanUp();
 		if (map == 0)
 		{
-			App->map->Load("edgy map.tmx");
+			App->map->Load("edgy map retextured.tmx");
 			map++;
 		}
 		else if (map == 1)
