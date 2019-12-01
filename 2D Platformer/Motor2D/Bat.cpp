@@ -1,7 +1,7 @@
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "j1App.h"
-#include "Enemy.h"
+#include "Bat.h"
 #include <math.h>
 #include <cstring>
 
@@ -11,18 +11,18 @@
 
 #define THIS App->entities->Entities[index]
 
-Enemy::Enemy() 
+Bat::Bat()
 {
 	type = enemy;
 	enemy_sprites = App->tex->Load("textures/Enemy.png");
 	Animate(run, 0, 0, 8, 0.1f);
-	initialposx = -69420.0f;
-	velocity = 0.5f;
+	initialpos = { -69420.0f, 0.0f };
+	velocity = 1.0f;
 	fliped = false;
-	col = App->collision->AddCollider({ 0, 0, 20, 27}, COLLIDER_ENEMY_SHOT, App->entities);
+	col = App->collision->AddCollider({ 0, 0, 20, 27 }, COLLIDER_ENEMY_SHOT, App->entities);
 }
 
-void Enemy::Animate(Animation& anim, const int first_coll, const int first_row, const int n, float speed, bool loop)
+void Bat::Animate(Animation& anim, const int first_coll, const int first_row, const int n, float speed, bool loop)
 {
 	int coll = first_coll;
 	int row = first_row;
@@ -40,36 +40,23 @@ void Enemy::Animate(Animation& anim, const int first_coll, const int first_row, 
 	anim.loop = loop;
 }
 
-bool Enemy::Update(float dt)
-{ 
+bool Bat::Update(float dt)
+{
 	current_animation = &run;
-	if (initialposx == -69420.0f)
-		initialposx = THIS->position.x;
-	
-	if (THIS->position.x < initialposx - 50.0f && velocity < 0.0f)
-	{
-		velocity *= -1;
-		fliped = true;
-	}
-	if (THIS->position.x > initialposx + 50.0f && velocity > 0.0f)
-	{
-		velocity *= -1;
-		fliped = false;
-	}
+	if (initialpos.x == -69420.0f)
+		initialpos = { THIS->position.x, THIS->position.y };
 
 	THIS->position.x += App->SyncVelocity(velocity);
-
 
 	SDL_Rect& current_frame = current_animation->GetCurrentFrame();
 	col->SetPos(position.x + 21, position.y + 17);
 
 	App->render->Blit(enemy_sprites, THIS->position.x, THIS->position.y, &current_frame/*, fliped*/);
 
-
-	return true; 
+	return true;
 }
 
-bool Enemy::CleanUp()
-{ 
+bool Bat::CleanUp()
+{
 	return true;
 }

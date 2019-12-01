@@ -9,7 +9,8 @@
 enum entity_type
 {
 	player,
-	enemy
+	enemy,
+	bat
 };
 
 class Entity

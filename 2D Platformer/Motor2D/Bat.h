@@ -1,5 +1,5 @@
-#ifndef __Enemy_H__
-#define __Enemy_H__
+#ifndef __Bat_H__
+#define __Bat_H__
 
 #include "PugiXml/src/pugixml.hpp"
 #include "p2List.h"
@@ -9,14 +9,14 @@
 #include "Animation.h"
 #include "j1Textures.h"
 
-class Enemy : public Entity
+class Bat : public Entity
 {
 public:
 
-	Enemy();
+	Bat();
 
-	bool Update(float dt); 
-	bool CleanUp(); 
+	bool Update(float dt);
+	bool CleanUp();
 	void Animate(Animation& anim, const int first_coll, const int first_row, const int n, float speed = 1.0f, bool loop = true);
 
 	Animation* current_animation = nullptr;
@@ -27,9 +27,9 @@ public:
 private:
 
 	bool fliped;
-	float initialposx;
+	fPoint initialpos;
 	float velocity;
 	SDL_Texture* enemy_sprites = nullptr;
 };
 
-#endif // __Enemy_H__
+#endif // __Bat_H__
