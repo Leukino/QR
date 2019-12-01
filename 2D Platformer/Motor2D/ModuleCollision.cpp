@@ -124,7 +124,6 @@ bool ModuleCollision::PreUpdate()
 					continue;
 
 				c2 = colliders[k];
-
 				if(c1->CheckCollision(c2->rect) == true)
 				{
 					if(matrix[c1->type][c2->type] && c1->callback) 

@@ -139,7 +139,6 @@ public:
 
 private:
 
-	bool first;
 	bool LoadMap();
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
@@ -150,6 +149,7 @@ private:
 
 public:
 
+	bool first;
 	MapData data;
 
 private:

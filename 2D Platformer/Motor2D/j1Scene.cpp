@@ -78,7 +78,6 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
 	{
 		App->map->CleanUp();
-		App->player->Reset();
 		if (map == 0)
 		{
 			App->map->Load("edgy map.tmx");
@@ -91,6 +90,7 @@ bool j1Scene::Update(float dt)
 		}
 		if (map > 1)
 			map = 0;
+		App->player->Reset();
 	}
 
 	int posx;

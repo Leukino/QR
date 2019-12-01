@@ -46,7 +46,7 @@ void Player::Animate(Animation& anim,const int first_coll,const int first_row,co
 bool Player::Awake(pugi::xml_node& player_data)
 {
 	initial_posX = 200.0f;
-	initial_posY = 400.0f;
+	initial_posY = 300.0f;
 	pugi::xml_node setup = player_data.child("player_data").child("setup");
 		pugi::xml_node animate = setup.child("animate");
 		sprite_wh = 60;
@@ -345,7 +345,8 @@ void Player::AirMove()
 		else
 		{
 			air_atking = false;
-			air_atking = false; player_atk->set({ -10, -10, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+			air_atking = false; 
+			player_atk->set({ -10, -10, 20, 30 }, COLLIDER_PLAYER_ATK, this);
 		}
 }
 
@@ -410,6 +411,8 @@ void Player::Dead()
 	air_atk = false;
 	headcollided = false;
 	sliding = false;
+	App->entities->CleanUp();
+	App->map->first = true;
 }
 
 bool Player::Update(float dt)

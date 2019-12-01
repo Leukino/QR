@@ -81,6 +81,8 @@ bool EntityManager::Update(float dt)
 
 bool EntityManager::CleanUp()
 {
+	for (int i = 0; i < Entities.count(); i++)
+		Entities[i]->col->to_delete= true;
 	Entities.clear();
 	entity_id = 0;
 
