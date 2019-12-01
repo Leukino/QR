@@ -21,6 +21,7 @@ public:
 
 	void Animate(Animation& anim, const int first_coll, const int first_row, const int n, float speed = 1.0f, bool loop = true);
 	void OnCollision(Collider* c1, Collider* c2);
+	void Reset();
 
 	Animation* current_animation = nullptr;
 
@@ -102,6 +103,7 @@ private:
 	void AirAttack();
 	void AirMove();
 	void Slide(float dt);
+	void Dead();
 
 	pugi::xml_document	player_file;
 	p2SString			folder;

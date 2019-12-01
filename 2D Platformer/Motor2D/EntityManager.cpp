@@ -80,6 +80,7 @@ bool EntityManager::Update(float dt)
 bool EntityManager::CleanUp()
 {
 	Entities.clear();
+	entity_id = 0;
 
 	return true;
 }

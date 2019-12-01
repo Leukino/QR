@@ -42,7 +42,8 @@ bool Enemy::Update(float dt)
 { 
 	current_animation = &run;
 	
-	//THIS->position.x -= App->SyncVelocity(3.0f);
+
+	THIS->position.x -= App->SyncVelocity(3.0f);
 
 	SDL_Rect& current_frame = current_animation->GetCurrentFrame();
 	

@@ -133,6 +133,28 @@ bool Player::Awake(pugi::xml_node& player_data)
 	return true;
 }
 
+void Player::Reset()
+{
+	right_col = App->collision->AddCollider({ 0, 0, 5, 18 }, COLLIDER_PLAYER_RIGHT, this);
+	left_col = App->collision->AddCollider({ 0, 0, 5, 18 }, COLLIDER_PLAYER_LEFT, this);
+	feet_col = App->collision->AddCollider({ 0, 0, 13, 10 }, COLLIDER_PLAYER_FOOT, this);
+	head_col = App->collision->AddCollider({ 0, 0, 10, 10 }, COLLIDER_PLAYER_HEAD, this);
+	player_atk = App->collision->AddCollider({ 0, 0, 20, 30 }, COLLIDER_PLAYER_ATK, this);
+	position.x = initial_posX;
+	position.y = initial_posY;
+	vo = 0.0f;
+	timer = 0;
+	facing_right = true;
+	running = false;
+	running = false;
+	grounded = false;
+	jumping = false;
+	air_atking = false;
+	air_atk = false;
+	headcollided = false;
+	sliding = false;
+}
+
 bool Player::CleanUp()
 {
 	return true;
@@ -373,6 +395,23 @@ void Player::Slide(float dt)
 	}
 }
 
+void Player::Dead()
+{
+	position.x = initial_posX;
+	position.y = initial_posY;
+	vo = 0.0f;
+	timer = 0;
+	facing_right = true;
+	running = false;
+	running = false;
+	grounded = false;
+	jumping = false;
+	air_atking = false;
+	air_atk = false;
+	headcollided = false;
+	sliding = false;
+}
+
 bool Player::Update(float dt)
 {
 	//LOG("START position Y: %f - velocity Y: %f", position.y, velocityY);
@@ -594,19 +633,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		}
 		else if ((c1->type == COLLIDER_PLAYER_FOOT || c1->type == COLLIDER_PLAYER_HEAD) && c2->type == COLLIDER_ENEMY_SHOT)
 		{
-			position.x = initial_posX;
-			position.y = initial_posY;
-			vo = 0.0f;
-			timer = 0;
-			facing_right = true;
-			running = false;
-			running = false;
-			grounded = false;
-			jumping = false;
-			air_atking = false;
-			air_atk = false;
-			headcollided = false;
-			sliding = false;
+			Dead();
 		}
 	}
 }

@@ -28,6 +28,7 @@ bool j1Scene::Awake()
 {
 	LOG("Loading Scene");
 	bool ret = true;
+	map = 0;
 
 	return ret;
 }
@@ -74,9 +75,24 @@ bool j1Scene::Update(float dt)
 		//if (App->getFpsCap() > 10)
 		App->setFpsCap(App->getFpsCap() - 10);
 	}
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	{
+		App->map->CleanUp();
+		App->player->Reset();
+		if (map == 0)
+		{
+			App->map->Load("edgy map.tmx");
+			map++;
+		}
+		else if (map == 1)
+		{
+			App->map->Load("Map 2 retextured.tmx");
+			map++;
+		}
+		if (map > 1)
+			map = 0;
+	}
 
-	//if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
-	//	App->
 	int posx;
 	int posy;
 	App->input->GetMousePosition(posx, posy);

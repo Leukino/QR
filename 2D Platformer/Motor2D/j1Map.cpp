@@ -162,23 +162,12 @@ bool j1Map::CleanUp()
 {
 	LOG("Unloading map");
 
-	// Remove all tilesets
-	p2List_item<TileSet*>* item;
-	item = data.tilesets.start;
-
-	while(item != NULL)
-	{
-		RELEASE(item->data);
-		item = item->next;
-	}
 	data.tilesets.clear();
-	
-	for (p2List_item<MapLayer*>* item = data.layers.start; item != NULL; item = item->next) {
-		RELEASE(item->data);
-	}
-
-	// Clean up the pugui tree
+	data.layers.clear();
+	App->entities->CleanUp();
+	App->collision->CleanUp();
 	map_file.reset();
+	first = true;
 
 	return true;
 }
