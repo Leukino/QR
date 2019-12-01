@@ -22,7 +22,7 @@ bool j1Map::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Map Parser");
 	bool ret = true;
-
+	first = true;
 	folder.create(config.child("folder").child_value());
 
 	return ret;
@@ -112,7 +112,7 @@ void j1Map::Draw()
 	{
 		MapLayer* layer = item->data;
 
-		if (layer->properties.list.At(2)->data->value == 0)
+		
 			for (int y = 0; y < data.height; ++y)
 			{
 				for (int x = 0; x < data.width; ++x)
@@ -121,16 +121,19 @@ void j1Map::Draw()
 					if (tile_id > 0)
 					{
 						iPoint pos = MapToWorld(x, y);
-						if (layer->properties.list.At(0)->data->value == 0)
+						if (layer->properties.list.At(2)->data->value != 0)
+						{
+							if (first && layer->properties.list.At(0)->data->value != 0)
+								App->entities->CreateEntity(pos.x - 16, pos.y - 16, enemy);
+							else if (first && layer->properties.list.At(3)->data->value != 0)
+								App->entities->CreateEntity(pos.x - 16, pos.y - 16, bat);
+						}
+						else
 						{
 							TileSet* tileset = GetTilesetFromTileId(tile_id);
 
 							SDL_Rect r = tileset->GetTileRect(tile_id);
 							App->render->Blit(tileset->texture, pos.x, pos.y, &r);
-						}
-						else if (first)
-						{
-							App->entities->CreateEntity(pos.x - 16, pos.y - 16, bat);
 						}
 					}
 				}
