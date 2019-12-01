@@ -4,7 +4,7 @@
 #include "PugiXml/src/pugixml.hpp"
 #include "p2List.h"
 #include "p2Point.h"
-#include "j1Module.h"
+#include "EntityManager.h"
 #include "Animation.h"
 
 class Player : public j1Module

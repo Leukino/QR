@@ -17,6 +17,7 @@ class j1Scene;
 class j1Map;
 class Player;
 class ModuleCollision;
+class EntityManager;
 
 class j1App
 {
@@ -89,6 +90,7 @@ public:
 	j1Map*				map;
 	Player*				player;
 	ModuleCollision*	collision;
+	EntityManager*		entities;
 
 private:
 

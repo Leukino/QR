@@ -138,6 +138,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="j1Main.cpp" />
     <ClCompile Include="j1App.cpp" />
     <ClCompile Include="j1Audio.cpp" />
@@ -157,6 +159,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EntityManager.h" />
     <ClInclude Include="j1Map.h" />
     <ClInclude Include="j1PerfTimer.h" />
     <ClInclude Include="j1Scene.h" />
@@ -188,7 +192,6 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
-    <Xml Include="..\Game\player_data.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,6 +2,7 @@
 #define __j1INPUT_H__
 
 #include "j1Module.h"
+#include "SDL/include/SDL.h"
 
 //#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5

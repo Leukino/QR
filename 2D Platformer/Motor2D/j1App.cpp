@@ -13,6 +13,7 @@
 #include "j1App.h"
 #include "Player.h"
 #include "ModuleCollision.h"
+#include "EntityManager.h"
 #include "brofiler/Brofiler/Brofiler.h"
 
 // Constructor
@@ -30,6 +31,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	map = new j1Map();
 	player = new Player();
 	collision = new ModuleCollision();
+	entities = new EntityManager();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -40,6 +42,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(scene);
 	AddModule(player);
+	AddModule(entities);
 	AddModule(collision);
 
 	// render last to swap buffer

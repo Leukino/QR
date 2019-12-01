@@ -3,7 +3,7 @@
 
 #include "p2Defs.h"
 
-/**
+/*
 * Contains items from double linked list
 */
 template<class tdata>

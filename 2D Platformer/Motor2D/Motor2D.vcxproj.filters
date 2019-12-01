@@ -1,27 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="j1Window.cpp">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Audio.cpp">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1App.cpp">
-      <Filter>Desenvolupament  ========</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Input.cpp">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Main.cpp">
-      <Filter>Desenvolupament  ========</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Render.cpp">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Textures.cpp">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="p2Log.cpp">
       <Filter>Programacio 2 ===========</Filter>
     </ClCompile>
@@ -37,41 +16,47 @@
     <ClCompile Include="Player.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleCollision.cpp">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleFadeToBlack.cpp">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="j1PerfTimer.cpp">
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClCompile>
     <ClCompile Include="j1Timer.cpp">
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="EntityManager.cpp">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Audio.cpp">
+      <Filter>Desenvolupament  ========\Modules\Image &amp; Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Render.cpp">
+      <Filter>Desenvolupament  ========\Modules\Image &amp; Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Textures.cpp">
+      <Filter>Desenvolupament  ========\Modules\Image &amp; Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Window.cpp">
+      <Filter>Desenvolupament  ========\Modules\Image &amp; Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Input.cpp">
+      <Filter>Desenvolupament  ========\Modules\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleCollision.cpp">
+      <Filter>Desenvolupament  ========\Modules\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleFadeToBlack.cpp">
+      <Filter>Desenvolupament  ========\Modules\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Main.cpp">
+      <Filter>Desenvolupament  ========\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="j1App.cpp">
+      <Filter>Desenvolupament  ========\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Desenvolupament  ========\Modules\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="j1Window.h">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Audio.h">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1App.h">
-      <Filter>Desenvolupament  ========</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Input.h">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Module.h">
-      <Filter>Desenvolupament  ========</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Render.h">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Textures.h">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="p2Defs.h">
       <Filter>Programacio 2 ===========</Filter>
     </ClInclude>
@@ -108,20 +93,47 @@
     <ClInclude Include="Player.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>Desenvolupament  ========</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleCollision.h">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleFadeToBlack.h">
-      <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="j1PerfTimer.h">
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClInclude>
     <ClInclude Include="j1Timer.h">
       <Filter>Desenvolupament  ========\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityManager.h">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Audio.h">
+      <Filter>Desenvolupament  ========\Modules\Image &amp; Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Render.h">
+      <Filter>Desenvolupament  ========\Modules\Image &amp; Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Textures.h">
+      <Filter>Desenvolupament  ========\Modules\Image &amp; Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Window.h">
+      <Filter>Desenvolupament  ========\Modules\Image &amp; Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Desenvolupament  ========\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Input.h">
+      <Filter>Desenvolupament  ========\Modules\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleCollision.h">
+      <Filter>Desenvolupament  ========\Modules\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleFadeToBlack.h">
+      <Filter>Desenvolupament  ========\Modules\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="j1App.h">
+      <Filter>Desenvolupament  ========\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Module.h">
+      <Filter>Desenvolupament  ========\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Desenvolupament  ========\Modules\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -143,26 +155,35 @@
     <Filter Include="Desenvolupament  ========\Tools\PuguiXML">
       <UniqueIdentifier>{7cb78d67-17cc-45eb-af97-e2106becce7b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Maps">
+    <Filter Include="Desenvolupament  ========\Maps">
       <UniqueIdentifier>{2e43b943-0505-43dc-95a7-50dc63b6bb09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Image &amp; Sound">
+      <UniqueIdentifier>{54863e4f-0de1-4cf8-9dcd-0bdcdef9ad10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Utility">
+      <UniqueIdentifier>{ff1b988e-f99d-4148-8a32-81e77708b85f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Main">
+      <UniqueIdentifier>{fc8c30f5-84f2-4dd3-9607-6a921fc996ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Entities">
+      <UniqueIdentifier>{0693120a-55fa-4114-be27-903f463b1c98}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\maps\edgy map.tmx">
-      <Filter>Desenvolupament  ========\Modules\Maps</Filter>
+      <Filter>Desenvolupament  ========\Maps</Filter>
     </None>
     <None Include="..\Game\maps\Map S.tmx">
-      <Filter>Desenvolupament  ========\Modules\Maps</Filter>
+      <Filter>Desenvolupament  ========\Maps</Filter>
     </None>
     <None Include="..\Game\maps\Map 2 retextured.tmx">
-      <Filter>Desenvolupament  ========\Modules\Maps</Filter>
+      <Filter>Desenvolupament  ========\Maps</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml">
-      <Filter>Desenvolupament  ========</Filter>
-    </Xml>
-    <Xml Include="..\Game\player_data.xml">
       <Filter>Desenvolupament  ========</Filter>
     </Xml>
   </ItemGroup>
