@@ -352,9 +352,9 @@ void Player::AirMove()
 
 void Player::Slide(float dt)
 {
-	timer += dt / 0.016f;
+	timer ++;
 	air_atking = false;
-	if (timer < 50 * 0.016f / dt)
+	if (timer < 50)
 	{
 		if (facing_right)
 		{
