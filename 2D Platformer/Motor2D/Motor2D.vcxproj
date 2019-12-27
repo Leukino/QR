@@ -185,6 +185,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
+    <ClInclude Include="UI.h" />
     <ClInclude Include="WindowsStuff.h" />
   </ItemGroup>
   <ItemGroup>
