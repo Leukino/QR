@@ -18,6 +18,7 @@ class j1Map;
 class Player;
 class ModuleCollision;
 class EntityManager;
+class j1Fonts;
 
 class j1App
 {
@@ -88,6 +89,7 @@ public:
 	j1Audio*			audio;
 	j1Scene*			scene;
 	j1Map*				map;
+	j1Fonts*			fonts;
 	Player*				player;
 	ModuleCollision*	collision;
 	EntityManager*		entities;
