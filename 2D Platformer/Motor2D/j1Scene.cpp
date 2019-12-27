@@ -13,6 +13,7 @@
 #include "WindowsStuff.h"
 #include "ModuleCollision.h"
 #include "Player.h"
+#include "j1Fonts.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -97,8 +98,11 @@ bool j1Scene::Update(float dt)
 	int posy;
 	App->input->GetMousePosition(posx, posy);
 	App->render->setCamera(App->player, { 0.5f, 0.5f });
+	if (App->input->GetKey(SDL_SCANCODE_J)) {
+		App->fonts->Print("I have crippling depression");
+		LOG("I'M PRESSING J I'M RETARDED");
+	}
 	App->map->Draw();
-
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
 					App->map->data.width, App->map->data.height,
 					App->map->data.tile_width, App->map->data.tile_height,

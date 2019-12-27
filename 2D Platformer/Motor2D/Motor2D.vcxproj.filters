@@ -58,6 +58,9 @@
     <ClCompile Include="Bat.cpp">
       <Filter>Desenvolupament  ========\Modules\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="j1Fonts.cpp">
+      <Filter>Desenvolupament  ========\Modules\Image &amp; Sound</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -143,6 +146,9 @@
     </ClInclude>
     <ClInclude Include="UI.h">
       <Filter>Desenvolupament  ========\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Fonts.h">
+      <Filter>Desenvolupament  ========\Modules\Image &amp; Sound</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
