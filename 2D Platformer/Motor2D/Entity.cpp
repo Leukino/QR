@@ -4,7 +4,7 @@
 #include <math.h>
 #include <cstring>
 
-Enemy::Enemy()
+Entity::Entity()
 {
-
+	LOG("Created Entity");
 }

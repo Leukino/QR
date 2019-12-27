@@ -4,22 +4,22 @@
 #include <math.h>
 #include <cstring>
 
-Bat::Bat()
+Walker::Walker()
 {
-	LOG("it's a Bat");
+	LOG("it's a Walker");
 }
 
-bool Bat::Update(float dt)
-{
-	return true;
-}
-
-bool Bat::CleanUp()
+bool Walker::Update(float dt)
 {
 	return true;
 }
 
-void Bat::OnCollision(Collider*, Collider*)
+bool Walker::CleanUp()
+{
+	return true;
+}
+
+void Walker::OnCollision(Collider*, Collider*)
 {
 
 }

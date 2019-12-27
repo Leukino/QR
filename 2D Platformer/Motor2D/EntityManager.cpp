@@ -2,25 +2,14 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "EntityManager.h"
-#include "Enemy.h"
-#include "Bat.h"
 #include <math.h>
 #include <cstring>
-
 #include "j1Input.h"
-#include "Player.h"
 #include "j1Window.h"
 #include "j1Render.h"
 #include "ModuleCollision.h"
 
-Entity::Entity() {}
-
-entity_type Entity::GetType()
-{
-	return this->type;
-}
-
-EntityManager::EntityManager() 
+EntityManager::EntityManager()
 {
 	LOG("Entity Manager Loaded");
 }
@@ -38,63 +27,74 @@ bool EntityManager::Start()
 	return true;
 }
 
-void EntityManager::CreateEntity(float x, float y, entity_type type, bool exists)
+Entity* EntityManager::CreateEntity(float x, float y, entity_type type, bool exists)
 {
 	switch (type)
 	{
-	case player: this->entity = new Entity(); break;
-	case enemy: this->entity = new Enemy(); break;
+	case player: this->entity = new Player(); break;
+	case walker: this->entity = new Walker(); break;
 	case bat: this->entity = new Bat(); break;
+	case none: this->entity = new Entity(); break;
 	}
-	this->entity->position.x = x;
-	this->entity->position.y = y;
-	this->entity->index = entity_id;
-	this->entity->exists = exists;
+	entity->position.x = x;
+	entity->position.y = y;
+	entity->index = entity_id;
+	entity->type = type;
+	entity->exists = exists;
 
 	Entities.add(entity);
 
 	entity_id++;
+
+	return entity;
+}
+
+void EntityManager::DeleteEntity(int index)
+{
+	Entities.del(Entities.At(index));
+	for (int i = index; i < Entities.count(); i++)
+		Entities[i]->index--;
 }
 
 bool EntityManager::Update(float dt)
 {
+	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	{
+		CreateEntity(0.0f, 0.0f, player);
+		CreateEntity(0.0f, 0.0f, walker);
+		CreateEntity(0.0f, 0.0f, bat);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+	{
+		DeleteEntity(1);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+		for (int i = 0; i < Entities.count(); i++)
+			LOG("Entity %d - x: %f y: %f Size: %d, type: %d", Entities[i]->index, Entities[i]->position.x, Entities[i]->position.y, Entities.count(), Entities[i]->type);
 	for (int i = 0; i < Entities.count(); i++)
 		if (Entities[i]->exists)
 		{
-			if (Entities[i]->position.x > App->player->position.x - 1000.0f && Entities[i]->position.x < App->player->position.x + 1000.0f && Entities[i]->position.y > App->player->position.y - 1000.0f && Entities[i]->position.y < App->player->position.y + 1000.0f)
-				Entities[i]->Update(dt);
-		}
-		else
-		{
-			Entities[i]->col->to_delete = true;
+			//if (Entities[i]->position.x > App->player->position.x - 1000.0f && Entities[i]->position.x < App->player->position.x + 1000.0f && Entities[i]->position.y > App->player->position.y - 1000.0f && Entities[i]->position.y < App->player->position.y + 1000.0f)
+			Entities[i]->Update(dt);
 		}
 
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-		CreateEntity(App->player->position.x, App->player->position.y - 20, enemy);
-
-	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
-		for (int i = 0; i < Entities.count(); i++)
-			LOG("Entity %d - x: %f y: %f Size: %d", Entities[i]->index, Entities[i]->position.x, Entities[i]->position.y, Entities.count());
-		
+	//
+	//	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	//		CreateEntity(App->player->position.x, App->player->position.y - 20, enemy);
+	//
+	//	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+	//		for (int i = 0; i < Entities.count(); i++)
+	//			LOG("Entity %d - x: %f y: %f Size: %d", Entities[i]->index, Entities[i]->position.x, Entities[i]->position.y, Entities.count());
+	//		
 	return true;
 }
 
 bool EntityManager::CleanUp()
 {
-	for (int i = 0; i < Entities.count(); i++)
-		Entities[i]->col->to_delete= true;
+	//	for (int i = 0; i < Entities.count(); i++)
+	//		Entities[i]->col->to_delete= true;
 	Entities.clear();
 	entity_id = 0;
 
 	return true;
-}
-
-void EntityManager::OnCollision(Collider* c1, Collider* c2)
-{
-	//if ((c2->type == COLLIDER_ENEMY_SHOT && c1->type == COLLIDER_PLAYER_ATK))
-	//{
-	//	for (int i = 0; i < Entities.count(); i++)
-	//		if (Entities[i]->col == c2)
-	//			Entities[i]->exists = false;
-	//}
 }

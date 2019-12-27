@@ -11,7 +11,6 @@
 #include "j1Scene.h"
 #include "j1Map.h"
 #include "j1App.h"
-#include "Player.h"
 #include "ModuleCollision.h"
 #include "EntityManager.h"
 #include "brofiler/Brofiler/Brofiler.h"
@@ -30,7 +29,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new j1Audio();
 	scene = new j1Scene();
 	map = new j1Map();
-	player = new Player();
 	collision = new ModuleCollision();
 	entities = new EntityManager();
 	fonts = new j1Fonts();
@@ -45,7 +43,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(scene);
 	AddModule(entities);
-	AddModule(player);
 	AddModule(collision);
 	
 

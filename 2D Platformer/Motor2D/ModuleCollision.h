@@ -8,6 +8,7 @@
 #include "p2Point.h"
 #include "j1Module.h"
 #include "Animation.h"
+#include "Entities.h"
 
 enum COLLIDER_TYPE
 {
@@ -28,9 +29,9 @@ struct Collider
 	SDL_Rect rect;
 	bool to_delete = false;
 	COLLIDER_TYPE type;
-	j1Module* callback = nullptr;
+	Entity* callback = nullptr;
 
-	Collider(SDL_Rect rectangle, COLLIDER_TYPE type, j1Module* callback = nullptr) :
+	Collider(SDL_Rect rectangle, COLLIDER_TYPE type, Entity* callback = nullptr) :
 		rect(rectangle),
 		type(type),
 		callback(callback)
@@ -51,7 +52,8 @@ struct Collider
 	}
 
 	bool CheckCollision(const SDL_Rect& r) const;
-	void set(SDL_Rect rec, COLLIDER_TYPE type, j1Module* callback);
+	void set(SDL_Rect rec, COLLIDER_TYPE type, Entity* callback);
+	void setRect(SDL_Rect);
 };
 
 class ModuleCollision : public j1Module
@@ -66,7 +68,7 @@ public:
 	bool CleanUp();
 	void Delete_all();
 
-	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
+	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, Entity* callback = nullptr);
 
 private:
 

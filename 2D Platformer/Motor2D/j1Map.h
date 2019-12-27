@@ -6,6 +6,7 @@
 #include "p2Point.h"
 #include "j1Module.h"
 #include "ModuleCollision.h"
+
 struct Properties
 {
 	struct Property
@@ -37,7 +38,7 @@ struct TileCollisions
 {
 	int id;
 	Collider collider[20] = {};
-	//TileCollisions() : collider({ 0, 0, 0, 0 }, COLLIDER_NONE, nullptr), id(0) {}
+	entity_type eType;
 	TileCollisions() : collider(), id(0) {}
 };
 
@@ -46,7 +47,7 @@ struct MapLayer
 	p2SString	name;
 	int			width;
 	int			height;
-	uint*		data;
+	uint* data;
 	TileCollisions collisions[210];
 	Properties	properties;
 

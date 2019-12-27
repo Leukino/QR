@@ -2,14 +2,15 @@
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "j1App.h"
-#include "j1Render.h"
-#include "j1Input.h"
-#include "j1Textures.h"
-#include "Player.h"
-#include "j1Render.h"
 #include "j1Window.h"
 #include <math.h>
 #include <cstring>
+
+#include "j1Render.h"
+#include "j1Input.h"
+#include "j1Textures.h"
+#include "j1Scene.h"
+#include "j1Render.h"
 
 ModuleCollision::ModuleCollision()
 {
@@ -116,7 +117,11 @@ bool ModuleCollision::PreUpdate()
 
 		//int scale = App->win->GetScale();
 		//if ((c1->rect.x * scale) > -App->render->camera.x && (c1->rect.x * scale) < -(App->render->camera.x - App->render->camera.w) && (c1->rect.y * scale) > -App->render->camera.y && (c1->rect.y * scale) < -(App->render->camera.y - App->render->camera.h))
-		if(c1->rect.x > App->player->position.x - 100.0f && c1->rect.x < App->player->position.x + 100.0f && c1->rect.y > App->player->position.y - 100.0f && c1->rect.y < App->player->position.y + 100.0f)
+		if (App->scene->pl != nullptr)
+			if (c1->rect.x > App->scene->pl->position.x - 80.0f &&
+				c1->rect.x < App->scene->pl->position.x + 80.0f &&
+				c1->rect.y > App->scene->pl->position.y - 70.0f
+				&& c1->rect.y < App->scene->pl->position.y + 70.0f)
 			for(uint k = i+1; k < MAX_COLLIDERS; ++k)
 			{
 				// skip empty colliders
@@ -153,8 +158,11 @@ bool ModuleCollision::Update(float dt)
 	{
 		if(colliders[i] == nullptr)
 			continue;
-		if (colliders[i]->rect.x > App->player->position.x - 100.0f && colliders[i]->rect.x < App->player->position.x + 100.0f && colliders[i]->rect.y > App->player->position.y - 100.0f && colliders[i]->rect.y < App->player->position.y + 100.0f)
-		//if ((colliders[i]->rect.x *scale) > -App->render->camera.x && (colliders[i]->rect.x * scale) < -(App->render->camera.x - App->render->camera.w) && (colliders[i]->rect.y * scale) > -App->render->camera.y && (colliders[i]->rect.y * scale) < -(App->render->camera.y - App->render->camera.h))
+		if (App->scene->pl != nullptr)
+			if (colliders[i]->rect.x > App->scene->pl->position.x - 80.0f &&
+				colliders[i]->rect.x < App->scene->pl->position.x + 80.0f &&
+				colliders[i]->rect.y > App->scene->pl->position.y - 70.0f &&
+				colliders[i]->rect.y < App->scene->pl->position.y + 70.0f)
 			switch(colliders[i]->type)
 			{
 				case COLLIDER_NONE: // white
@@ -207,7 +215,7 @@ bool ModuleCollision::CleanUp()
 	return true;
 }
 
-Collider* ModuleCollision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback)
+Collider* ModuleCollision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, Entity* callback)
 {
 	Collider* ret = nullptr;
 
@@ -240,7 +248,7 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 			rect.h + rect.y > r.y);
 }
 
-void Collider::set(SDL_Rect rec_, COLLIDER_TYPE type_, j1Module* callback_)
+void Collider::set(SDL_Rect rec_, COLLIDER_TYPE type_, Entity* callback_)
 {
 	//Collider* ret(rec, type, callback);
 	this->rect.x = rec_.x;
@@ -250,4 +258,12 @@ void Collider::set(SDL_Rect rec_, COLLIDER_TYPE type_, j1Module* callback_)
 	this->type = type_;
 	this->callback = callback_;
 	return;
+}
+
+void Collider::setRect(SDL_Rect rec)
+{
+	this->rect.x = rec.x;
+	this->rect.y = rec.y;
+	this->rect.w = rec.w;
+	this->rect.h = rec.h;
 }

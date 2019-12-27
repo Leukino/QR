@@ -5,35 +5,7 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
-
-enum entity_type
-{
-	player,
-	enemy,
-	bat
-};
-
-class Entity
-{
-public:
-
-	Entity();
-
-	virtual bool Update(float dt) { return true; }
-	virtual bool CleanUp() { return true; }
-
-	entity_type GetType();
-
-	Collider* col;
-
-	fPoint position;
-	bool exists;
-	int index;
-
-protected:
-
-	entity_type type;
-};
+#include "Entities.h"
 
 class EntityManager : public j1Module
 {
@@ -47,8 +19,8 @@ public:
 	bool Update(float dt);
 	bool CleanUp();
 
-	void CreateEntity(float x, float y, entity_type type, bool exists = true);
-	void OnCollision(Collider* c1, Collider* c2);
+	Entity* CreateEntity(float x, float y, entity_type type, bool exists = true);
+	void DeleteEntity(int index);
 
 	p2List<Entity*> Entities;
 

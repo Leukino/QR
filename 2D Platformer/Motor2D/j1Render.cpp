@@ -4,6 +4,9 @@
 #include "j1Window.h"
 #include "j1Render.h"
 #include "brofiler/Brofiler/Brofiler.h"
+
+#include "j1Scene.h"
+
 #define VSYNC true
 
 j1Render::j1Render() : j1Module()
@@ -250,24 +253,34 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 	return ret;
 }
 
-void j1Render::setCamera(Player* player, fPoint size)
+void j1Render::setCamera(fPoint pos, fPoint size)
 {
 	uint scale = App->win->GetScale();
-	camera.x = camera.w / 2 - ((int)player->position.x + 250)* scale;
 
-	if (camera.y != camera.h / 2 - (player->position.y) * scale)
+	if (App->scene->pl != nullptr)
 	{
-		if (camera.y < camera.h / 2 - (player->position.y) * scale)
-			if (App->dt < 0.007f)
-				camera.y++;
-			else
-				camera.y += App->SyncVelocity(camera_speed_y);
-		else if (camera.y > camera.h / 2 - (player->position.y) * scale)
-			if (App->dt < 0.007f)
-				camera.y--;
-			else
-				camera.y -= App->SyncVelocity(camera_speed_y);
+		camera.x = camera.w / 2 - (App->scene->pl->position.x + 250) * scale;
+
+		if (camera.y != camera.h / 2 - (App->scene->pl->position.y) * scale)
+		{
+			if (camera.y < camera.h / 2 - (App->scene->pl->position.y) * scale)
+				if (App->dt < 0.007f)
+					camera.y++;
+				else
+					camera.y += App->SyncVelocity(camera_speed_y);
+			else if (camera.y > camera.h / 2 - (App->scene->pl->position.y) * scale)
+				if (App->dt < 0.007f)
+					camera.y--;
+				else
+					camera.y -= App->SyncVelocity(camera_speed_y);
+		}
+
+		if (camera.y > 0)
+			camera.y = 0;
 	}
-	if (camera.y > 0)
+	else
+	{
+		camera.x = 0;
 		camera.y = 0;
+	}
 }
