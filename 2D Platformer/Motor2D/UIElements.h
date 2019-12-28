@@ -19,24 +19,17 @@ class UIElement
 {
 public:
 
-	UIElement();
+	UIElement(){}
 
 	virtual void Start() = 0;
-	virtual void Update() = 0;
+	virtual void Update(float dt) = 0;
 
-	fPoint position;
-	fPoint size;
-
-private:
-
-	Element element;
-};
-
-enum class button_state
-{
-	idle,
-	hover,
-	pressed
+	iPoint position;
+	iPoint size;
+	bool exists;
+	int index;
+	Element type;
+	SDL_Texture* text;
 };
 
 class Button : public UIElement
@@ -46,10 +39,7 @@ public:
 	Button();
 
 	void Start();
-	void Update();
-
-	button_state state;
-	SDL_Texture* text;
+	void Update(float dt);
 
 private:
 

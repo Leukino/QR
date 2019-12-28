@@ -15,6 +15,7 @@
 #include "EntityManager.h"
 #include "brofiler/Brofiler/Brofiler.h"
 #include "j1Fonts.h"
+#include "ModuleUI.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -32,6 +33,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	collision = new ModuleCollision();
 	entities = new EntityManager();
 	fonts = new j1Fonts();
+	ui = new ModuleUI();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -39,11 +41,12 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
-	AddModule(fonts);
 	AddModule(map);
 	AddModule(scene);
 	AddModule(entities);
 	AddModule(collision);
+	AddModule(fonts);
+	AddModule(ui);
 	
 
 	// render last to swap buffer

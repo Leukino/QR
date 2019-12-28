@@ -18,6 +18,7 @@ class j1Map;
 class ModuleCollision;
 class EntityManager;
 class j1Fonts;
+class ModuleUI;
 
 class j1App
 {
@@ -91,6 +92,7 @@ public:
 	j1Fonts*			fonts;
 	ModuleCollision*	collision;
 	EntityManager*		entities;
+	ModuleUI*			ui;
 
 private:
 
