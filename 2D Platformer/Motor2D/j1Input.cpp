@@ -144,10 +144,20 @@ bool j1Input::GetWindowEvent(j1EventWindow ev)
 	return windowEvents[ev];
 }
 
-void j1Input::GetMousePosition(int& x, int& y)
+void j1Input::SetMousePosition(int& x, int& y)
 {
 	x = mouse_x;
 	y = mouse_y;
+}
+
+iPoint j1Input::GetMousePosition()
+{
+	iPoint mouse_pos;
+
+	mouse_pos.x = mouse_x;
+	mouse_pos.y = mouse_y;
+
+	return mouse_pos;
 }
 
 void j1Input::GetMouseMotion(int& x, int& y)

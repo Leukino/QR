@@ -253,7 +253,7 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 	return ret;
 }
 
-void j1Render::setCamera(fPoint pos, fPoint size)
+void j1Render::setCamera()
 {
 	uint scale = App->win->GetScale();
 

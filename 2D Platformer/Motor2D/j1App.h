@@ -14,6 +14,7 @@ class j1Render;
 class j1Textures;
 class j1Audio;
 class j1Scene;
+class MainMenu;
 class j1Map;
 class ModuleCollision;
 class EntityManager;
@@ -43,7 +44,7 @@ public:
 	bool CleanUp();
 
 	// Add a new module to handle
-	void AddModule(j1Module* module);
+	void AddModule(j1Module* module, bool init = true);
 
 	// Exposing some properties for reading
 	int GetArgc() const;
@@ -88,6 +89,7 @@ public:
 	j1Textures*			tex;
 	j1Audio*			audio;
 	j1Scene*			scene;
+	MainMenu*			mainmenu;
 	j1Map*				map;
 	j1Fonts*			fonts;
 	ModuleCollision*	collision;

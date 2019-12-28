@@ -70,6 +70,7 @@ Player::Player()
 
 bool Player::Update(float dt)
 {
+	//LOG("playerX: %f | playerY: %f", position.x, position.y);
 	ResetColChecks();
 
 	Inputs();

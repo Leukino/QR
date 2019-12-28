@@ -3,6 +3,7 @@
 
 #include "j1Module.h"
 #include "SDL/include/SDL.h"
+#include "p2Point.h"
 
 //#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
@@ -66,7 +67,8 @@ public:
 	bool GetWindowEvent(int code);
 
 	// Get mouse / axis position
-	void GetMousePosition(int &x, int &y);
+	void SetMousePosition(int &x, int &y);
+	iPoint GetMousePosition();
 	void GetMouseMotion(int& x, int& y);
 
 private:

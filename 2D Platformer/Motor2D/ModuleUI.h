@@ -17,7 +17,7 @@ public:
 	bool Update(float dt);
 	bool CleanUp();
 
-	UIElement* CreateUIElement(iPoint pos, iPoint size, Element type, char* text = "", bool exists = true);
+	Button* CreateButton(iPoint pos, iPoint size, char* text = "", bool exists = true);
 	void DeleteUIElement(int index);
 
 	p2List<UIElement*> UIElements;
