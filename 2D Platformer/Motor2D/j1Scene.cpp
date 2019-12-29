@@ -12,6 +12,7 @@
 #include "j1Audio.h"
 #include "j1Render.h"
 #include "j1Map.h"
+#include "ModuleUI.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -97,7 +98,7 @@ bool j1Scene::Update(float dt)
 
 	App->render->setCamera();
 	App->map->Draw();
-
+	
 	//p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
 	//	App->map->data.width, App->map->data.height,
 	//	App->map->data.tile_width, App->map->data.tile_height,

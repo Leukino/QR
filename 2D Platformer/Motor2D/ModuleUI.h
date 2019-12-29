@@ -18,6 +18,7 @@ public:
 	bool CleanUp();
 
 	Button* CreateButton(iPoint pos, iPoint size, char* text = "", bool exists = true);
+	Console* CreateConsole(iPoint pos, iPoint size, bool exists = true);
 	void DeleteUIElement(int index);
 
 	p2List<UIElement*> UIElements;

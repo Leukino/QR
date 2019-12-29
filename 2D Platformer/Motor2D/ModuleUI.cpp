@@ -50,6 +50,25 @@ Button* ModuleUI::CreateButton(iPoint pos, iPoint size, char* text, bool exists)
 	return but;
 }
 
+Console* ModuleUI::CreateConsole(iPoint pos, iPoint size, bool exists)
+{
+	Console* cons = new Console();
+
+	cons->text = App->fonts->Print(cons->GetOutputText().GetString());
+	cons->position.x = pos.x;
+	cons->position.y = pos.y;
+	cons->size.x = size.x;
+	cons->size.y = size.y;
+	cons->index = element_id;
+	cons->type = Element::console;
+	cons->exists = exists;
+
+	UIElements.add(cons);
+
+	element_id++;
+	return cons;
+}
+
 void ModuleUI::DeleteUIElement(int index)
 {
 	UIElements.del(UIElements.At(index));
@@ -67,6 +86,8 @@ bool ModuleUI::Update(float dt)
 	{
 		CreateButton({ (int)App->scene->pl->position.x , (int)App->scene->pl->position.y }, { 100,40 }, "aaaaaaa");
 	}
+	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
+		CreateConsole({ (int)App->scene->pl->position.x , (int)App->scene->pl->position.y }, { 200, 20 });
 
 	for (int i = 0; i < UIElements.count(); i++)
 		if (UIElements[i]->exists)

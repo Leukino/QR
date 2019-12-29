@@ -40,7 +40,7 @@ void Button::Update(float dt)
 	
 	//LOG("mouseX: %d | mouseY: %d", mpos.x, mpos.y);
 	//LOG("cameraX: %d | cameraY: %d", App->render->camera.x, App->render->camera.y);
-	LOG("mouseworldX: %d | mouseworldY: %d", mpos.x - App->render->camera.x/scale, mpos.y - App->render->camera.y/scale);
+	//LOG("mouseworldX: %d | mouseworldY: %d", mpos.x - App->render->camera.x/scale, mpos.y - App->render->camera.y/scale);
 
 	if(!is_hovering && !is_pressed)
 		App->render->DrawQuad({ position.x, position.y, size.x, size.y}, 0, 0, 255);

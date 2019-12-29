@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Console.cpp" />
     <ClCompile Include="Dynamic.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />

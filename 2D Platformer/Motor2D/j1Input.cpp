@@ -78,8 +78,8 @@ bool j1Input::PreUpdate()
 			mouse_buttons[i] = KEY_IDLE;
 	}
 
-	if (App->consoleEnabled)
-		SDL_StartTextInput();
+	//if (App->consoleEnabled)
+	//	SDL_StartTextInput();
 
 	while(SDL_PollEvent(&event) != 0)
 	{
@@ -132,29 +132,29 @@ bool j1Input::PreUpdate()
 				break;
 			}
 
-			case SDL_TEXTINPUT:	
-			{
-				text += event.text.text;
-			}
-			
-			break;
+			//case SDL_TEXTINPUT:	
+			//{
+			//	text += event.text.text;
+			//}
+			//
+			//break;
 			
 		}
 	}
 
-	if (GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
-	{
-		text.Substract();
-	}
-
-	if (GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
-	{
-		text.Clear();
-		LOG("ENTERED COMMAND");
-	}
+	//if (GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
+	//{
+	//	text.Substract();
+	//}
+	//
+	//if (GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+	//{
+	//	text.Clear();
+	//	LOG("ENTERED COMMAND");
+	//}
 
 	
-	SDL_StopTextInput();
+	//SDL_StopTextInput();
 
 	
 

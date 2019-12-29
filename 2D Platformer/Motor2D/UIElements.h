@@ -12,6 +12,7 @@ enum class Element
 	button,
 	slider,
 	textblock,
+	console,
 	none
 };
 
@@ -50,4 +51,20 @@ private:
 	Animation pressed;
 };
 
+class Console : public UIElement
+{
+public:
+
+	Console();
+
+	void Update(float dt);
+	void ExecuteCommand(const char* text);
+	p2SString GetOutputText();
+	bool isOpen;
+
+private:
+	p2SString inputText;
+	p2SString outputText;
+
+};
 #endif //__UI_H__
