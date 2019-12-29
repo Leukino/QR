@@ -95,10 +95,7 @@ bool j1Scene::Update(float dt)
 		//App->player->Reset();
 	}
 
-	int posx;
-	int posy;
-	App->input->GetMousePosition(posx, posy);
-	App->render->setCamera({ 0.0f, 0.0f }, { 0.5f, 0.5f });
+	App->render->setCamera();
 	App->map->Draw();
 
 	//p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
@@ -123,6 +120,8 @@ bool j1Scene::PostUpdate()
 // Called before quitting
 bool j1Scene::CleanUp()
 {
-	LOG("Freeing scene");
+	App->entities->CleanUp();
+	App->collision->CleanUp();
+	App->map->CleanUp();
 	return true;
 }

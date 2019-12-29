@@ -21,7 +21,6 @@ public:
 
 	UIElement(){}
 
-	virtual void Start() = 0;
 	virtual void Update(float dt) = 0;
 
 	iPoint position;
@@ -38,8 +37,11 @@ public:
 
 	Button();
 
-	void Start();
 	void Update(float dt);
+
+	bool lock_press;
+	bool is_pressed;
+	bool is_hovering;
 
 private:
 

@@ -9,6 +9,7 @@
 #include "j1Textures.h"
 #include "j1Audio.h"
 #include "j1Scene.h"
+#include "MainMenu.h"
 #include "j1Map.h"
 #include "j1App.h"
 #include "ModuleCollision.h"
@@ -29,6 +30,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new j1Textures();
 	audio = new j1Audio();
 	scene = new j1Scene();
+	mainmenu = new MainMenu();
 	map = new j1Map();
 	collision = new ModuleCollision();
 	entities = new EntityManager();
@@ -42,12 +44,12 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(map);
-	AddModule(scene);
-	AddModule(entities);
-	AddModule(collision);
+	AddModule(scene, false);
+	AddModule(mainmenu);
+	AddModule(entities, false);
+	AddModule(collision, false);
 	AddModule(fonts);
 	AddModule(ui);
-	
 
 	// render last to swap buffer
 	AddModule(render);
@@ -68,9 +70,10 @@ j1App::~j1App()
 	modules.clear();
 }
 
-void j1App::AddModule(j1Module* module)
+void j1App::AddModule(j1Module* module, bool init)
 {
-	module->Init();
+	if(init)
+		module->Init();
 	modules.add(module);
 }
 
@@ -121,7 +124,6 @@ bool j1App::Start()
 		ret = item->data->Start();
 		item = item->next;
 	}
-
 	return ret;
 }
 

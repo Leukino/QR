@@ -30,26 +30,24 @@ bool ModuleUI::Start()
 	return true;
 }
 
-UIElement* ModuleUI::CreateUIElement(iPoint pos, iPoint size, Element type, char* text, bool exists)
+Button* ModuleUI::CreateButton(iPoint pos, iPoint size, char* text, bool exists)
 {
-	switch (type)
-	{
-	case Element::button: elem = new Button(); break;
-	}
-	elem->text = App->fonts->Print(text);
-	elem->position.x = pos.x;
-	elem->position.y = pos.y;
-	elem->size.x = size.x;
-	elem->size.y = size.y;
-	elem->index = element_id;
-	elem->type = type;
-	elem->exists = exists;
+	Button* but = new Button();
+	
+	but->text = App->fonts->Print(text);
+	but->position.x = pos.x;
+	but->position.y = pos.y;
+	but->size.x = size.x;
+	but->size.y = size.y;
+	but->index = element_id;
+	but->type = Element::button;
+	but->exists = exists;
 
-	UIElements.add(elem);
+	UIElements.add(but);
 
 	element_id++;
 
-	return elem;
+	return but;
 }
 
 void ModuleUI::DeleteUIElement(int index)
@@ -67,7 +65,7 @@ bool ModuleUI::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
-		CreateUIElement({ (int)App->scene->pl->position.x , (int)App->scene->pl->position.y }, { 100,40 }, Element::button, "aaaaaaa");
+		CreateButton({ (int)App->scene->pl->position.x , (int)App->scene->pl->position.y }, { 100,40 }, "aaaaaaa");
 	}
 
 	for (int i = 0; i < UIElements.count(); i++)
