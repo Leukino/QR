@@ -11,11 +11,11 @@ distribution of de sprites, also the colliders are loaded by tilesets in Tiled, 
 
 ![](https://lh5.googleusercontent.com/7f6wff3Z2-I5YRCfbzg9KhBsG2fQlJxO5nZ5wGuAZVOrDJNzpkxPK3lZyka5-Z2TVoknGtjSwXt5wS41gGbSl9fwLxkkH4Xqz0sYWJADvVQvEBQQ84q5akvWnHmaUh3ghEyidQkh)
 
-### Miquel Quintana
-- [GitHub account](https://github.com/Leukino)
-
 ### David Rami
 - [GitHub account](https://github.com/Paideieitor)
+
+### Miquel Quintana
+- [GitHub account](https://github.com/Leukino)
 
 ## LINKS
 See our GitHub repository [HERE](https://github.com/Leukino/QR.git) - https://github.com/Leukino/QR
