@@ -9,7 +9,8 @@ distribution of de sprites, also the colliders are loaded by tilesets in Tiled, 
 
 ## TEAM MEMBERS
 
-![](https://lh3.googleusercontent.com/pn-17VS_OT4YVqz__Df8kQKjgPT5FehWDj1oBYtKlGyiGnWIQnvN_gEhiSq_WObWZ5mHJAvTS93tdR-do2gY3MKGrNsiClZOYEdbjP4al0NxA5dYLjOPmV7FsrEr1xQtPSdVFqLw)
+![](https://lh4.googleusercontent.com/oqf9JCweppMtN08ywDeiodjLDd190fB9TLH6cRTAuNymiGChI29GqJR-wKPqWI6UfcF0jWy-8RwpAY2KHZHxT6O6Ulc5T3JZ7XD6qPwMZQfnPo6Gl-8T7gbIj3QF1XcExf09wvcY)
+![](https://lh4.googleusercontent.com/xvYWnP9aUHJBztVNK-Ka2WBikWL-l_7YQWOpxuMjglswEPmNDTtkJSNNp3GxCMOurMKMykjVkdbMfPexZG_x--z28BjAg-GPEU5_jvKs0C587xyqEyduGwruZja7dTya1JweuU51)
 
 ### Miquel Quintana
 - [GitHub account](https://github.com/Leukino)
