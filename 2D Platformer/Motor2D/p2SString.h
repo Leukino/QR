@@ -106,6 +106,7 @@ public:
 		return *this;
 	}
 
+	
 	// Operators
 	bool operator== (const p2SString& string) const
 	{
@@ -172,11 +173,28 @@ public:
 		return(*this);
 	}
 	
+	const p2SString& operator-= (const p2SString& string)
+	{
+		unsigned int need_size = string.Length() + Length() - 1;
+
+		if(need_size < size)
+		{
+			char* tmp = str;
+			Alloc(need_size);
+			strcpy_s(str, size, tmp);
+			delete[] tmp;
+		}
+
+		strcat_s(str, size, string.str);
+
+		return(*this);
+	}
+
 	const p2SString& operator+= (const p2SString& string)
 	{
 		unsigned int need_size = string.Length() + Length() + 1;
 
-		if(need_size > size)
+		if (need_size > size)
 		{
 			char* tmp = str;
 			Alloc(need_size);
@@ -218,6 +236,15 @@ public:
 	void Clear()
 	{
 		str[0] = '\0';
+	}
+
+	void Substract()
+	{
+		//Cut(Length() - 1);
+		uint s = strlen(this->str);
+
+		for (uint i = s+1; i < s; --i)
+			str[i] = 0;
 	}
 
 	const char* GetString() const

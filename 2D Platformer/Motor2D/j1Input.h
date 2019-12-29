@@ -68,7 +68,7 @@ public:
 	// Get mouse / axis position
 	void GetMousePosition(int &x, int &y);
 	void GetMouseMotion(int& x, int& y);
-
+	p2SString GetText() { return text; };
 private:
 	bool		windowEvents[WE_COUNT];
 	j1KeyState*	keyboard;
@@ -77,6 +77,7 @@ private:
 	int			mouse_motion_y;
 	int			mouse_x;
 	int			mouse_y;
+	p2SString	text = "Sample Text";
 };
 
 #endif // __j1INPUT_H__

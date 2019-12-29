@@ -78,8 +78,12 @@ bool j1Input::PreUpdate()
 			mouse_buttons[i] = KEY_IDLE;
 	}
 
+	if (App->consoleEnabled)
+		SDL_StartTextInput();
+
 	while(SDL_PollEvent(&event) != 0)
 	{
+		
 		switch(event.type)
 		{
 			case SDL_QUIT:
@@ -117,15 +121,42 @@ bool j1Input::PreUpdate()
 			break;
 
 			case SDL_MOUSEMOTION:
+			{
 				int scale = App->win->GetScale();
 				mouse_motion_x = event.motion.xrel / scale;
 				mouse_motion_y = event.motion.yrel / scale;
 				mouse_x = event.motion.x / scale;
 				mouse_y = event.motion.y / scale;
 				//LOG("Mouse motion x %d y %d", mouse_motion_x, mouse_motion_y);
+
+				break;
+			}
+
+			case SDL_TEXTINPUT:	
+			{
+				text += event.text.text;
+			}
+			
 			break;
+			
 		}
 	}
+
+	if (GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
+	{
+		text.Substract();
+	}
+
+	if (GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+	{
+		text.Clear();
+		LOG("ENTERED COMMAND");
+	}
+
+	
+	SDL_StopTextInput();
+
+	
 
 	return true;
 }
