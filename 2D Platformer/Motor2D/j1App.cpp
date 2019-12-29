@@ -191,11 +191,6 @@ void j1App::FinishUpdate()
 		last_sec_frame_count = 0;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_F11) == j1KeyState::KEY_DOWN) {
-		fpscap = !fpscap;
-		frame_count = 0;
-	}
-
 	float avg_fps = float(frame_count) / startup_time.ReadSec();
 	float seconds_since_startup = startup_time.ReadSec();
 	uint32 last_frame_ms = frame_time.Read();
@@ -218,8 +213,8 @@ void j1App::FinishUpdate()
 	sprintf_s(title, 256, "QR || FPS: %02u / EstFPS: %02u/ Av.FPS: %.2f / Last Frame Ms: %02u / Cap: %s / Vsync: %s / dt: %f",
 		frames_on_last_update, framerate_cap, avg_fps, last_frame_ms, cap, vsync, dt);
 	
-	//App->win->SetTitle(title);
-	App->win->SetTitle(App->input->GetText().GetString());
+	App->win->SetTitle(title);
+	//App->win->SetTitle(App->input->GetText().GetString());
 	if ((framerate_cap >= 0) && fpscap)
 	{
 		if ((last_frame_ms < (1000 / framerate_cap))) {
@@ -280,7 +275,6 @@ bool j1App::PostUpdate()
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	j1Module* pModule = NULL;
-
 	for(item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
@@ -291,7 +285,8 @@ bool j1App::PostUpdate()
 
 		ret = item->data->PostUpdate();
 	}
-
+	if (wannaquit)
+		ret = false;
 	return ret;
 }
 
@@ -307,7 +302,7 @@ bool j1App::CleanUp()
 		ret = item->data->CleanUp();
 		item = item->prev;
 	}
-
+	
 	return ret;
 }
 
@@ -436,7 +431,7 @@ void j1App::setFpsCap(uint32 fps)
 	if (fps <= 0)
 	{
 		fpscap = false;
-		framerate_cap = 30;
+		framerate_cap = 120;
 	}
 	else
 	{

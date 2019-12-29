@@ -62,19 +62,19 @@ void EntityManager::DeleteEntity(int index)
 
 bool EntityManager::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-	{
-		CreateEntity(0.0f, 0.0f, player);
-		CreateEntity(0.0f, 0.0f, walker);
-		CreateEntity(0.0f, 0.0f, bat);
-	}
-	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
-	{
-		DeleteEntity(1);
-	}
-	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
-		for (int i = 0; i < Entities.count(); i++)
-			LOG("Entity %d - x: %f y: %f Size: %d, type: %d", Entities[i]->index, Entities[i]->position.x, Entities[i]->position.y, Entities.count(), Entities[i]->type);
+	//if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	//{
+	//	CreateEntity(0.0f, 0.0f, player);
+	//	CreateEntity(0.0f, 0.0f, walker);
+	//	CreateEntity(0.0f, 0.0f, bat);
+	//}
+	//if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+	//{
+	//	DeleteEntity(1);
+	//}
+	//if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN
+	//	for (int i = 0; i < Entities.count(); i++)
+	//		LOG("Entity %d - x: %f y: %f Size: %d, type: %d", Entities[i]->index, Entities[i]->position.x, Entities[i]->position.y, Entities.count(), Entities[i]->type);
 	for (int i = 0; i < Entities.count(); i++)
 		if (Entities[i]->exists)
 		{

@@ -79,17 +79,6 @@ void ModuleUI::DeleteUIElement(int index)
 
 bool ModuleUI::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
-		for (int i = 0; i < UIElements.count(); i++)
-			LOG("Entity %d - x: %f y: %f Size: %d, type: %d", UIElements[i]->index, UIElements[i]->position.x, UIElements[i]->position.y, UIElements.count(), UIElements[i]->type);
-
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
-	{
-		CreateButton({ (int)App->scene->pl->position.x , (int)App->scene->pl->position.y }, { 100,40 }, "aaaaaaa");
-	}
-	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
-		CreateConsole({ (int)App->scene->pl->position.x , (int)App->scene->pl->position.y }, { 200, 20 });
-
 	for (int i = 0; i < UIElements.count(); i++)
 		if (UIElements[i]->exists)
 		{

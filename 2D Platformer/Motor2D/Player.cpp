@@ -72,7 +72,12 @@ Player::Player()
 
 bool Player::Update(float dt)
 {
-	LOG("playerX: %f | playerY: %f", position.x, position.y);
+	if (App->changeGodMode) 
+	{
+		SetGodMode();
+		App->changeGodMode = false;
+	}
+	//LOG("playerX: %f | playerY: %f", position.x, position.y);
 	ResetColChecks();
 
 	Inputs();
@@ -206,22 +211,27 @@ void Player::ResetColChecks()
 	wallcolcounter = 0;
 }
 
+void Player::SetGodMode()
+{
+	godmode = !godmode;
+	vo = 0.0f;
+	timer = 0;
+	facing_right = true;
+	running = false;
+	running = false;
+	grounded = false;
+	jumping = false;
+	air_atking = false;
+	air_atk = false;
+	headcollided = false;
+	sliding = false;
+}
+
 void Player::Inputs()
 {
 	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
-		godmode = !godmode;
-		vo = 0.0f;
-		timer = 0;
-		facing_right = true;
-		running = false;
-		running = false;
-		grounded = false;
-		jumping = false;
-		air_atking = false;
-		air_atk = false;
-		headcollided = false;
-		sliding = false;
+		SetGodMode();
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 		Dead();

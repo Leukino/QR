@@ -40,6 +40,16 @@ Download the last version of the game [HERE](https://github.com/Leukino/QR/relea
 					     OTHERS
 			F1 -> Collider Debug On/Off
 			
+## Console
+Pressing "º" key will open the console. There are a few options to manage certain game settings
+	- set30fps: Caps game to 30 fps
+	- set60fps: Caps game to 60 fps
+	- set120fps: Caps game to 120 fps
+	- quit: Quits the game
+	- godmode: Enables god mode
+	- showcolliders: Displays the collisions near the player
+	- changemap: Instantly loads the second map
+			
 ## License
 This software is provided 'as-is', without any express or implied
 warranty.  In no event will the authors be held liable for any damages

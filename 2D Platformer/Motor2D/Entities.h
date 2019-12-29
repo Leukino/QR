@@ -68,6 +68,8 @@ public:
 	bool CleanUp();
 
 	void OnCollision(Collider*, Collider*);
+	void SetGodMode();
+	void Dead();
 
 	Animation idle_right;
 	Animation idle_left;
@@ -134,7 +136,7 @@ private:
 	inline void AirAttack();
 	inline void AirMove();
 	inline void Slide();
-	void Dead();
+	
 };
 
 class Enemy :public Dynamic
