@@ -18,11 +18,11 @@ distribution of de sprites, also the colliders are loaded by tilesets in Tiled, 
 - [GitHub account](https://github.com/Paideieitor)
 
 ## LINKS
-See our GitHub repository [HERE](https://github.com/Leukino/QR.git) - https://github.com/NIKANIS/QR
+See our GitHub repository [HERE](https://github.com/Leukino/QR.git) - https://github.com/Leukino/QR
 
 For more information see our wiki page [HERE](https://github.com/Leukino/QR/wiki) - https://github.com/Leukino/QR/wiki
 
-Download the last version of the game [HERE](https://github.com/Leukino/QR/releases/tag/1.0)
+Download the last version of the game [HERE](https://github.com/Leukino/QR/releases)
 
 ## GAMEPLAY VIDEO
 <iframe width="560" height="315" src="VIDEO LINK QUE FALTA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
