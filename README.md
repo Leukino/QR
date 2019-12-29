@@ -54,7 +54,7 @@ Pressing "º" key will open the console. There are a few options to manage certa
 	
 	- godmode: Enables god mode
 	
-	- showcolliders: Displays the collisions near the player
+	- showcolliders: Displays the processed colliders
 	
 	- changemap: Instantly loads the second map
 	
