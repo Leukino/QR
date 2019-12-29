@@ -11,6 +11,7 @@
 #include "j1Scene.h"
 #include "ModuleCollision.h"
 #include "EntityManager.h"
+#include "j1Map.h"
 
 
 
@@ -62,6 +63,7 @@ bool MainMenu::Update(float dt)
 		App->collision->Init();
 		App->entities->Init();
 		PlayButton->is_pressed = false;
+		App->map->Load("Map 2 retextured.tmx");
 		App->scene->Reset();
 		Disable();
 	}
