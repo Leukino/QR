@@ -10,7 +10,6 @@
 
 Button::Button()
 {
-	lock_press = false;
 }
 
 void Button::Update(float dt)

@@ -120,7 +120,7 @@ private:
 public:
 	uint32				framerate_cap = 30;
 private:
-	bool fpscap = true;
+	bool fpscap = false;
 	
 public: 
 	float dt = 0.1f;
@@ -130,6 +130,6 @@ public:
 	bool consoleEnabled = true;
 };
 
-extern j1App* App; // No student is asking me about that ... odd :-S
+extern j1App* App; 
 
 #endif

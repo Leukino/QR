@@ -30,7 +30,7 @@ bool ModuleUI::Start()
 	return true;
 }
 
-Button* ModuleUI::CreateButton(iPoint pos, iPoint size, char* text, bool exists)
+Button* ModuleUI::CreateButton(iPoint pos, iPoint size, char* text, bool exists, bool lock)
 {
 	Button* but = new Button();
 	
@@ -42,6 +42,7 @@ Button* ModuleUI::CreateButton(iPoint pos, iPoint size, char* text, bool exists)
 	but->index = element_id;
 	but->type = Element::button;
 	but->exists = exists;
+	but->lock_press = lock;
 
 	UIElements.add(but);
 
