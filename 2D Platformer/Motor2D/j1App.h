@@ -127,7 +127,9 @@ public:
 	uint32 getFpsCap() { return framerate_cap; }
 	void setFpsCap(uint32 fps);
 	float SyncVelocity(float vel);
-	bool consoleEnabled = true;
+	bool consoleEnabled = false;
+	bool wannaquit = false;
+	bool changeGodMode = false;
 };
 
 extern j1App* App; 

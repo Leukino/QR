@@ -71,6 +71,7 @@ public:
 	iPoint GetMousePosition();
 	void GetMouseMotion(int& x, int& y);
 	p2SString GetText() { return text; };
+	void ResetText() { text.Clear(); }
 private:
 	bool		windowEvents[WE_COUNT];
 	j1KeyState*	keyboard;
@@ -79,7 +80,7 @@ private:
 	int			mouse_motion_y;
 	int			mouse_x;
 	int			mouse_y;
-	p2SString	text = "Sample Text";
+	p2SString	text = "";
 };
 
 #endif // __j1INPUT_H__

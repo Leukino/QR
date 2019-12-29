@@ -37,12 +37,14 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
+	
 	//App->map->Load("edgy map.tmx");
 	App->map->Load("Map 2 retextured.tmx");
 
 	pl = App->entities->CreateEntity(0.0f, 0.0f, player);
 	MenuButton = App->ui->CreateButton({ 0,10 }, { 35,35 }, "Menu", false);
-
+	App->ui->CreateConsole({ 100, 100 }, { 200, 20 });
+	
 	return true;
 	srand(time(NULL));
 }
@@ -99,7 +101,11 @@ bool j1Scene::Update(float dt)
 			map = 0;
 		Reset();
 	}
-
+	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
+	{
+		App->consoleEnabled = !App->consoleEnabled;
+		LOG(" % s", App->consoleEnabled ? "true" : "false");
+	}
 	if (MenuButton->is_pressed)
 	{
 		CleanUp();
