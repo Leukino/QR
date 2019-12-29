@@ -25,6 +25,7 @@ void Console::Update(float dt)
 	if (App->consoleEnabled == false)
 	{
 		inputText.Clear();
+		App->input->ResetText();
 		return;
 	}
 	//if (App->consoleEnabled)
