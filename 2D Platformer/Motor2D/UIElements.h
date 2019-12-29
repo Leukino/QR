@@ -25,6 +25,7 @@ public:
 	virtual void Update(float dt) = 0;
 
 	iPoint position;
+	iPoint initialpos;
 	iPoint size;
 	bool exists;
 	int index;

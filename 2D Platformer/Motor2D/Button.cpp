@@ -10,7 +10,6 @@
 
 Button::Button()
 {
-	lock_press = true;
 }
 
 void Button::Update(float dt)
@@ -19,6 +18,8 @@ void Button::Update(float dt)
 	int scale = App->win->GetScale();
 	mpos.x -= App->render->camera.x / scale;
 	mpos.y -= App->render->camera.y / scale;
+	position.x = initialpos.x - App->render->camera.x / scale;
+	position.y = initialpos.y - App->render->camera.y / scale;
 	if (mpos.x > position.x && mpos.x < (position.x + size.x) && mpos.y > position.y && mpos.y < (position.y + size.y))
 	{
 		is_hovering = true;

@@ -9,6 +9,7 @@
 #include "j1Map.h"
 #include "j1Input.h"
 #include "j1Render.h"
+#include "j1Scene.h"
 
 Player::Player()
 {
@@ -70,7 +71,7 @@ Player::Player()
 
 bool Player::Update(float dt)
 {
-	//LOG("playerX: %f | playerY: %f", position.x, position.y);
+	LOG("playerX: %f | playerY: %f", position.x, position.y);
 	ResetColChecks();
 
 	Inputs();
@@ -554,6 +555,6 @@ void Player::Dead()
 	air_atk = false;
 	headcollided = false;
 	sliding = false;
-	//App->entities->CleanUp();
-	App->map->first = true;
+	App->scene->Reset();
+	CleanUp();
 }

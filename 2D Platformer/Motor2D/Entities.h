@@ -43,6 +43,7 @@ class Dynamic :public Entity
 public:
 
 	Dynamic();
+	//~Dynamic();
 	void Animate(Animation& anim, const int first_coll, const int first_row, const int n, float speed = 1.0f, bool loop = true);
 
 	fPoint initialpos;
@@ -170,8 +171,10 @@ public:
 
 	void OnCollision(Collider*, Collider*);
 
+
 	Animation rest;
 	Animation fly;
+
 };
 
 class Static : public Entity

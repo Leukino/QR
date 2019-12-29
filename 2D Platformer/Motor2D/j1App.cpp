@@ -202,7 +202,7 @@ void j1App::FinishUpdate()
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
 
 	static char title[256];
-	char* cap = "ON";
+	char* cap = "OFF";
 	char* vsync = "OFF";
 
 	if (fpscap)
