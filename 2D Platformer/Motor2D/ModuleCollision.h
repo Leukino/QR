@@ -67,7 +67,7 @@ public:
 	bool Update(float dt);
 	bool CleanUp();
 	void Delete_all();
-
+	void changeDebug() { debug = !debug; };
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, Entity* callback = nullptr);
 
 private:

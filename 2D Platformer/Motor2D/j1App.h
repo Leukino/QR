@@ -111,7 +111,7 @@ private:
 	p2SString			load_game;
 	mutable p2SString	save_game;
 
-	uint64				frame_count = 0;
+	
 	j1Timer				startup_time;
 	j1Timer				frame_time;
 	j1Timer				last_sec_frame_time;
@@ -119,8 +119,8 @@ private:
 	uint32				prev_last_sec_frame_count = 0;
 public:
 	uint32				framerate_cap = 30;
-private:
 	bool fpscap = false;
+	uint64				frame_count = 0;
 	
 public: 
 	float dt = 0.1f;

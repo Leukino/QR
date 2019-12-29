@@ -12,6 +12,7 @@
 #include "j1Scene.h"
 #include "j1Audio.h"
 #include "Entities.h"
+#include "ModuleCollision.h"
 Console::Console()
 {
 	inputText = "";
@@ -70,14 +71,29 @@ void Console::Update(float dt)
 
 void Console::ExecuteCommand(const char* text)
 {
-	if (strcmp(text, "fpscap") == 0)
-		App->setFpsCap(120);
-	if (strcmp(text, "fpsuncap") == 0)
+	//if (strcmp(text, "fpscap") == 0)
+	//	if (App->input->GetKey(SDL_SCANCODE_F11) == j1KeyState::KEY_DOWN) {
+	//		App->fpscap = !App->fpscap;
+	//		App->frame_count = 0;
+	//		if (App->fpscap)
+	//			App->setFpsCap(30);
+	//		else
+	//			App->setFpsCap(120);
+	//	}
+	if (strcmp(text, "set30fps") == 0)
 		App->setFpsCap(30);
+	if (strcmp(text, "set60fps") == 0)
+		App->setFpsCap(60);
+	if (strcmp(text, "set120fps") == 0)
+		App->setFpsCap(120);
 	if (strcmp(text, "quit") == 0)
 		App->wannaquit = true;
 	if (strcmp(text, "godmode") == 0)
 		App->changeGodMode = true;
+	if (strcmp(text, "showcolliders") == 0)
+		App->collision->changeDebug();
+	if (strcmp(text, "changemap") == 0)
+		App->scene->changeMap();
 }
 
 p2SString Console::GetOutputText()

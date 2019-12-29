@@ -191,11 +191,6 @@ void j1App::FinishUpdate()
 		last_sec_frame_count = 0;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_F11) == j1KeyState::KEY_DOWN) {
-		fpscap = !fpscap;
-		frame_count = 0;
-	}
-
 	float avg_fps = float(frame_count) / startup_time.ReadSec();
 	float seconds_since_startup = startup_time.ReadSec();
 	uint32 last_frame_ms = frame_time.Read();
@@ -436,7 +431,7 @@ void j1App::setFpsCap(uint32 fps)
 	if (fps <= 0)
 	{
 		fpscap = false;
-		framerate_cap = 30;
+		framerate_cap = 120;
 	}
 	else
 	{

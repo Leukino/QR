@@ -19,6 +19,7 @@ public:
 	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
+	void changeMap();
 
 	void Reset();
 	bool CleanUp();
