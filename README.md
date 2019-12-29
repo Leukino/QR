@@ -25,7 +25,7 @@ For more information see our wiki page [HERE](https://github.com/Leukino/QR/wiki
 Download the last version of the game [HERE](https://github.com/Leukino/QR/releases)
 
 ## GAMEPLAY VIDEO
-<iframe width="560" height="315" src="https://youtu.be/ychKRW9gwqQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="1280" height="720" src="https://www.youtube.com/embed/ychKRW9gwqQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Controls
 
