@@ -18,9 +18,9 @@ distribution of de sprites, also the colliders are loaded by tilesets in Tiled, 
 - [GitHub account](https://github.com/Leukino)
 
 ## LINKS
-See our GitHub repository [HERE](https://github.com/Leukino/QR.git) - https://github.com/Leukino/QR
+See our GitHub repository [HERE](https://github.com/Leukino/QR)
 
-For more information see our wiki page [HERE](https://github.com/Leukino/QR/wiki) - https://github.com/Leukino/QR/wiki
+For more information see our wiki page [HERE](https://github.com/Leukino/QR/wiki)
 
 Download the last version of the game [HERE](https://github.com/Leukino/QR/releases)
 
