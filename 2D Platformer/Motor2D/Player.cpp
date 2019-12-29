@@ -67,6 +67,7 @@ Player::Player()
 	footcol_offset.y = 44;
 	headcol_offset.x = 24;
 	headcol_offset.y = 20;
+	coins = 0;
 }
 
 bool Player::Update(float dt)
@@ -128,6 +129,8 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 {
 	if (!godmode)
 	{
+		if (c2->type == COLLIDER_COIN && (c1->type == COLLIDER_PLAYER_FOOT || c1->type == COLLIDER_PLAYER_HEAD || c1->type == COLLIDER_PLAYER_RIGHT || c1->type == COLLIDER_PLAYER_LEFT))
+			coins++;
 		if (c1->type == COLLIDER_PLAYER_FOOT && c2->type == COLLIDER_GROUND)
 		{
 			if (jumping)

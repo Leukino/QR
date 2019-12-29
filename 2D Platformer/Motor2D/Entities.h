@@ -17,6 +17,7 @@ enum entity_type
 	bat,
 	dynamic,
 	static_,
+	coin,
 	none
 };
 
@@ -33,6 +34,7 @@ public:
 	entity_type type;
 	bool exists;
 	int index;
+	Collider* col;
 
 	virtual void OnCollision(Collider*, Collider*) {}
 
@@ -47,7 +49,6 @@ public:
 	void Animate(Animation& anim, const int first_coll, const int first_row, const int n, float speed = 1.0f, bool loop = true);
 
 	fPoint initialpos;
-	Collider* col;
 	float velocity;
 
 	Animation* current_animation = nullptr;
@@ -110,6 +111,7 @@ public:
 	int collissioncounter;
 	int wallcolcounter;
 	int air_atk_counter;
+	int coins;
 	float timer;
 	float exp_vel;
 	float ground_friction;
@@ -179,6 +181,17 @@ public:
 
 class Static : public Entity
 {
+public:
+	Static();
+};
+
+class Coin : public Static
+{
+public:
+	Coin();
+
+	bool Update(float dt);
+	void OnCollision(Collider* c1, Collider* c2);
 };
 
 

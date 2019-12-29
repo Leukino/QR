@@ -34,10 +34,11 @@ Entity* EntityManager::CreateEntity(float x, float y, entity_type type, bool exi
 {
 	switch (type)
 	{
-	case player: this->entity = new Player(); break;
-	case walker: this->entity = new Walker(); break;
-	case bat: this->entity = new Bat(); break;
-	case none: this->entity = new Entity(); break;
+	case player: entity = new Player(); break;
+	case walker: entity = new Walker(); break;
+	case bat: entity = new Bat(); break;
+	case coin: entity = new Coin(); break;
+	case none: entity = new Entity(); break;
 	}
 	entity->position.x = x;
 	entity->position.y = y;
@@ -81,14 +82,6 @@ bool EntityManager::Update(float dt)
 			Entities[i]->Update(dt);
 		}
 
-	//
-	//	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-	//		CreateEntity(App->player->position.x, App->player->position.y - 20, enemy);
-	//
-	//	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
-	//		for (int i = 0; i < Entities.count(); i++)
-	//			LOG("Entity %d - x: %f y: %f Size: %d", Entities[i]->index, Entities[i]->position.x, Entities[i]->position.y, Entities.count());
-	//		
 	return true;
 }
 

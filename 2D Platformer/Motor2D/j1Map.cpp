@@ -435,10 +435,13 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 						colltype = COLLIDER_WALL;
 					else if (SDL_strcmp(type.GetString(), "DANGER") == 0)
 						colltype = COLLIDER_ENEMY_SHOT;
+					else if (SDL_strcmp(type.GetString(), "coin") == 0)
+						enType = coin;
 					else if (SDL_strcmp(type.GetString(), "walker") == 0)
 						enType = walker;
 					else if (SDL_strcmp(type.GetString(), "bat") == 0)
 						enType = bat;
+					
 
 					layer->collisions[i].collider[e].rect = r;
 					LOG("rect set to: %d - %d - %d - %d number %d", r.x, r.y, r.w, r.h, e);
