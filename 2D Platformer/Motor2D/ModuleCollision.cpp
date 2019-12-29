@@ -207,6 +207,9 @@ bool ModuleCollision::Update(float dt)
 				case COLLIDER_PLAYER_ATK: // magenta
 					App->render->DrawQuad(colliders[i]->rect, 255, 100, 100, alpha);
 					break;
+				case COLLIDER_COIN: // magenta
+					App->render->DrawQuad(colliders[i]->rect, 255, 255, 255);
+					break;
 			}
 	}
 

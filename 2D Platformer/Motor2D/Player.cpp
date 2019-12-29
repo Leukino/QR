@@ -72,12 +72,14 @@ Player::Player()
 
 bool Player::Update(float dt)
 {
+	LOG("%d", coins);
+	App->coins = coins / 2;
 	if (App->changeGodMode) 
 	{
 		SetGodMode();
 		App->changeGodMode = false;
 	}
-	//LOG("playerX: %f | playerY: %f", position.x, position.y);
+	
 	ResetColChecks();
 
 	Inputs();

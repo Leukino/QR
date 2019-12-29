@@ -130,6 +130,7 @@ public:
 	bool consoleEnabled = false;
 	bool wannaquit = false;
 	bool changeGodMode = false;
+	int coins = 0;
 };
 
 extern j1App* App; 

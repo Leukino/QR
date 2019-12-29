@@ -210,8 +210,8 @@ void j1App::FinishUpdate()
 	else
 		vsync = "OFF";
 
-	sprintf_s(title, 256, "QR || FPS: %02u / EstFPS: %02u/ Av.FPS: %.2f / Last Frame Ms: %02u / Cap: %s / Vsync: %s / dt: %f",
-		frames_on_last_update, framerate_cap, avg_fps, last_frame_ms, cap, vsync, dt);
+	sprintf_s(title, 256, "QR || FPS: %02u / EstFPS: %02u/ Av.FPS: %.2f / Last Frame Ms: %02u / Cap: %s / Vsync: %s / dt: %f                                                     COINS:%d",
+		frames_on_last_update, framerate_cap, avg_fps, last_frame_ms, cap, vsync, dt, coins);
 	
 	App->win->SetTitle(title);
 	//App->win->SetTitle(App->input->GetText().GetString());

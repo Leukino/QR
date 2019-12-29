@@ -16,6 +16,7 @@ Coin::Coin()
 
 bool Coin::Update(float dt)
 {
+	col->SetPos((int)position.x, (int)position.y);
 	App->render->DrawQuad({ (int)position.x, (int)position.y, 20, 20 }, 189, 183, 107);
 	return true;
 }
