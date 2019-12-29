@@ -4,10 +4,18 @@
 #include <math.h>
 #include <cstring>
 
+//#include "ModuleCollision.h"
+
 Dynamic::Dynamic()
 {
 	LOG("it's Dynamic");
 }
+
+//Dynamic::~Dynamic()
+//{
+//	LOG("it's Dynamic");
+//	col->to_delete = true;
+//}
 
 void Dynamic::Animate(Animation& anim, const int first_coll, const int first_row, const int n, float speed, bool loop)
 {

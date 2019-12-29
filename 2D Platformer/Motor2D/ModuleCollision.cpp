@@ -84,7 +84,7 @@ ModuleCollision::ModuleCollision()
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_PLAYER_FOOT] = true;
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_ENEMY_SHOT] = false;
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_PLAYER_HEAD] = false;
-	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_PLAYER_ATK] = false;
+	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_PLAYER_ATK] = true;
 }
 
 // Destructor

@@ -44,18 +44,25 @@ bool MainMenu::Start()
 // Called each loop iteration
 bool MainMenu::Update(float dt)
 {
+	PlayButton->exists = true;
+	ExitButton->exists = true;
+	
+
 	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
 		App->setFpsCap(App->getFpsCap() + 10);
 	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
 	{
 		App->setFpsCap(App->getFpsCap() - 10);
 	}
+
 	if(PlayButton->is_pressed)
 	{ 
 		CleanUp();
 		App->scene->Init();
 		App->collision->Init();
 		App->entities->Init();
+		PlayButton->is_pressed = false;
+		App->scene->Reset();
 		Disable();
 	}
 
@@ -80,6 +87,7 @@ bool MainMenu::PostUpdate()
 // Called before quitting
 bool MainMenu::CleanUp()
 {
-	App->ui->CleanUp();
+	PlayButton->exists = false;
+	ExitButton->exists = false;
 	return true;
 }

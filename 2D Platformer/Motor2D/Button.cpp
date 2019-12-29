@@ -10,7 +10,7 @@
 
 Button::Button()
 {
-	lock_press = true;
+	lock_press = false;
 }
 
 void Button::Update(float dt)
@@ -19,6 +19,8 @@ void Button::Update(float dt)
 	int scale = App->win->GetScale();
 	mpos.x -= App->render->camera.x / scale;
 	mpos.y -= App->render->camera.y / scale;
+	position.x = initialpos.x - App->render->camera.x / scale;
+	position.y = initialpos.y - App->render->camera.y / scale;
 	if (mpos.x > position.x && mpos.x < (position.x + size.x) && mpos.y > position.y && mpos.y < (position.y + size.y))
 	{
 		is_hovering = true;
@@ -40,7 +42,7 @@ void Button::Update(float dt)
 	
 	//LOG("mouseX: %d | mouseY: %d", mpos.x, mpos.y);
 	//LOG("cameraX: %d | cameraY: %d", App->render->camera.x, App->render->camera.y);
-	LOG("mouseworldX: %d | mouseworldY: %d", mpos.x - App->render->camera.x/scale, mpos.y - App->render->camera.y/scale);
+	//LOG("mouseworldX: %d | mouseworldY: %d", mpos.x - App->render->camera.x/scale, mpos.y - App->render->camera.y/scale);
 
 	if(!is_hovering && !is_pressed)
 		App->render->DrawQuad({ position.x, position.y, size.x, size.y}, 0, 0, 255);

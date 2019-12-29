@@ -35,8 +35,8 @@ Button* ModuleUI::CreateButton(iPoint pos, iPoint size, char* text, bool exists)
 	Button* but = new Button();
 	
 	but->text = App->fonts->Print(text);
-	but->position.x = pos.x;
-	but->position.y = pos.y;
+	but->initialpos.x = pos.x;
+	but->initialpos.y = pos.y;
 	but->size.x = size.x;
 	but->size.y = size.y;
 	but->index = element_id;

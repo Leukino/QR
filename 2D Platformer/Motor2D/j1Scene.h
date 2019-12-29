@@ -3,6 +3,7 @@
 
 #include "j1Module.h"
 #include "EntityManager.h"
+#include "ModuleUI.h"
 
 struct SDL_Texture;
 
@@ -19,9 +20,12 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 
+	void Reset();
 	bool CleanUp();
 
 	Entity* pl;
+
+	Button* MenuButton;
 
 private:
 

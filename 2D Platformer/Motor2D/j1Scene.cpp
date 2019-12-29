@@ -12,6 +12,7 @@
 #include "j1Audio.h"
 #include "j1Render.h"
 #include "j1Map.h"
+#include "MainMenu.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -39,6 +40,7 @@ bool j1Scene::Start()
 	App->map->Load("Map 2 retextured.tmx");
 
 	pl = App->entities->CreateEntity(0.0f, 0.0f, player);
+	MenuButton = App->ui->CreateButton({ 0,10 }, { 35,35 }, "Menu", false);
 
 	return true;
 	srand(time(NULL));
@@ -53,6 +55,8 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+	MenuButton->exists = true;
+
 	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		App->LoadGame();
 
@@ -92,17 +96,22 @@ bool j1Scene::Update(float dt)
 		}
 		if (map > 1)
 			map = 0;
-		//App->player->Reset();
+		Reset();
+	}
+
+	if (MenuButton->is_pressed)
+	{
+		CleanUp();
+		Disable();
+		App->collision->Disable();
+		App->entities->Disable();
+		App->mainmenu->Init();
+		MenuButton->is_pressed = false;
 	}
 
 	App->render->setCamera();
 	App->map->Draw();
 
-	//p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
-	//	App->map->data.width, App->map->data.height,
-	//	App->map->data.tile_width, App->map->data.tile_height,
-	//	App->map->data.tilesets.count());
-	//App->win->SetTitle(title.GetString());
 	return true;
 }
 
@@ -117,9 +126,18 @@ bool j1Scene::PostUpdate()
 	return ret;
 }
 
-// Called before quitting
+void j1Scene::Reset()
+{
+	App->entities->CleanUp();
+	App->collision->CleanUp();
+	App->map->DrawMapEntities();
+	App->map->DrawMapColliders();
+	pl = App->entities->CreateEntity(200.0f, 300.0f, player);
+}
+
 bool j1Scene::CleanUp()
 {
+	MenuButton->exists = false;
 	App->entities->CleanUp();
 	App->collision->CleanUp();
 	App->map->CleanUp();
