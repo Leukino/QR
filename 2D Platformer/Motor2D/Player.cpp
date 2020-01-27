@@ -72,7 +72,7 @@ Player::Player()
 
 bool Player::Update(float dt)
 {
-	LOG("%d", coins);
+	//LOG("%d", coins);
 	App->coins = coins / 2;
 	if (App->changeGodMode) 
 	{

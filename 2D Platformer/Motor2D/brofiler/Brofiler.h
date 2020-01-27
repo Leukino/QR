@@ -1,7 +1,7 @@
 #pragma once
 
 #if !defined(USE_PROFILER) && (!defined(_FINALRELEASE) || defined(EMULATE_DEVELOPER_FINAL_RELEASE))
-	#define USE_PROFILER 1
+#define USE_PROFILER 1
 #endif
 
 #if USE_PROFILER
@@ -178,83 +178,83 @@ namespace Profiler
 #pragma region Event.h
 namespace Profiler
 {
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct BROFILER_API ThreadDescription
-{
-	unsigned long threadID;
-	const char* name;
-
-	ThreadDescription(const char* threadName = "MainThread");
-};
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-extern "C" BROFILER_API __int64 GetTime();
-BROFILER_API __int64 GetTimeMicroSeconds();
-BROFILER_API void NextFrame();
-BROFILER_API bool IsActive();
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct EventDescription;
-struct Frame;
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct EventTime
-{
-	__int64 start;
-	__int64 finish;
-
-	BRO_INLINE void Start() { start  = GetTime(); }
-	BRO_INLINE void Stop() 	{ finish = GetTime(); }
-};
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct EventData : public EventTime
-{
-	const EventDescription* description;
-};
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct BROFILER_API EventDescription
-{
-	bool isSampling;		
-
-	// HOT  \\
-	// Have to place "hot" variables at the beginning of the class (here will be some padding)
-	// COLD //
-
-	const char* name;
-	const char* file;
-	unsigned long line;
-	unsigned long index;
-	unsigned long color;
-
-	static EventDescription* Create(const char* eventName, const char* fileName, const unsigned long fileLine, const unsigned long eventColor = Color::Null);
-private:
-	friend class EventDescriptionBoard;
-	EventDescription();
-	EventDescription& operator=(const EventDescription&);
-};
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct BROFILER_API Event
-{
-
-	EventData* data;
-
-	static EventData* Start(const EventDescription& description);
-	static void Stop(EventData& data);
-
-	Event( const EventDescription& description )
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	struct BROFILER_API ThreadDescription
 	{
-		data = Start(description);
-	}
+		unsigned long threadID;
+		const char* name;
 
-	~Event()
+		ThreadDescription(const char* threadName = "MainThread");
+	};
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	extern "C" BROFILER_API __int64 GetTime();
+	BROFILER_API __int64 GetTimeMicroSeconds();
+	BROFILER_API void NextFrame();
+	BROFILER_API bool IsActive();
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	struct EventDescription;
+	struct Frame;
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	struct EventTime
 	{
-		if (data)
-			Stop(*data);
-	}
-};
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct BROFILER_API Category : public Event
-{
-	Category( const EventDescription& description );
-};
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		__int64 start;
+		__int64 finish;
+
+		BRO_INLINE void Start() { start = GetTime(); }
+		BRO_INLINE void Stop() { finish = GetTime(); }
+	};
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	struct EventData : public EventTime
+	{
+		const EventDescription* description;
+	};
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	struct BROFILER_API EventDescription
+	{
+		bool isSampling;
+
+		// HOT  \\
+		// Have to place "hot" variables at the beginning of the class (here will be some padding)
+		// COLD //
+
+		const char* name;
+		const char* file;
+		unsigned long line;
+		unsigned long index;
+		unsigned long color;
+
+		static EventDescription* Create(const char* eventName, const char* fileName, const unsigned long fileLine, const unsigned long eventColor = Color::Null);
+	private:
+		friend class EventDescriptionBoard;
+		EventDescription();
+		EventDescription& operator=(const EventDescription&);
+	};
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	struct BROFILER_API Event
+	{
+
+		EventData* data;
+
+		static EventData* Start(const EventDescription& description);
+		static void Stop(EventData& data);
+
+		Event(const EventDescription& description)
+		{
+			data = Start(description);
+		}
+
+		~Event()
+		{
+			if (data)
+				Stop(*data);
+		}
+	};
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	struct BROFILER_API Category : public Event
+	{
+		Category(const EventDescription& description);
+	};
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 #pragma endregion
 
@@ -274,7 +274,7 @@ struct BROFILER_API Category : public Event
 																																				BROFILER_EVENT("Frame")							\
 
 #define BROFILER_THREAD(FRAME_NAME) Profiler::ThreadDescription currentFrameDescription(FRAME_NAME);\
-																				
+
 #else
 #define BROFILER_EVENT(NAME)
 #define PROFILE

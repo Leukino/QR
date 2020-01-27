@@ -3,7 +3,7 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
-#include "brofiler/Brofiler/Brofiler.h"
+#include "brofiler/Brofiler.h"
 
 #include "j1Scene.h"
 

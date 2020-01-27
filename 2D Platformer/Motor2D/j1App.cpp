@@ -14,7 +14,7 @@
 #include "j1App.h"
 #include "ModuleCollision.h"
 #include "EntityManager.h"
-#include "brofiler/Brofiler/Brofiler.h"
+#include "brofiler/Brofiler.h"
 #include "j1Fonts.h"
 #include "ModuleUI.h"
 

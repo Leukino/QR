@@ -10,7 +10,7 @@
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
 //brooooooofiler
-#include "brofiler/Brofiler/Brofiler.h"
+#include "brofiler/Brofiler.h"
 #pragma comment( lib, "brofiler/Brofiler//ProfilerCore32.lib")
 
 
